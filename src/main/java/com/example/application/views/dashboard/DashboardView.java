@@ -28,9 +28,11 @@ import com.vaadin.flow.theme.lumo.LumoUtility.FontWeight;
 import com.vaadin.flow.theme.lumo.LumoUtility.Margin;
 import com.vaadin.flow.theme.lumo.LumoUtility.Padding;
 import com.vaadin.flow.theme.lumo.LumoUtility.TextColor;
+import jakarta.annotation.security.PermitAll;
 
 @PageTitle("Dashboard")
 @Route(value = "dashboard", layout = MainLayout.class)
+@PermitAll
 public class DashboardView extends Main {
 
     public DashboardView() {

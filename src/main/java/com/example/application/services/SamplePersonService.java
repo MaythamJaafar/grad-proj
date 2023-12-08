@@ -2,15 +2,20 @@ package com.example.application.services;
 
 import com.example.application.data.SamplePerson;
 import com.example.application.data.SamplePersonRepository;
+
 import java.util.Optional;
+
+import com.example.application.db.model.User;
+import com.example.application.db.repo.RepoUser;
+import jakarta.annotation.PostConstruct;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
 public class SamplePersonService {
-
     private final SamplePersonRepository repository;
 
     public SamplePersonService(SamplePersonRepository repository) {

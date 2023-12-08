@@ -13,14 +13,14 @@ import java.time.LocalDate;
 @NoArgsConstructor
 public class User {
     private String _id;
-    private String firstName;
-    private String lastName;
+    private String fullName;
     private String phoneNb;
     private Gender gender;
     private Role role;
     private String username;
     private String password;
     private LocalDate dateOfBirth;
+    private LocalDate joinedAt;
 
     public enum Role {
         ADMIN,

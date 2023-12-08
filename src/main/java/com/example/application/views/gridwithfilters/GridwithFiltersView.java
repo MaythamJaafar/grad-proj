@@ -25,6 +25,7 @@ import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import com.vaadin.flow.spring.data.VaadinSpringDataHelpers;
 import com.vaadin.flow.theme.lumo.LumoUtility;
+import jakarta.annotation.security.PermitAll;
 import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.persistence.criteria.CriteriaQuery;
 import jakarta.persistence.criteria.Expression;
@@ -37,6 +38,7 @@ import org.springframework.data.jpa.domain.Specification;
 
 @PageTitle("Grid with Filters")
 @Route(value = "grid-with-filters", layout = MainLayout.class)
+@PermitAll
 @Uses(Icon.class)
 public class GridwithFiltersView extends Div {
 
