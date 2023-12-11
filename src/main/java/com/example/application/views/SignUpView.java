@@ -27,6 +27,7 @@ import static com.example.application.util.InputChecker.*;
 @Route(value = "signup")
 public class SignUpView extends VerticalLayout {
     private final TextField fullNameTxt = new TextField("Full Name");
+    private final TextField usernameTxt = new TextField("Username");
     private final EmailField emailField = new EmailField("Email");
     private final PasswordField password = new PasswordField("Password");
     private final PasswordField passwordConfirm = new PasswordField("Confirm Password");
@@ -40,18 +41,22 @@ public class SignUpView extends VerticalLayout {
         getElement().getStyle().set("background-color", "#ffffff");
 
         fullNameTxt.setWidth("100%");
+        usernameTxt.setWidth("100%");
         emailField.setWidth("100%");
         password.setWidth("100%");
         passwordConfirm.setWidth("100%");
         fullNameTxt.setValueChangeMode(ValueChangeMode.EAGER);
+        usernameTxt.setValueChangeMode(ValueChangeMode.EAGER);
         emailField.setValueChangeMode(ValueChangeMode.EAGER);
         password.setValueChangeMode(ValueChangeMode.EAGER);
         passwordConfirm.setValueChangeMode(ValueChangeMode.EAGER);
         fullNameTxt.addValueChangeListener(event -> fullNameTxt.setInvalid(false));
+        usernameTxt.addValueChangeListener(event -> usernameTxt.setInvalid(false));
         emailField.addValueChangeListener(event -> emailField.setInvalid(false));
         emailField.setPlaceholder("username@example.com");
 
         fullNameTxt.setRequired(true);
+        usernameTxt.setRequired(true);
         emailField.setRequired(true);
         password.setRequired(true);
         passwordConfirm.setRequired(true);
@@ -76,7 +81,7 @@ public class SignUpView extends VerticalLayout {
         signInLink.setRoute(LoginView.class);
 
         VerticalLayout signUpVl = new VerticalLayout();
-        signUpVl.add(signUpTitle, fullNameTxt, emailField, password, passwordConfirm, signUpBtn);
+        signUpVl.add(signUpTitle, fullNameTxt, usernameTxt, emailField, password, passwordConfirm, signUpBtn);
         signUpVl.setAlignItems(Alignment.CENTER);
         signUpVl.getElement().getStyle().set("background", "#FFFFFF");
         signUpVl.setWidth("350px");
@@ -85,9 +90,10 @@ public class SignUpView extends VerticalLayout {
                 return;
             BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
             User user = new User();
-            user.set_id(emailField.getValue());
+            user.set_id(usernameTxt.getValue());
             user.setRole(User.Role.CLIENT);
             user.setFullName(fullNameTxt.getValue());
+            user.setUsername(usernameTxt.getValue());
             user.setJoinedAt(LocalDate.now());
             user.setPassword(passwordEncoder.encode(password.getValue()));
             repoUser.save(user);
@@ -100,6 +106,7 @@ public class SignUpView extends VerticalLayout {
     private boolean checkFields() {
         AtomicBoolean continueSignUp = new AtomicBoolean(true);
         checkTextField(fullNameTxt, continueSignUp);
+        checkTextField(usernameTxt, continueSignUp);
         checkEmailField(emailField, continueSignUp);
         checkPasswordField(password, continueSignUp);
         checkPasswordField(passwordConfirm, continueSignUp);

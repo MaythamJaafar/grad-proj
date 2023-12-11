@@ -24,7 +24,7 @@ public class SecurityConfiguration extends VaadinWebSecurity {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http.formLogin(form -> form.loginPage("/login").permitAll());
+        http.formLogin(form -> form.loginPage("/signin").permitAll());
         super.configure(http);
         setLoginView(http, LoginView.class);
     }

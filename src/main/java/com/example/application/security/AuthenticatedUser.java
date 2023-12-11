@@ -21,6 +21,10 @@ public class AuthenticatedUser {
 
     public Optional<User> get() {
         return authenticationContext.getAuthenticatedUser(UserDetails.class)
+                .map(x -> {
+                    System.out.println(x.getUsername());
+                    return x;
+                })
                 .map(userDetails -> repoUser.findByUsername(userDetails.getUsername()));
     }
 
