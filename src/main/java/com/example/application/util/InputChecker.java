@@ -20,6 +20,8 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import static com.example.application.util.Util.showErrorNotification;
+
 @Slf4j
 public class InputChecker {
     public static boolean checkDates(DatePicker sinceDatePicker, DatePicker untilDatePicker, LocalDate date) {
@@ -91,10 +93,10 @@ public class InputChecker {
             checkbox.scrollIntoView();
             continueFlag.set(false);
             if (checkbox.getLabel().contains("ADX")) {
-                ui.access(() -> Notification.show("Please accept to digitally sign ADX form.", 2000, Notification.Position.MIDDLE).addThemeVariants(NotificationVariant.LUMO_ERROR));
+                ui.access(() -> showErrorNotification("Please accept to digitally sign ADX form."));
             }
             if (checkbox.getLabel().contains("DFM")) {
-                ui.access(() -> Notification.show("Please accept to digitally sign DFM form.", 2000, Notification.Position.MIDDLE).addThemeVariants(NotificationVariant.LUMO_ERROR));
+                ui.access(() -> showErrorNotification("Please accept to digitally sign DFM form."));
             }
         }
     }
@@ -263,20 +265,10 @@ public class InputChecker {
         }
     }
 
-    public static void checkDatePicker(DatePicker datePicker, AtomicBoolean continueFlag, boolean expiry) {
+    public static void checkDatePicker(DatePicker datePicker, AtomicBoolean continueFlag) {
         if (datePicker.getValue() == null) {
             datePicker.setInvalid(true);
             datePicker.setErrorMessage("Fill Empty Fields");
-            datePicker.scrollIntoView();
-            continueFlag.set(false);
-        } else if (expiry && datePicker.getValue().isBefore(LocalDate.now())) {
-            datePicker.setInvalid(true);
-            datePicker.setErrorMessage("Cannot set Date Before Today");
-            datePicker.scrollIntoView();
-            continueFlag.set(false);
-        } else if (!expiry && datePicker.getValue().isAfter(LocalDate.now())) {
-            datePicker.setInvalid(true);
-            datePicker.setErrorMessage("Cannot set Date After Today");
             datePicker.scrollIntoView();
             continueFlag.set(false);
         }

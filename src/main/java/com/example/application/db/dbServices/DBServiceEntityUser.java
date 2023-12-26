@@ -22,4 +22,8 @@ public class DBServiceEntityUser {
         return repoUser.findAll();
     }
 
+    public User findUserByUsername(String username){
+        return repoUser.findByUsername(username);
+    }
+
 }

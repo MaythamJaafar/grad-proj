@@ -3,14 +3,14 @@ package com.example.application.views;
 import com.example.application.db.dbServices.DBServiceEntityUser;
 import com.example.application.db.model.User;
 import com.example.application.security.AuthenticatedUser;
-import com.example.application.views.about.AboutView;
+import com.example.application.util.InputChecker;
 import com.example.application.views.dashboard.DashboardView;
-import com.example.application.views.datagrid.DataGridView;
-import com.example.application.views.feed.FeedView;
-import com.example.application.views.gridwithfilters.GridwithFiltersView;
-import com.example.application.views.helloworld.HelloWorldView;
-import com.example.application.views.masterdetail.MasterDetailView;
-import com.example.application.views.personform.PersonFormView;
+import com.example.application.views.expense.ExpenseView;
+import com.example.application.views.faq.FaqView;
+import com.example.application.views.medicine.MedicineView;
+import com.example.application.views.pcare.PCareView;
+import com.example.application.views.sportSup.SportSuppView;
+import com.example.application.views.user.UserView;
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.applayout.AppLayout;
 import com.vaadin.flow.component.applayout.DrawerToggle;
@@ -22,6 +22,8 @@ import com.vaadin.flow.component.dialog.Dialog;
 import com.vaadin.flow.component.html.*;
 import com.vaadin.flow.component.icon.Icon;
 import com.vaadin.flow.component.menubar.MenuBar;
+import com.vaadin.flow.component.notification.Notification;
+import com.vaadin.flow.component.notification.NotificationVariant;
 import com.vaadin.flow.component.orderedlayout.FlexComponent;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.Scroller;
@@ -33,6 +35,11 @@ import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.theme.lumo.LumoUtility;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.vaadin.lineawesome.LineAwesomeIcon;
+
+import java.util.concurrent.atomic.AtomicBoolean;
+
+import static com.example.application.util.Util.showErrorNotification;
+import static com.example.application.util.Util.showSuccessNotification;
 
 /**
  * The main view is a top-level placeholder for other views.
@@ -55,9 +62,7 @@ public class MainLayout extends AppLayout {
 
     private Component createHeaderContent() {
         Header header = new Header();
-        header.setWidth("100%");
         header.setHeight("100%");
-        header.getElement().getStyle().set("justify-content", "space-between");
         header.addClassName("header-shadow");
         header.addClassNames(LumoUtility.BoxSizing.BORDER, LumoUtility.Display.FLEX, LumoUtility.FlexDirection.COLUMN, LumoUtility.Width.MEDIUM);
 
@@ -67,8 +72,6 @@ public class MainLayout extends AppLayout {
 
         Div layout = new Div();
         layout.addClassNames(LumoUtility.Display.FLEX, LumoUtility.AlignItems.CENTER, LumoUtility.Padding.Horizontal.MEDIUM);
-        layout.getElement().getStyle().set("justify-content", "space-between");
-
 
         Avatar avatar = new Avatar(currentUser.getFullName());
         avatar.setImage("./images/pp.png");
@@ -104,9 +107,14 @@ public class MainLayout extends AppLayout {
 
         viewTitle = new H2();
         viewTitle.addClassNames(LumoUtility.FontSize.LARGE, LumoUtility.Margin.NONE);
+        viewTitle.getElement().getStyle().set("align-self", "center");
 
-        addToNavbar(true, toggle, viewTitle);
-        addToNavbar(true, createHeaderContent());
+        HorizontalLayout headerHl = new HorizontalLayout(viewTitle, createHeaderContent());
+        headerHl.getElement().getStyle().set("justify-content", "space-between");
+        headerHl.setWidth("90%");
+//        headerHl.getElement().getStyle().set("background-color", "royalblue");
+
+        addToNavbar(true, toggle, headerHl);
 
     }
 
@@ -136,13 +144,18 @@ public class MainLayout extends AppLayout {
         dialog.getElement().getStyle().set("align-item", "center");
 
         Button changePasswordButton = new Button("Save", (e) -> {
-            if (newPasswordTxt.getValue().equals(confirmNewPasswordTxt.getValue())) {
-                dialog.close();
-                entityUser.setPassword(new BCryptPasswordEncoder().encode(confirmNewPasswordTxt.getValue()));
-                dbServiceUser.saveUser(entityUser);
-            }
+            AtomicBoolean continueFlag = new AtomicBoolean(true);
+            InputChecker.checkPasswordField(newPasswordTxt, continueFlag);
+            InputChecker.checkPasswordField(confirmNewPasswordTxt, continueFlag);
+
+            if (continueFlag.get())
+                if (newPasswordTxt.getValue().equals(confirmNewPasswordTxt.getValue())) {
+                    dialog.close();
+                    entityUser.setPassword(new BCryptPasswordEncoder().encode(confirmNewPasswordTxt.getValue()));
+                    dbServiceUser.saveUser(entityUser);
+                } else
+                    showErrorNotification("Passwords do not match");
         });
-        changePasswordButton.setEnabled(false);
 
         dialog.setHeaderTitle(
                 String.format("Change password of \"%s\"?", entityUser.get_id()));
@@ -152,15 +165,6 @@ public class MainLayout extends AppLayout {
             confirmNewPasswordTxt.setInvalid(false);
         });
         confirmNewPasswordTxt.setPlaceholder("Confirm New Password");
-        confirmNewPasswordTxt.addValueChangeListener(event -> {
-            confirmNewPasswordTxt.setInvalid(false);
-            changePasswordButton.setEnabled(event.getValue() != null && event.getValue().equals(newPasswordTxt.getValue()));
-            if (event.getValue() != null && !event.getValue().equals(newPasswordTxt.getValue())) {
-                confirmNewPasswordTxt.setInvalid(true);
-                confirmNewPasswordTxt.setErrorMessage("Password doesnt match ");
-
-            }
-        });
 
         changePasswordButton.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
         changePasswordButton.getStyle().set("margin-right", "auto");
@@ -175,14 +179,18 @@ public class MainLayout extends AppLayout {
     private SideNav createNavigation() {
         SideNav nav = new SideNav();
 
-        nav.addItem(new SideNavItem("Hello World", HelloWorldView.class, LineAwesomeIcon.GLOBE_SOLID.create()));
-        nav.addItem(new SideNavItem("About", AboutView.class, LineAwesomeIcon.FILE.create()));
-        nav.addItem(new SideNavItem("Dashboard", DashboardView.class, LineAwesomeIcon.CHART_AREA_SOLID.create()));
-        nav.addItem(new SideNavItem("Data Grid", DataGridView.class, LineAwesomeIcon.TH_SOLID.create()));
-        nav.addItem(new SideNavItem("Master-Detail", MasterDetailView.class, LineAwesomeIcon.COLUMNS_SOLID.create()));
-        nav.addItem(new SideNavItem("Person Form", PersonFormView.class, LineAwesomeIcon.USER.create()));
-        nav.addItem(new SideNavItem("Grid with Filters", GridwithFiltersView.class, LineAwesomeIcon.FILTER_SOLID.create()));
-        nav.addItem(new SideNavItem("Feed", FeedView.class, LineAwesomeIcon.LIST_SOLID.create()));
+        nav.addItem(new SideNavItem("Dashboard", DashboardView.class, LineAwesomeIcon.ACCUSOFT.create()));
+        nav.addItem(new SideNavItem("MedicineGrid", MedicineView.class, LineAwesomeIcon.ACCUSOFT.create()));
+        if (currentUser.getRole().equals(User.Role.SUPER_ADMIN))
+            nav.addItem(new SideNavItem("UserGrid", UserView.class, LineAwesomeIcon.USER.create()));
+        if (currentUser.getRole().equals(User.Role.SUPER_ADMIN) || currentUser.getRole().equals(User.Role.ADMIN))
+            nav.addItem(new SideNavItem("Expenses", ExpenseView.class, LineAwesomeIcon.ACCUSOFT.create()));
+        nav.addItem(new SideNavItem("SportSupp", SportSuppView.class, LineAwesomeIcon.ACCUSOFT.create()));
+        nav.addItem(new SideNavItem("Contact", Contact.class, LineAwesomeIcon.ACCUSOFT.create()));
+        nav.addItem(new SideNavItem("PCare", PCareView.class, LineAwesomeIcon.ACCUSOFT.create()));
+        nav.addItem(new SideNavItem("FAQ", FaqView.class, LineAwesomeIcon.ACCUSOFT.create()));
+//        nav.addItem(new SideNavItem("Eye", EyeView.class, LineAwesomeIcon.ACCUSOFT.create()));
+
 
         return nav;
     }

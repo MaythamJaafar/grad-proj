@@ -2,9 +2,13 @@ package com.example.application.views;
 
 import com.example.application.db.model.User;
 import com.example.application.db.repo.RepoUser;
+import com.example.application.views.dashboard.DashboardView;
+import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
+import com.vaadin.flow.component.datepicker.DatePicker;
 import com.vaadin.flow.component.html.H3;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
+import com.vaadin.flow.component.radiobutton.RadioButtonGroup;
 import com.vaadin.flow.component.textfield.EmailField;
 import com.vaadin.flow.component.textfield.PasswordField;
 import com.vaadin.flow.component.textfield.TextField;
@@ -29,6 +33,8 @@ public class SignUpView extends VerticalLayout {
     private final TextField fullNameTxt = new TextField("Full Name");
     private final TextField usernameTxt = new TextField("Username");
     private final EmailField emailField = new EmailField("Email");
+    private final RadioButtonGroup<User.Gender> genderRd = new RadioButtonGroup<>("Gender", User.Gender.values());
+    private final DatePicker dateOfBirth = new DatePicker("DOB");
     private final PasswordField password = new PasswordField("Password");
     private final PasswordField passwordConfirm = new PasswordField("Confirm Password");
 
@@ -43,6 +49,8 @@ public class SignUpView extends VerticalLayout {
         fullNameTxt.setWidth("100%");
         usernameTxt.setWidth("100%");
         emailField.setWidth("100%");
+        genderRd.setWidth("100%");
+        dateOfBirth.setWidth("100%");
         password.setWidth("100%");
         passwordConfirm.setWidth("100%");
         fullNameTxt.setValueChangeMode(ValueChangeMode.EAGER);
@@ -53,11 +61,15 @@ public class SignUpView extends VerticalLayout {
         fullNameTxt.addValueChangeListener(event -> fullNameTxt.setInvalid(false));
         usernameTxt.addValueChangeListener(event -> usernameTxt.setInvalid(false));
         emailField.addValueChangeListener(event -> emailField.setInvalid(false));
+        genderRd.addValueChangeListener(event -> emailField.setInvalid(false));
+        dateOfBirth.addValueChangeListener(event -> emailField.setInvalid(false));
         emailField.setPlaceholder("username@example.com");
 
         fullNameTxt.setRequired(true);
         usernameTxt.setRequired(true);
         emailField.setRequired(true);
+        genderRd.setRequired(true);
+        dateOfBirth.setRequired(true);
         password.setRequired(true);
         passwordConfirm.setRequired(true);
 
@@ -81,7 +93,7 @@ public class SignUpView extends VerticalLayout {
         signInLink.setRoute(LoginView.class);
 
         VerticalLayout signUpVl = new VerticalLayout();
-        signUpVl.add(signUpTitle, fullNameTxt, usernameTxt, emailField, password, passwordConfirm, signUpBtn);
+        signUpVl.add(signUpTitle, fullNameTxt, usernameTxt, emailField, genderRd, dateOfBirth, password, passwordConfirm, signUpBtn);
         signUpVl.setAlignItems(Alignment.CENTER);
         signUpVl.getElement().getStyle().set("background", "#FFFFFF");
         signUpVl.setWidth("350px");
@@ -94,9 +106,12 @@ public class SignUpView extends VerticalLayout {
             user.setRole(User.Role.CLIENT);
             user.setFullName(fullNameTxt.getValue());
             user.setUsername(usernameTxt.getValue());
+            user.setGender(genderRd.getValue());
+            user.setDateOfBirth(dateOfBirth.getValue());
             user.setJoinedAt(LocalDate.now());
             user.setPassword(passwordEncoder.encode(password.getValue()));
             repoUser.save(user);
+            UI.getCurrent().navigate(LoginView.class);
         });
         signUpVl.getElement().getStyle().set("display", "table-header-group");
         add(signUpVl, signInLink);
@@ -108,6 +123,8 @@ public class SignUpView extends VerticalLayout {
         checkTextField(fullNameTxt, continueSignUp);
         checkTextField(usernameTxt, continueSignUp);
         checkEmailField(emailField, continueSignUp);
+        checkRdGrp(genderRd, continueSignUp);
+        checkDatePicker(dateOfBirth, continueSignUp);
         checkPasswordField(password, continueSignUp);
         checkPasswordField(passwordConfirm, continueSignUp);
         if (password.getValue() != null && passwordConfirm.getValue() != null && !password.getValue().equals(passwordConfirm.getValue())) {

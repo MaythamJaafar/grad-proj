@@ -14,7 +14,6 @@ import java.time.LocalDate;
 public class User {
     private String _id;
     private String fullName;
-    private String phoneNb;
     private Gender gender;
     private Role role;
     private String username;
@@ -25,8 +24,9 @@ public class User {
     public enum Role {
         ADMIN,
         CLIENT,
-        SUPER_ADMIN
+        SUPER_ADMIN ;
     }
+
     public enum Gender {
         MALE,
         FEMALE

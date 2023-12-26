@@ -17,6 +17,9 @@ public class DBServiceMedicine {
     public void saveMedicine(Medicine newMedicine){
         repoMedicine.save(newMedicine);
     }
+    public void deleteMedicine(String _id){
+        repoMedicine.deleteById(_id);
+    }
 
     public List<Medicine> findAllMedicines(){
         return repoMedicine.findAll();

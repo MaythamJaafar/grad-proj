@@ -1,0 +1,37 @@
+.faq-answer-layout {
+    padding: 16px;
+    background-color: #f8f8f8;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    margin-top: 8px;
+}
+
+.faq-answer-text {
+    color: #333;
+}
+
+/* frontend/styles/components/card-component.css */
+
+.card {
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    margin: 16px;
+    transition: transform 0.3s;
+}
+
+.card:hover {
+    transform: scale(1.05);
+}
+
+.card-title {
+    font-size: 1.2em;
+    font-weight: bold;
+    padding: 12px;
+    /*border-bottom: 1px solid #ddd;*/
+}
+
+.card-description {
+    padding: 12px;
+}

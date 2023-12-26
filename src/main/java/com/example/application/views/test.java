@@ -3,14 +3,7 @@ package com.example.application.views;
 import com.example.application.db.dbServices.DBServiceEntityUser;
 import com.example.application.db.model.User;
 import com.example.application.security.AuthenticatedUser;
-import com.example.application.views.about.AboutView;
 import com.example.application.views.dashboard.DashboardView;
-import com.example.application.views.datagrid.DataGridView;
-import com.example.application.views.feed.FeedView;
-import com.example.application.views.gridwithfilters.GridwithFiltersView;
-import com.example.application.views.helloworld.HelloWorldView;
-import com.example.application.views.masterdetail.MasterDetailView;
-import com.example.application.views.personform.PersonFormView;
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.applayout.AppLayout;
@@ -157,10 +150,7 @@ public class test extends AppLayout {
         H1 appName = new H1("My App");
         appName.addClassNames(LumoUtility.FontSize.LARGE, LumoUtility.Margin.NONE);
         Header header = new Header(appName);
-
-        Scroller scroller = new Scroller(createNavigation());
-
-        addToDrawer(header, scroller, createFooter());
+        addToDrawer(header, createFooter());
     }
 
     private void changePassword(User entityUser) {
@@ -224,21 +214,6 @@ public class test extends AppLayout {
         tabs.setOrientation(Tabs.Orientation.VERTICAL);
 
         return tabs;
-    }
-
-    private SideNav createNavigation() {
-        SideNav nav = new SideNav();
-
-        nav.addItem(new SideNavItem("Hello World", HelloWorldView.class, LineAwesomeIcon.GLOBE_SOLID.create()));
-        nav.addItem(new SideNavItem("About", AboutView.class, LineAwesomeIcon.FILE.create()));
-        nav.addItem(new SideNavItem("Dashboard", DashboardView.class, LineAwesomeIcon.CHART_AREA_SOLID.create()));
-        nav.addItem(new SideNavItem("Data Grid", DataGridView.class, LineAwesomeIcon.TH_SOLID.create()));
-        nav.addItem(new SideNavItem("Master-Detail", MasterDetailView.class, LineAwesomeIcon.COLUMNS_SOLID.create()));
-        nav.addItem(new SideNavItem("Person Form", PersonFormView.class, LineAwesomeIcon.USER.create()));
-        nav.addItem(new SideNavItem("Grid with Filters", GridwithFiltersView.class, LineAwesomeIcon.FILTER_SOLID.create()));
-        nav.addItem(new SideNavItem("Feed", FeedView.class, LineAwesomeIcon.LIST_SOLID.create()));
-
-        return nav;
     }
 
     private Footer createFooter() {
