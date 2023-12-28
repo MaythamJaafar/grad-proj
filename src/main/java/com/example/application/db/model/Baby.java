@@ -11,19 +11,14 @@ import java.time.LocalDate;
 @ToString
 @AllArgsConstructor
 @NoArgsConstructor
-public class  Medicine {
+public class Baby {
     private String _id;
     private String name;
     private String category;
     private String BatchNo;
-    private String dosage;
     private String quantity;
-    private String sideEffect;
     private LocalDate expiryDate;
     private String buyingPrice;
     private String sellingPrice;
     private String details;
-    private String formula;
-
-
 }

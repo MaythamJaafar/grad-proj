@@ -1,7 +1,7 @@
-package com.example.application.views.pcare;
+package com.example.application.views.baby;
 
-import com.example.application.db.dbServices.DBServicePCare;
-import com.example.application.db.model.PCare;
+import com.example.application.db.dbServices.DBServicesBaby;
+import com.example.application.db.model.Baby;
 import com.example.application.db.model.User;
 import com.example.application.security.AuthenticatedUser;
 import com.example.application.views.MainLayout;
@@ -23,33 +23,33 @@ import jakarta.annotation.security.PermitAll;
 
 import static com.example.application.util.Util.*;
 
-@Route(value = "pCareGrid", layout = MainLayout.class)
-@PageTitle("PCare Grid")
+@Route(value = "babyGrid", layout = MainLayout.class)
+@PageTitle("Baby Grid")
 @PermitAll
 
-public class PCareView extends VerticalLayout {
-    public final DBServicePCare dbServicePCare;
-    private final Button addNewPCareBtn = new Button("Add PCare");
-    public final Grid<PCare> pCareGrid = new Grid<>();
-    private final Dialog addPCareDialog = new Dialog();
+public class BabyView extends VerticalLayout {
+    public final DBServicesBaby dbServicesBaby;
+    private final Button addNewBabyBtn = new Button("Add Baby Item");
+    public final Grid<Baby> babyGrid = new Grid<>();
+    private final Dialog addBabyDialog = new Dialog();
     private final User currentUser;
-    private GridListDataView<PCare> gridListDataView;
+    private GridListDataView<Baby> gridListDataView;
 
-    public PCareView(DBServicePCare dbServicePCare, AuthenticatedUser authenticatedUser) {
-        this.dbServicePCare = dbServicePCare;
+    public BabyView(DBServicesBaby dbServicesBaby, AuthenticatedUser authenticatedUser) {
+        this.dbServicesBaby = dbServicesBaby;
         currentUser = authenticatedUser.get().orElseThrow(() -> new RuntimeException("Authenticated user not found"));
         createGrid();
         setSizeFull();
         setFilters();
-        addNewPCareBtn.addClickListener(buttonClickEvent -> addPCareDialog.open());
-        addPCareDialog.add(new PCareForm(this.dbServicePCare, addPCareDialog, pCareGrid, gridListDataView));
+        addNewBabyBtn.addClickListener(buttonClickEvent -> addBabyDialog.open());
+        addBabyDialog.add(new BabyForm(this.dbServicesBaby, addBabyDialog, babyGrid, gridListDataView));
     }
 
     private void setFilters() {
-        HeaderRow filterRow = pCareGrid.appendHeaderRow();
+        HeaderRow filterRow = babyGrid.appendHeaderRow();
 
         TextField nameTxt = new TextField();
-        filterRow.getCell(pCareGrid.getColumnByKey("name")).setComponent(nameTxt);
+        filterRow.getCell(babyGrid.getColumnByKey("name")).setComponent(nameTxt);
         nameTxt.setValueChangeMode(ValueChangeMode.EAGER);
         nameTxt.setClearButtonVisible(true);
         nameTxt.setWidthFull();
@@ -57,7 +57,7 @@ public class PCareView extends VerticalLayout {
         nameTxt.getElement().getStyle().set("font-size", "12px");
 
         TextField categoryTxt = new TextField();
-        filterRow.getCell(pCareGrid.getColumnByKey("category")).setComponent(categoryTxt);
+        filterRow.getCell(babyGrid.getColumnByKey("category")).setComponent(categoryTxt);
         categoryTxt.setValueChangeMode(ValueChangeMode.EAGER);
         categoryTxt.setClearButtonVisible(true);
         categoryTxt.setWidthFull();
@@ -65,7 +65,7 @@ public class PCareView extends VerticalLayout {
         categoryTxt.getElement().getStyle().set("font-size", "12px");
 
         TextField detailsTxt = new TextField();
-        filterRow.getCell(pCareGrid.getColumnByKey("details")).setComponent(detailsTxt);
+        filterRow.getCell(babyGrid.getColumnByKey("details")).setComponent(detailsTxt);
         detailsTxt.setValueChangeMode(ValueChangeMode.EAGER);
         detailsTxt.setClearButtonVisible(true);
         detailsTxt.setWidthFull();
@@ -73,7 +73,7 @@ public class PCareView extends VerticalLayout {
         detailsTxt.getElement().getStyle().set("font-size", "12px");
 
         TextField batchNoTxt = new TextField();
-        filterRow.getCell(pCareGrid.getColumnByKey("batchNb")).setComponent(batchNoTxt);
+        filterRow.getCell(babyGrid.getColumnByKey("batchNb")).setComponent(batchNoTxt);
         batchNoTxt.setValueChangeMode(ValueChangeMode.EAGER);
         batchNoTxt.setClearButtonVisible(true);
         batchNoTxt.setWidthFull();
@@ -81,7 +81,7 @@ public class PCareView extends VerticalLayout {
         batchNoTxt.getElement().getStyle().set("font-size", "12px");
 
         TextField quantityTxt = new TextField();
-        filterRow.getCell(pCareGrid.getColumnByKey("quantity")).setComponent(quantityTxt);
+        filterRow.getCell(babyGrid.getColumnByKey("quantity")).setComponent(quantityTxt);
         quantityTxt.setValueChangeMode(ValueChangeMode.EAGER);
         quantityTxt.setClearButtonVisible(true);
         quantityTxt.setWidthFull();
@@ -89,7 +89,7 @@ public class PCareView extends VerticalLayout {
         quantityTxt.getElement().getStyle().set("font-size", "12px");
 
         DatePicker expiryDatePicker = new DatePicker();
-        filterRow.getCell(pCareGrid.getColumnByKey("expiryDate")).setComponent(expiryDatePicker);
+        filterRow.getCell(babyGrid.getColumnByKey("expiryDate")).setComponent(expiryDatePicker);
         expiryDatePicker.setClearButtonVisible(true);
         expiryDatePicker.setWidthFull();
         expiryDatePicker.setPlaceholder("Expiry Date");
@@ -97,7 +97,7 @@ public class PCareView extends VerticalLayout {
 
         TextField buyingPriceTxt = new TextField();
         if (!currentUser.getRole().equals(User.Role.CLIENT))
-            filterRow.getCell(pCareGrid.getColumnByKey("buyingPrice")).setComponent(buyingPriceTxt);
+            filterRow.getCell(babyGrid.getColumnByKey("buyingPrice")).setComponent(buyingPriceTxt);
         buyingPriceTxt.setValueChangeMode(ValueChangeMode.EAGER);
         buyingPriceTxt.setClearButtonVisible(true);
         buyingPriceTxt.setWidthFull();
@@ -105,7 +105,7 @@ public class PCareView extends VerticalLayout {
         buyingPriceTxt.getElement().getStyle().set("font-size", "12px");
 
         TextField sellingPriceTxt = new TextField();
-        filterRow.getCell(pCareGrid.getColumnByKey("sellingPrice")).setComponent(sellingPriceTxt);
+        filterRow.getCell(babyGrid.getColumnByKey("sellingPrice")).setComponent(sellingPriceTxt);
         sellingPriceTxt.setValueChangeMode(ValueChangeMode.EAGER);
         sellingPriceTxt.setClearButtonVisible(true);
         sellingPriceTxt.setWidthFull();
@@ -126,74 +126,74 @@ public class PCareView extends VerticalLayout {
     }
 
     private void applyFilter(TextField nameTxt, TextField categoryTxt, TextField detailsTxt, TextField batchNoTxt, TextField quantityTxt, DatePicker expiryDatePicker, TextField buyingPriceTxt, TextField sellingPriceTxt) {
-        gridListDataView.setFilter(pCare ->
-                (nameTxt.getValue() == null || nameTxt.getValue().isEmpty() || pCare.getName().contains(nameTxt.getValue()))
-                        && (categoryTxt.getValue() == null || categoryTxt.getValue().isEmpty() || pCare.getCategory().contains(categoryTxt.getValue()))
-                        && (detailsTxt.getValue() == null || detailsTxt.getValue().isEmpty() || pCare.getDetails().contains(detailsTxt.getValue()))
-                        && (batchNoTxt.getValue() == null || batchNoTxt.getValue().isEmpty() || pCare.getBatchNo().contains(batchNoTxt.getValue()))
-                        && (quantityTxt.getValue() == null || quantityTxt.getValue().isEmpty() || pCare.getQuantity().contains(quantityTxt.getValue()))
-                        && (expiryDatePicker.getValue() == null || pCare.getExpiryDate().equals(expiryDatePicker.getValue()))
-                        && (buyingPriceTxt.getValue() == null || buyingPriceTxt.getValue().isEmpty() || pCare.getBuyingPrice().contains(buyingPriceTxt.getValue()))
-                        && (sellingPriceTxt.getValue() == null || sellingPriceTxt.getValue().isEmpty() || pCare.getSellingPrice().contains(sellingPriceTxt.getValue())));
+        gridListDataView.setFilter(baby ->
+                (nameTxt.getValue() == null || nameTxt.getValue().isEmpty() || baby.getName().contains(nameTxt.getValue()))
+                        && (categoryTxt.getValue() == null || categoryTxt.getValue().isEmpty() || baby.getCategory().contains(categoryTxt.getValue()))
+                        && (detailsTxt.getValue() == null || detailsTxt.getValue().isEmpty() || baby.getDetails().contains(detailsTxt.getValue()))
+                        && (batchNoTxt.getValue() == null || batchNoTxt.getValue().isEmpty() || baby.getBatchNo().contains(batchNoTxt.getValue()))
+                        && (quantityTxt.getValue() == null || quantityTxt.getValue().isEmpty() || baby.getQuantity().contains(quantityTxt.getValue()))
+                        && (expiryDatePicker.getValue() == null || baby.getExpiryDate().equals(expiryDatePicker.getValue()))
+                        && (buyingPriceTxt.getValue() == null || buyingPriceTxt.getValue().isEmpty() || baby.getBuyingPrice().contains(buyingPriceTxt.getValue()))
+                        && (sellingPriceTxt.getValue() == null || sellingPriceTxt.getValue().isEmpty() || baby.getSellingPrice().contains(sellingPriceTxt.getValue())));
     }
 
     private void createGrid() {
-        gridListDataView = pCareGrid.setItems(dbServicePCare.findAllPCare());
-        pCareGrid.addComponentColumn(pCare -> {
-            NativeLabel nameLbl = new NativeLabel(pCare.getName());
-            nameLbl.getElement().setProperty("title", pCare.getName());
+        gridListDataView = babyGrid.setItems(dbServicesBaby.findAllBaby());
+        babyGrid.addComponentColumn(baby -> {
+            NativeLabel nameLbl = new NativeLabel(baby.getName());
+            nameLbl.getElement().setProperty("title", baby.getName());
             return nameLbl;
         }).setHeader("Name").setKey("name").setSortable(true).setResizable(true);
 
-        pCareGrid.addComponentColumn(pCare -> {
-            NativeLabel detailsLbl = new NativeLabel(pCare.getDetails());
-            detailsLbl.getElement().setProperty("title", pCare.getDetails());
+        babyGrid.addComponentColumn(baby -> {
+            NativeLabel detailsLbl = new NativeLabel(baby.getDetails());
+            detailsLbl.getElement().setProperty("title", baby.getDetails());
             return detailsLbl;
         }).setHeader("Details").setKey("details").setSortable(true).setResizable(true);
 
-        pCareGrid.addComponentColumn(pCare -> {
-            NativeLabel categoryLbl = new NativeLabel(pCare.getCategory());
-            categoryLbl.getElement().setProperty("title", pCare.getCategory());
+        babyGrid.addComponentColumn(baby -> {
+            NativeLabel categoryLbl = new NativeLabel(baby.getCategory());
+            categoryLbl.getElement().setProperty("title", baby.getCategory());
             return categoryLbl;
         }).setHeader("Category").setKey("category").setSortable(true).setResizable(true);
 
-        pCareGrid.addComponentColumn(pCare -> {
-            NativeLabel batchNbLbl = new NativeLabel(pCare.getBatchNo());
-            batchNbLbl.getElement().setProperty("title", pCare.getBatchNo());
+        babyGrid.addComponentColumn(baby -> {
+            NativeLabel batchNbLbl = new NativeLabel(baby.getBatchNo());
+            batchNbLbl.getElement().setProperty("title", baby.getBatchNo());
             return batchNbLbl;
         }).setHeader("Batch Nb").setKey("batchNb").setSortable(true).setResizable(true);
 
-        pCareGrid.addComponentColumn(pCare -> {
-            NativeLabel quantityLbl = new NativeLabel(pCare.getQuantity());
-            quantityLbl.getElement().setProperty("title", pCare.getQuantity());
+        babyGrid.addComponentColumn(baby -> {
+            NativeLabel quantityLbl = new NativeLabel(baby.getQuantity());
+            quantityLbl.getElement().setProperty("title", baby.getQuantity());
             return quantityLbl;
         }).setHeader("Quantity").setKey("quantity").setSortable(true).setResizable(true);
 
-        pCareGrid.addComponentColumn(pCare -> {
-            NativeLabel expDateLbl = new NativeLabel(pCare.getExpiryDate().toString());
-            expDateLbl.getElement().setProperty("title", pCare.getExpiryDate().toString());
+        babyGrid.addComponentColumn(baby -> {
+            NativeLabel expDateLbl = new NativeLabel(baby.getExpiryDate().toString());
+            expDateLbl.getElement().setProperty("title", baby.getExpiryDate().toString());
             return expDateLbl;
         }).setHeader("Exp Date").setKey("expiryDate").setSortable(true).setResizable(true);
         if (!currentUser.getRole().equals(User.Role.CLIENT))
-            pCareGrid.addComponentColumn(pCare -> {
-                NativeLabel buyingPriceLbl = new NativeLabel(pCare.getBuyingPrice());
-                buyingPriceLbl.getElement().setProperty("title", pCare.getBuyingPrice());
+            babyGrid.addComponentColumn(baby -> {
+                NativeLabel buyingPriceLbl = new NativeLabel(baby.getBuyingPrice());
+                buyingPriceLbl.getElement().setProperty("title", baby.getBuyingPrice());
                 return buyingPriceLbl;
             }).setHeader("Buying Price").setKey("buyingPrice").setSortable(true).setResizable(true);
-        pCareGrid.addComponentColumn(pCare -> {
-            NativeLabel sellingPriceLbl = new NativeLabel(pCare.getSellingPrice());
-            sellingPriceLbl.getElement().setProperty("title", pCare.getSellingPrice());
+        babyGrid.addComponentColumn(baby -> {
+            NativeLabel sellingPriceLbl = new NativeLabel(baby.getSellingPrice());
+            sellingPriceLbl.getElement().setProperty("title", baby.getSellingPrice());
             return sellingPriceLbl;
         }).setHeader("Selling Price").setKey("sellingPrice").setSortable(true).setResizable(true);
 
         if (!currentUser.getRole().equals(User.Role.CLIENT))
-            pCareGrid.addComponentColumn(pCare -> {
+            babyGrid.addComponentColumn(baby -> {
                 Button editBtn = createEditButton();
                 Button deleteBtn = createDeleteButton();
 
                 editBtn.addClickListener(clickEvent -> {
                     Dialog editDialog = new Dialog();
-                    editDialog.add(new PCareForm(dbServicePCare, editDialog, pCare, pCareGrid, gridListDataView));
+                    editDialog.add(new BabyForm(dbServicesBaby, editDialog, baby, babyGrid, gridListDataView));
                     editDialog.open();
                 });
                 deleteBtn.addClickListener(clickEvent -> {
@@ -201,10 +201,10 @@ public class PCareView extends VerticalLayout {
                     Button confirmDeleteBtn = createDeleteButton();
                     confirmDialog.setConfirmButton(confirmDeleteBtn);
                     confirmDialog.setHeader("Delete Confirmation");
-                    confirmDialog.setText("Are you sure you want to delete " + pCare.getName());
+                    confirmDialog.setText("Are you sure you want to delete " + baby.getName());
                     confirmDeleteBtn.addClickListener(clickEvent1 -> {
-                        dbServicePCare.deleteById(pCare.get_id());
-                        gridListDataView = pCareGrid.setItems(dbServicePCare.findAllPCare());
+                        dbServicesBaby.deleteById(baby.get_id());
+                        gridListDataView = babyGrid.setItems(dbServicesBaby.findAllBaby());
                         gridListDataView.refreshAll();
                         showSuccessNotification("Item deleted successfully");
                     });
@@ -219,14 +219,14 @@ public class PCareView extends VerticalLayout {
                 HorizontalLayout editDltBtn = new HorizontalLayout();
                 editDltBtn.add(editBtn, deleteBtn);
                 return editDltBtn;
-            }).setHeader("Edit").setFooter(addNewPCareBtn).setWidth("10%");
+            }).setHeader("Edit").setFooter(addNewBabyBtn).setWidth("10%");
 
-        addNewPCareBtn.getStyle().set("background-color", getSaveBtnColor());
-        addNewPCareBtn.getStyle().set("color", "white");
-        addNewPCareBtn.getStyle().set("border", "none");
-        addNewPCareBtn.getStyle().set("border-radius", "5px");
-        pCareGrid.setHeightFull();
-        add(pCareGrid);
+        addNewBabyBtn.getStyle().set("background-color", getSaveBtnColor());
+        addNewBabyBtn.getStyle().set("color", "white");
+        addNewBabyBtn.getStyle().set("border", "none");
+        addNewBabyBtn.getStyle().set("border-radius", "5px");
+        babyGrid.setHeightFull();
+        add(babyGrid);
     }
 
 }

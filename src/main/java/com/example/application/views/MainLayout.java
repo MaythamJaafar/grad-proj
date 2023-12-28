@@ -4,6 +4,9 @@ import com.example.application.db.dbServices.DBServiceEntityUser;
 import com.example.application.db.model.User;
 import com.example.application.security.AuthenticatedUser;
 import com.example.application.util.InputChecker;
+import com.example.application.views.baby.BabyView;
+import com.example.application.views.contact.ContactUs;
+import com.example.application.views.eye.EyeSuppView;
 import com.example.application.views.dashboard.DashboardView;
 import com.example.application.views.expense.ExpenseView;
 import com.example.application.views.faq.FaqView;
@@ -22,11 +25,8 @@ import com.vaadin.flow.component.dialog.Dialog;
 import com.vaadin.flow.component.html.*;
 import com.vaadin.flow.component.icon.Icon;
 import com.vaadin.flow.component.menubar.MenuBar;
-import com.vaadin.flow.component.notification.Notification;
-import com.vaadin.flow.component.notification.NotificationVariant;
 import com.vaadin.flow.component.orderedlayout.FlexComponent;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
-import com.vaadin.flow.component.orderedlayout.Scroller;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.sidenav.SideNav;
 import com.vaadin.flow.component.sidenav.SideNavItem;
@@ -39,7 +39,6 @@ import org.vaadin.lineawesome.LineAwesomeIcon;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import static com.example.application.util.Util.showErrorNotification;
-import static com.example.application.util.Util.showSuccessNotification;
 
 /**
  * The main view is a top-level placeholder for other views.
@@ -81,7 +80,8 @@ public class MainLayout extends AppLayout {
         Div div = new Div();
         div.add(avatar);
         NativeLabel text = new NativeLabel(currentUser.getFullName().split("\s")[0]);
-        text.getElement().getStyle().set("color", "white");
+        text.getElement().getStyle().set("color", "grey");
+        text.getElement().getStyle().set("margin-bottom", "5px");
         div.add(text);
 
         Icon dropDownIcon = new Icon("lumo", "dropdown");
@@ -119,13 +119,17 @@ public class MainLayout extends AppLayout {
     }
 
     private void addDrawerContent() {
-        H1 appName = new H1("My App");
+        H1 appName = new H1("MJ");
         appName.addClassNames(LumoUtility.FontSize.LARGE, LumoUtility.Margin.NONE);
         Header header = new Header(appName);
 
-        Scroller scroller = new Scroller(createNavigation());
+//        Scroller scroller = new Scroller(createNavigation());
 
-        addToDrawer(header, scroller, createFooter());
+        NativeLabel label = new NativeLabel();
+        label.add(header, createNavigation());
+//        label.addClassNames("drawerLayout");
+        addToDrawer(label);
+//        addToDrawer(header, scroller, createFooter());
     }
 
     private void changePassword(User entityUser) {
@@ -178,20 +182,18 @@ public class MainLayout extends AppLayout {
 
     private SideNav createNavigation() {
         SideNav nav = new SideNav();
-
-        nav.addItem(new SideNavItem("Dashboard", DashboardView.class, LineAwesomeIcon.ACCUSOFT.create()));
-        nav.addItem(new SideNavItem("MedicineGrid", MedicineView.class, LineAwesomeIcon.ACCUSOFT.create()));
+        nav.addItem(new SideNavItem("Dashboard", DashboardView.class, LineAwesomeIcon.DATABASE_SOLID.create()));
+        nav.addItem(new SideNavItem("MedicineGrid", MedicineView.class, LineAwesomeIcon.HEART.create()));
         if (currentUser.getRole().equals(User.Role.SUPER_ADMIN))
             nav.addItem(new SideNavItem("UserGrid", UserView.class, LineAwesomeIcon.USER.create()));
         if (currentUser.getRole().equals(User.Role.SUPER_ADMIN) || currentUser.getRole().equals(User.Role.ADMIN))
-            nav.addItem(new SideNavItem("Expenses", ExpenseView.class, LineAwesomeIcon.ACCUSOFT.create()));
-        nav.addItem(new SideNavItem("SportSupp", SportSuppView.class, LineAwesomeIcon.ACCUSOFT.create()));
-        nav.addItem(new SideNavItem("Contact", Contact.class, LineAwesomeIcon.ACCUSOFT.create()));
-        nav.addItem(new SideNavItem("PCare", PCareView.class, LineAwesomeIcon.ACCUSOFT.create()));
-        nav.addItem(new SideNavItem("FAQ", FaqView.class, LineAwesomeIcon.ACCUSOFT.create()));
-//        nav.addItem(new SideNavItem("Eye", EyeView.class, LineAwesomeIcon.ACCUSOFT.create()));
-
-
+            nav.addItem(new SideNavItem("Expenses", ExpenseView.class, LineAwesomeIcon.WALLET_SOLID.create()));
+        nav.addItem(new SideNavItem("SportSupp", SportSuppView.class, LineAwesomeIcon.DUMBBELL_SOLID.create()));
+        nav.addItem(new SideNavItem("Contact", ContactUs.class, LineAwesomeIcon.PHONE_SOLID.create()));
+        nav.addItem(new SideNavItem("PCare", PCareView.class, LineAwesomeIcon.PERSON_BOOTH_SOLID.create()));
+        nav.addItem(new SideNavItem("FAQ", FaqView.class, LineAwesomeIcon.QUESTION_SOLID.create()));
+        nav.addItem(new SideNavItem("Eye", EyeSuppView.class, LineAwesomeIcon.EYE.create()));
+        nav.addItem(new SideNavItem("Baby", BabyView.class, LineAwesomeIcon.BABY_SOLID.create()));
         return nav;
     }
 

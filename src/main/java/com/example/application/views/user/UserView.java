@@ -30,7 +30,7 @@ import static com.example.application.util.Util.createEditButton;
 @RolesAllowed({"SUPER_ADMIN"})
 public class UserView extends VerticalLayout {
     public final DBServiceEntityUser dbServiceEntityUser;
-    private final Button addNewUserBtn = new Button("Add New  User");
+    private final Button addNewUserBtn = new Button("Add User");
     public final Grid<User> userGrid = new Grid<>();
     private final Dialog addUserDialog = new Dialog();
     private GridListDataView<User> gridListDataView;
@@ -47,28 +47,28 @@ public class UserView extends VerticalLayout {
     private void setFilters() {
         HeaderRow filterRow = userGrid.appendHeaderRow();
 
-        TextField fullNameTxt = new TextField("Full Name");
+        TextField fullNameTxt = new TextField("");
         fullNameTxt.setValueChangeMode(ValueChangeMode.EAGER);
         fullNameTxt.setClearButtonVisible(true);
         filterRow.getCell(userGrid.getColumnByKey("fullName")).setComponent(fullNameTxt);
 
-        TextField usernameTxt = new TextField("Username");
+        TextField usernameTxt = new TextField("");
         usernameTxt.setValueChangeMode(ValueChangeMode.EAGER);
         usernameTxt.setClearButtonVisible(true);
         filterRow.getCell(userGrid.getColumnByKey("username")).setComponent(usernameTxt);
 
-        ComboBox<User.Gender> genderCombo = new ComboBox<>("Gender");
+        ComboBox<User.Gender> genderCombo = new ComboBox<>("");
         genderCombo.setItems(User.Gender.values());
         genderCombo.setClearButtonVisible(true);
         filterRow.getCell(userGrid.getColumnByKey("gender")).setComponent(genderCombo);
 
-        ComboBox<User.Role> roleCombo = new ComboBox<>("Role");
+        ComboBox<User.Role> roleCombo = new ComboBox<>("");
         List<User.Role> roleList = Arrays.asList(User.Role.values());
         roleCombo.setItems(roleList);
         roleCombo.setClearButtonVisible(true);
         filterRow.getCell(userGrid.getColumnByKey("role")).setComponent(roleCombo);
 
-        DatePicker dobDatePicker = new DatePicker("D.O.B");
+        DatePicker dobDatePicker = new DatePicker("");
         dobDatePicker.setClearButtonVisible(true);
         filterRow.getCell(userGrid.getColumnByKey("dob")).setComponent(dobDatePicker);
 

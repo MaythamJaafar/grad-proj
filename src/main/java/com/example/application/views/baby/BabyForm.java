@@ -1,7 +1,7 @@
-package com.example.application.views.pcare;
+package com.example.application.views.baby;
 
-import com.example.application.db.dbServices.DBServicePCare;
-import com.example.application.db.model.PCare;
+import com.example.application.db.dbServices.DBServicesBaby;
+import com.example.application.db.model.Baby;
 import com.example.application.util.InputChecker;
 import com.mongodb.lang.Nullable;
 import com.vaadin.flow.component.button.Button;
@@ -16,10 +16,10 @@ import com.vaadin.flow.component.textfield.TextField;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 
-public class PCareForm extends VerticalLayout {
-    private DBServicePCare dbServicePCare;
+public class BabyForm extends VerticalLayout {
+    private DBServicesBaby dbServicesBaby;
 
-    private final Button savePCareBtn = new Button("Add PCare");
+    private final Button saveBabyBtn = new Button("Add Baby");
     private final TextField nameTxt = new TextField("Name");
     private final TextField categoryTxt = new TextField("Category");
     private final TextField batchNb = new TextField("BatchNb");
@@ -30,33 +30,33 @@ public class PCareForm extends VerticalLayout {
     private final TextField sellingPriceNb = new TextField("Selling Price");
     private final Button cancelBtn = new Button("Cancel");
     private final Dialog dialog;
-    private final Grid<PCare> pCareGrid;
-    private GridListDataView<PCare> gridListDataView;
+    private final Grid<Baby> babyGrid;
+    private GridListDataView<Baby> gridListDataView;
 
-    public PCareForm(DBServicePCare dbServicePCare, Dialog addPCareDialog, Grid<PCare> pCareGrid, GridListDataView<PCare> gridListDataView) {
-        this.dbServicePCare = dbServicePCare;
-        this.dialog = addPCareDialog;
-        this.pCareGrid = pCareGrid;
+    public BabyForm(DBServicesBaby dbServicesBaby, Dialog addBabyDialog, Grid<Baby> babyGrid, GridListDataView<Baby> gridListDataView) {
+        this.dbServicesBaby = dbServicesBaby;
+        this.dialog = addBabyDialog;
+        this.babyGrid = babyGrid;
         this.gridListDataView = gridListDataView;
         cancelBtn.addClickListener(buttonClickEvent -> {
-            addPCareDialog.close();
+            addBabyDialog.close();
             clearFields();
         });
-        addPCareDialog.setCloseOnOutsideClick(false);
+        addBabyDialog.setCloseOnOutsideClick(false);
         createForm();
-        saveNewPCare(null);
+        saveNewbaby(null);
     }
 
-    public PCareForm(DBServicePCare dbServicePCare, Dialog editDialog, PCare pCare, Grid<PCare> pCareGrid, GridListDataView<PCare> gridListDataView) {
-        this.dbServicePCare = dbServicePCare;
+    public BabyForm(DBServicesBaby dbServicesBaby, Dialog editDialog, Baby baby, Grid<Baby> babyGrid, GridListDataView<Baby> gridListDataView) {
+        this.dbServicesBaby = dbServicesBaby;
         this.dialog = editDialog;
-        this.pCareGrid = pCareGrid;
+        this.babyGrid = babyGrid;
         this.gridListDataView = gridListDataView;
         cancelBtn.addClickListener(buttonClickEvent -> editDialog.close());
         editDialog.setCloseOnOutsideClick(false);
-        createEditForm(pCare);
-        saveNewPCare(pCare.get_id());
-        savePCareBtn.setText("update");
+        createEditForm(baby);
+        saveNewbaby(baby.get_id());
+        saveBabyBtn.setText("Update");
     }
 
     private void clearFields() {
@@ -70,15 +70,15 @@ public class PCareForm extends VerticalLayout {
         sellingPriceNb.clear();
     }
 
-    private void createEditForm(PCare pCare) {
-        categoryTxt.setValue(pCare.getCategory());
-        nameTxt.setValue(pCare.getName());
-        detailsTxt.setValue(pCare.getDetails());
-        batchNb.setValue(pCare.getBatchNo());
-        quantityNb.setValue(pCare.getQuantity());
-        expiryDateNb.setValue(pCare.getExpiryDate());
-        buyingPriceNb.setValue(pCare.getBuyingPrice());
-        sellingPriceNb.setValue(pCare.getSellingPrice());
+    private void createEditForm(Baby baby) {
+        categoryTxt.setValue(baby.getCategory());
+        nameTxt.setValue(baby.getName());
+        detailsTxt.setValue(baby.getDetails());
+        batchNb.setValue(baby.getBatchNo());
+        quantityNb.setValue(baby.getQuantity());
+        expiryDateNb.setValue(baby.getExpiryDate());
+        buyingPriceNb.setValue(baby.getBuyingPrice());
+        sellingPriceNb.setValue(baby.getSellingPrice());
         createForm();
     }
 
@@ -87,27 +87,27 @@ public class PCareForm extends VerticalLayout {
         HorizontalLayout batchDosHl = new HorizontalLayout(batchNb, quantityNb);
         HorizontalLayout forQuaHl = new HorizontalLayout(expiryDateNb, detailsTxt);
         HorizontalLayout expiryBuySelHl = new HorizontalLayout(buyingPriceNb, sellingPriceNb);
-        HorizontalLayout cancelSaveHl = new HorizontalLayout(savePCareBtn, cancelBtn);
+        HorizontalLayout cancelSaveHl = new HorizontalLayout(saveBabyBtn, cancelBtn);
 
         add(catSupHl, batchDosHl, forQuaHl, batchDosHl, expiryBuySelHl, cancelSaveHl);
     }
 
-    public void saveNewPCare(@Nullable String id) {
-        savePCareBtn.addClickListener(buttonClickEvent -> {
+public void saveNewbaby(@Nullable String id) {
+        saveBabyBtn.addClickListener(buttonClickEvent -> {
             if (checkFields()) {
-                PCare pCare = new PCare();
+                Baby baby = new Baby();
                 if (id != null)
-                    pCare.set_id(id);
-                pCare.setName(nameTxt.getValue());
-                pCare.setBatchNo(batchNb.getValue());
-                pCare.setCategory(categoryTxt.getValue());
-                pCare.setDetails(detailsTxt.getValue());
-                pCare.setQuantity(quantityNb.getValue());
-                pCare.setExpiryDate(expiryDateNb.getValue());
-                pCare.setBuyingPrice(buyingPriceNb.getValue());
-                pCare.setSellingPrice(sellingPriceNb.getValue());
-                dbServicePCare.savePCare(pCare);
-                gridListDataView = pCareGrid.setItems(dbServicePCare.findAllPCare());
+                    baby.set_id(id);
+                baby.setName(nameTxt.getValue());
+                baby.setBatchNo(batchNb.getValue());
+                baby.setCategory(categoryTxt.getValue());
+                baby.setDetails(detailsTxt.getValue());
+                baby.setQuantity(quantityNb.getValue());
+                baby.setExpiryDate(expiryDateNb.getValue());
+                baby.setBuyingPrice(buyingPriceNb.getValue());
+                baby.setSellingPrice(sellingPriceNb.getValue());
+                dbServicesBaby.saveBaby(baby);
+                gridListDataView = babyGrid.setItems(dbServicesBaby.findAllBaby());
                 gridListDataView.refreshAll();
                 dialog.close();
             }

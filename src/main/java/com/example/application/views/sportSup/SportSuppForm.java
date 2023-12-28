@@ -67,15 +67,15 @@ public class SportSuppForm extends VerticalLayout {
         sellingPriceNb.clear();
     }
 
-    private void createEditForm(SportSupp medicine) {
-        categoryTxt.setValue(medicine.getCategory());
-        nameTxt.setValue(medicine.getName());
-        detailsTxt.setValue(medicine.getDetails());
-        batchNb.setValue(medicine.getBatchNo());
-        quantityNb.setValue(medicine.getQuantity());
-        expiryDateNb.setValue(medicine.getExpiryDate());
-        buyingPriceNb.setValue(medicine.getBuyingPrice());
-        sellingPriceNb.setValue(medicine.getSellingPrice());
+    private void createEditForm(SportSupp sportSupp) {
+        categoryTxt.setValue(sportSupp.getCategory());
+        nameTxt.setValue(sportSupp.getName());
+        detailsTxt.setValue(sportSupp.getDetails());
+        batchNb.setValue(sportSupp.getBatchNo());
+        quantityNb.setValue(sportSupp.getQuantity());
+        expiryDateNb.setValue(sportSupp.getExpiryDate());
+        buyingPriceNb.setValue(sportSupp.getBuyingPrice());
+        sellingPriceNb.setValue(sportSupp.getSellingPrice());
         createForm();
     }
 

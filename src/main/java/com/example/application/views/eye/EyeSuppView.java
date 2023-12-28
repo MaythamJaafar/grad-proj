@@ -1,7 +1,7 @@
-package com.example.application.views.pcare;
+package com.example.application.views.eye;
 
-import com.example.application.db.dbServices.DBServicePCare;
-import com.example.application.db.model.PCare;
+import com.example.application.db.dbServices.DBServicesEyeSupp;
+import com.example.application.db.model.EyeSupp;
 import com.example.application.db.model.User;
 import com.example.application.security.AuthenticatedUser;
 import com.example.application.views.MainLayout;
@@ -23,33 +23,34 @@ import jakarta.annotation.security.PermitAll;
 
 import static com.example.application.util.Util.*;
 
-@Route(value = "pCareGrid", layout = MainLayout.class)
-@PageTitle("PCare Grid")
+@Route(value = "eyeGrid", layout = MainLayout.class)
+@PageTitle("Eye Grid")
 @PermitAll
 
-public class PCareView extends VerticalLayout {
-    public final DBServicePCare dbServicePCare;
-    private final Button addNewPCareBtn = new Button("Add PCare");
-    public final Grid<PCare> pCareGrid = new Grid<>();
-    private final Dialog addPCareDialog = new Dialog();
+public class EyeSuppView extends VerticalLayout {
+    public final DBServicesEyeSupp dbServicesEyeSupp ;
+    private final Button addNewEyeSuppBtn = new Button("Add EyeSupp");
+public final Grid<EyeSupp> eyeSuppGrid = new Grid<>();
+    private final Dialog addEyeSuppDialog = new Dialog();
+    private GridListDataView<EyeSupp> gridListDataView;
     private final User currentUser;
-    private GridListDataView<PCare> gridListDataView;
 
-    public PCareView(DBServicePCare dbServicePCare, AuthenticatedUser authenticatedUser) {
-        this.dbServicePCare = dbServicePCare;
+    public EyeSuppView(DBServicesEyeSupp dbServicesEyeSupp, AuthenticatedUser authenticatedUser) {
+        this.dbServicesEyeSupp = dbServicesEyeSupp;
         currentUser = authenticatedUser.get().orElseThrow(() -> new RuntimeException("Authenticated user not found"));
         createGrid();
         setSizeFull();
         setFilters();
-        addNewPCareBtn.addClickListener(buttonClickEvent -> addPCareDialog.open());
-        addPCareDialog.add(new PCareForm(this.dbServicePCare, addPCareDialog, pCareGrid, gridListDataView));
+        addNewEyeSuppBtn.addClickListener(buttonClickEvent ->  addEyeSuppDialog.open());
+        addEyeSuppDialog.add(new EyeSuppForm(dbServicesEyeSupp,addEyeSuppDialog,eyeSuppGrid,gridListDataView));
+
     }
 
     private void setFilters() {
-        HeaderRow filterRow = pCareGrid.appendHeaderRow();
+        HeaderRow filterRow = eyeSuppGrid.appendHeaderRow();
 
         TextField nameTxt = new TextField();
-        filterRow.getCell(pCareGrid.getColumnByKey("name")).setComponent(nameTxt);
+        filterRow.getCell(eyeSuppGrid.getColumnByKey("name")).setComponent(nameTxt);
         nameTxt.setValueChangeMode(ValueChangeMode.EAGER);
         nameTxt.setClearButtonVisible(true);
         nameTxt.setWidthFull();
@@ -57,61 +58,55 @@ public class PCareView extends VerticalLayout {
         nameTxt.getElement().getStyle().set("font-size", "12px");
 
         TextField categoryTxt = new TextField();
-        filterRow.getCell(pCareGrid.getColumnByKey("category")).setComponent(categoryTxt);
+        filterRow.getCell(eyeSuppGrid.getColumnByKey("category")).setComponent(categoryTxt);
         categoryTxt.setValueChangeMode(ValueChangeMode.EAGER);
         categoryTxt.setClearButtonVisible(true);
-        categoryTxt.setWidthFull();
         categoryTxt.setPlaceholder("Category");
         categoryTxt.getElement().getStyle().set("font-size", "12px");
 
+
         TextField detailsTxt = new TextField();
-        filterRow.getCell(pCareGrid.getColumnByKey("details")).setComponent(detailsTxt);
+        filterRow.getCell(eyeSuppGrid.getColumnByKey("details")).setComponent(detailsTxt);
         detailsTxt.setValueChangeMode(ValueChangeMode.EAGER);
         detailsTxt.setClearButtonVisible(true);
-        detailsTxt.setWidthFull();
         detailsTxt.setPlaceholder("Details");
         detailsTxt.getElement().getStyle().set("font-size", "12px");
 
         TextField batchNoTxt = new TextField();
-        filterRow.getCell(pCareGrid.getColumnByKey("batchNb")).setComponent(batchNoTxt);
+        filterRow.getCell(eyeSuppGrid.getColumnByKey("batchNb")).setComponent(batchNoTxt);
         batchNoTxt.setValueChangeMode(ValueChangeMode.EAGER);
-        batchNoTxt.setClearButtonVisible(true);
-        batchNoTxt.setWidthFull();
-        batchNoTxt.setPlaceholder("Batch Nb");
+        batchNoTxt.setClearButtonVisible(true);batchNoTxt.setPlaceholder("Batch Nb");
         batchNoTxt.getElement().getStyle().set("font-size", "12px");
 
+
         TextField quantityTxt = new TextField();
-        filterRow.getCell(pCareGrid.getColumnByKey("quantity")).setComponent(quantityTxt);
+        filterRow.getCell(eyeSuppGrid.getColumnByKey("quantity")).setComponent(quantityTxt);
         quantityTxt.setValueChangeMode(ValueChangeMode.EAGER);
         quantityTxt.setClearButtonVisible(true);
-        quantityTxt.setWidthFull();
         quantityTxt.setPlaceholder("Quantity");
         quantityTxt.getElement().getStyle().set("font-size", "12px");
 
         DatePicker expiryDatePicker = new DatePicker();
-        filterRow.getCell(pCareGrid.getColumnByKey("expiryDate")).setComponent(expiryDatePicker);
+        filterRow.getCell(eyeSuppGrid.getColumnByKey("expiryDate")).setComponent(expiryDatePicker);
         expiryDatePicker.setClearButtonVisible(true);
-        expiryDatePicker.setWidthFull();
         expiryDatePicker.setPlaceholder("Expiry Date");
         expiryDatePicker.getElement().getStyle().set("font-size", "12px");
 
+
         TextField buyingPriceTxt = new TextField();
-        if (!currentUser.getRole().equals(User.Role.CLIENT))
-            filterRow.getCell(pCareGrid.getColumnByKey("buyingPrice")).setComponent(buyingPriceTxt);
+        if(!currentUser.getRole().equals(User.Role.CLIENT))
+            filterRow.getCell(eyeSuppGrid.getColumnByKey("buyingPrice")).setComponent(buyingPriceTxt);
         buyingPriceTxt.setValueChangeMode(ValueChangeMode.EAGER);
         buyingPriceTxt.setClearButtonVisible(true);
-        buyingPriceTxt.setWidthFull();
         buyingPriceTxt.setPlaceholder("Buying Price");
         buyingPriceTxt.getElement().getStyle().set("font-size", "12px");
 
         TextField sellingPriceTxt = new TextField();
-        filterRow.getCell(pCareGrid.getColumnByKey("sellingPrice")).setComponent(sellingPriceTxt);
+        filterRow.getCell(eyeSuppGrid.getColumnByKey("sellingPrice")).setComponent(sellingPriceTxt);
         sellingPriceTxt.setValueChangeMode(ValueChangeMode.EAGER);
         sellingPriceTxt.setClearButtonVisible(true);
-        sellingPriceTxt.setWidthFull();
         sellingPriceTxt.setPlaceholder("selling Price");
         sellingPriceTxt.getElement().getStyle().set("font-size", "12px");
-
 
         nameTxt.addValueChangeListener(event -> applyFilter(nameTxt, categoryTxt, detailsTxt, batchNoTxt, quantityTxt, expiryDatePicker, buyingPriceTxt, sellingPriceTxt));
         categoryTxt.addValueChangeListener(event -> applyFilter(nameTxt, categoryTxt, detailsTxt, batchNoTxt, quantityTxt, expiryDatePicker, buyingPriceTxt, sellingPriceTxt));
@@ -126,107 +121,110 @@ public class PCareView extends VerticalLayout {
     }
 
     private void applyFilter(TextField nameTxt, TextField categoryTxt, TextField detailsTxt, TextField batchNoTxt, TextField quantityTxt, DatePicker expiryDatePicker, TextField buyingPriceTxt, TextField sellingPriceTxt) {
-        gridListDataView.setFilter(pCare ->
-                (nameTxt.getValue() == null || nameTxt.getValue().isEmpty() || pCare.getName().contains(nameTxt.getValue()))
-                        && (categoryTxt.getValue() == null || categoryTxt.getValue().isEmpty() || pCare.getCategory().contains(categoryTxt.getValue()))
-                        && (detailsTxt.getValue() == null || detailsTxt.getValue().isEmpty() || pCare.getDetails().contains(detailsTxt.getValue()))
-                        && (batchNoTxt.getValue() == null || batchNoTxt.getValue().isEmpty() || pCare.getBatchNo().contains(batchNoTxt.getValue()))
-                        && (quantityTxt.getValue() == null || quantityTxt.getValue().isEmpty() || pCare.getQuantity().contains(quantityTxt.getValue()))
-                        && (expiryDatePicker.getValue() == null || pCare.getExpiryDate().equals(expiryDatePicker.getValue()))
-                        && (buyingPriceTxt.getValue() == null || buyingPriceTxt.getValue().isEmpty() || pCare.getBuyingPrice().contains(buyingPriceTxt.getValue()))
-                        && (sellingPriceTxt.getValue() == null || sellingPriceTxt.getValue().isEmpty() || pCare.getSellingPrice().contains(sellingPriceTxt.getValue())));
+        gridListDataView.setFilter(EyeSupp ->
+                (nameTxt.getValue() == null || nameTxt.getValue().isEmpty() || EyeSupp.getName().contains(nameTxt.getValue()))
+                        && (categoryTxt.getValue() == null || categoryTxt.getValue().isEmpty() || EyeSupp.getCategory().contains(categoryTxt.getValue()))
+                        && (detailsTxt.getValue() == null || detailsTxt.getValue().isEmpty() || EyeSupp.getDetails().contains(detailsTxt.getValue()))
+                        && (batchNoTxt.getValue() == null || batchNoTxt.getValue().isEmpty() || EyeSupp.getBatchNo().contains(batchNoTxt.getValue()))
+                        && (quantityTxt.getValue() == null || quantityTxt.getValue().isEmpty() || EyeSupp.getQuantity().contains(quantityTxt.getValue()))
+                        && (expiryDatePicker.getValue() == null || EyeSupp.getExpiryDate().equals(expiryDatePicker.getValue()))
+                        && (buyingPriceTxt.getValue() == null || buyingPriceTxt.getValue().isEmpty() || EyeSupp.getBuyingPrice().contains(buyingPriceTxt.getValue()))
+                        && (sellingPriceTxt.getValue() == null || sellingPriceTxt.getValue().isEmpty() || EyeSupp.getSellingPrice().contains(sellingPriceTxt.getValue())));
     }
 
+
     private void createGrid() {
-        gridListDataView = pCareGrid.setItems(dbServicePCare.findAllPCare());
-        pCareGrid.addComponentColumn(pCare -> {
-            NativeLabel nameLbl = new NativeLabel(pCare.getName());
-            nameLbl.getElement().setProperty("title", pCare.getName());
+        gridListDataView = eyeSuppGrid.setItems(dbServicesEyeSupp.findAllEyeSupp());
+        eyeSuppGrid.addComponentColumn(eyeSupp -> {
+            NativeLabel nameLbl = new NativeLabel(eyeSupp.getName());
+            nameLbl.getElement().setProperty("title", eyeSupp.getName());
             return nameLbl;
         }).setHeader("Name").setKey("name").setSortable(true).setResizable(true);
 
-        pCareGrid.addComponentColumn(pCare -> {
-            NativeLabel detailsLbl = new NativeLabel(pCare.getDetails());
-            detailsLbl.getElement().setProperty("title", pCare.getDetails());
+        eyeSuppGrid.addComponentColumn(eyeSupp -> {
+            NativeLabel detailsLbl = new NativeLabel(eyeSupp.getDetails());
+            detailsLbl.getElement().setProperty("title", eyeSupp.getDetails());
             return detailsLbl;
         }).setHeader("Details").setKey("details").setSortable(true).setResizable(true);
 
-        pCareGrid.addComponentColumn(pCare -> {
-            NativeLabel categoryLbl = new NativeLabel(pCare.getCategory());
-            categoryLbl.getElement().setProperty("title", pCare.getCategory());
+
+        eyeSuppGrid.addComponentColumn(eyeSupp -> {
+            NativeLabel categoryLbl = new NativeLabel(eyeSupp.getCategory());
+            categoryLbl.getElement().setProperty("title", eyeSupp.getCategory());
             return categoryLbl;
         }).setHeader("Category").setKey("category").setSortable(true).setResizable(true);
 
-        pCareGrid.addComponentColumn(pCare -> {
-            NativeLabel batchNbLbl = new NativeLabel(pCare.getBatchNo());
-            batchNbLbl.getElement().setProperty("title", pCare.getBatchNo());
+        eyeSuppGrid.addComponentColumn(eyeSupp -> {
+            NativeLabel batchNbLbl = new NativeLabel(eyeSupp.getBatchNo());
+            batchNbLbl.getElement().setProperty("title", eyeSupp.getBatchNo());
             return batchNbLbl;
         }).setHeader("Batch Nb").setKey("batchNb").setSortable(true).setResizable(true);
 
-        pCareGrid.addComponentColumn(pCare -> {
-            NativeLabel quantityLbl = new NativeLabel(pCare.getQuantity());
-            quantityLbl.getElement().setProperty("title", pCare.getQuantity());
+        eyeSuppGrid.addComponentColumn(eyeSupp -> {
+            NativeLabel quantityLbl = new NativeLabel(eyeSupp.getQuantity());
+            quantityLbl.getElement().setProperty("title", eyeSupp.getQuantity());
             return quantityLbl;
         }).setHeader("Quantity").setKey("quantity").setSortable(true).setResizable(true);
 
-        pCareGrid.addComponentColumn(pCare -> {
-            NativeLabel expDateLbl = new NativeLabel(pCare.getExpiryDate().toString());
-            expDateLbl.getElement().setProperty("title", pCare.getExpiryDate().toString());
+        eyeSuppGrid.addComponentColumn(eyeSupp -> {
+            NativeLabel expDateLbl = new NativeLabel(eyeSupp.getExpiryDate().toString());
+            expDateLbl.getElement().setProperty("title", eyeSupp.getExpiryDate().toString());
             return expDateLbl;
         }).setHeader("Exp Date").setKey("expiryDate").setSortable(true).setResizable(true);
-        if (!currentUser.getRole().equals(User.Role.CLIENT))
-            pCareGrid.addComponentColumn(pCare -> {
-                NativeLabel buyingPriceLbl = new NativeLabel(pCare.getBuyingPrice());
-                buyingPriceLbl.getElement().setProperty("title", pCare.getBuyingPrice());
+
+        if(!currentUser.getRole().equals(User.Role.CLIENT))
+            eyeSuppGrid.addComponentColumn(eyeSupp -> {
+                NativeLabel buyingPriceLbl = new NativeLabel(eyeSupp.getBuyingPrice());
+                buyingPriceLbl.getElement().setProperty("title", eyeSupp.getBuyingPrice());
                 return buyingPriceLbl;
             }).setHeader("Buying Price").setKey("buyingPrice").setSortable(true).setResizable(true);
-        pCareGrid.addComponentColumn(pCare -> {
-            NativeLabel sellingPriceLbl = new NativeLabel(pCare.getSellingPrice());
-            sellingPriceLbl.getElement().setProperty("title", pCare.getSellingPrice());
+
+        eyeSuppGrid.addComponentColumn(eyeSupp -> {
+            NativeLabel sellingPriceLbl = new NativeLabel(eyeSupp.getSellingPrice());
+            sellingPriceLbl.getElement().setProperty("title", eyeSupp.getSellingPrice());
             return sellingPriceLbl;
         }).setHeader("Selling Price").setKey("sellingPrice").setSortable(true).setResizable(true);
 
-        if (!currentUser.getRole().equals(User.Role.CLIENT))
-            pCareGrid.addComponentColumn(pCare -> {
+        if(!currentUser.getRole().equals(User.Role.CLIENT))
+            eyeSuppGrid.addComponentColumn(eyeSupp -> {
                 Button editBtn = createEditButton();
                 Button deleteBtn = createDeleteButton();
 
-                editBtn.addClickListener(clickEvent -> {
-                    Dialog editDialog = new Dialog();
-                    editDialog.add(new PCareForm(dbServicePCare, editDialog, pCare, pCareGrid, gridListDataView));
-                    editDialog.open();
-                });
                 deleteBtn.addClickListener(clickEvent -> {
                     ConfirmDialog confirmDialog = new ConfirmDialog();
+                    confirmDialog.setHeader("Delete Confirmation");
+                    confirmDialog.setText("Are you sure you want to delete "+ eyeSupp.getName());
+
                     Button confirmDeleteBtn = createDeleteButton();
                     confirmDialog.setConfirmButton(confirmDeleteBtn);
-                    confirmDialog.setHeader("Delete Confirmation");
-                    confirmDialog.setText("Are you sure you want to delete " + pCare.getName());
                     confirmDeleteBtn.addClickListener(clickEvent1 -> {
-                        dbServicePCare.deleteById(pCare.get_id());
-                        gridListDataView = pCareGrid.setItems(dbServicePCare.findAllPCare());
+                        dbServicesEyeSupp.deleteById(eyeSupp.get_id());
+                        gridListDataView = eyeSuppGrid.setItems(dbServicesEyeSupp.findAllEyeSupp());
                         gridListDataView.refreshAll();
                         showSuccessNotification("Item deleted successfully");
+                        confirmDialog.close();
                     });
                     Button cancelBtn = createCancelButton();
+                    confirmDialog.setCancelButton(cancelBtn);
+                    confirmDialog.setCancelable(true);
                     cancelBtn.addClickListener(clickEvent1 -> {
                         confirmDialog.close();
                     });
-                    confirmDialog.setCancelButton(cancelBtn);
-                    confirmDialog.setCancelable(true);
                     confirmDialog.open();
                 });
-                HorizontalLayout editDltBtn = new HorizontalLayout();
-                editDltBtn.add(editBtn, deleteBtn);
-                return editDltBtn;
-            }).setHeader("Edit").setFooter(addNewPCareBtn).setWidth("10%");
 
-        addNewPCareBtn.getStyle().set("background-color", getSaveBtnColor());
-        addNewPCareBtn.getStyle().set("color", "white");
-        addNewPCareBtn.getStyle().set("border", "none");
-        addNewPCareBtn.getStyle().set("border-radius", "5px");
-        pCareGrid.setHeightFull();
-        add(pCareGrid);
+                editBtn.addClickListener(clickEvent -> {
+                    Dialog editDialog = new Dialog();
+                    editDialog.add(new EyeSuppForm(dbServicesEyeSupp, editDialog, eyeSupp, eyeSuppGrid, gridListDataView));
+                    editDialog.open();
+                });
+                return new HorizontalLayout(editBtn,deleteBtn);
+            }).setHeader("Edit").setFooter(addNewEyeSuppBtn).setWidth("10%");
+        addNewEyeSuppBtn.getStyle().set("background-color", getSaveBtnColor());
+        addNewEyeSuppBtn.getStyle().set("color", "white");
+        addNewEyeSuppBtn.getStyle().set("border", "none");
+        addNewEyeSuppBtn.getStyle().set("border-radius", "5px");
+        eyeSuppGrid.setHeightFull();
+        add(eyeSuppGrid);
     }
-
 }

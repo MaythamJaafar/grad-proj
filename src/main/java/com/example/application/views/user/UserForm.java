@@ -55,7 +55,7 @@ public class UserForm extends VerticalLayout {
         this.userGrid = userGrid;
         this.gridListDataView = gridListDataView;
         cancelBtn.addClickListener(buttonClickEvent -> dialog.close());
-        saveUserBtn.setText("Save User");
+        saveUserBtn.setText("Update");
         createDesign();
         saveNewUser();
         setComponentsValues(user);

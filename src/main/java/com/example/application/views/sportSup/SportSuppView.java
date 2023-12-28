@@ -31,7 +31,7 @@ import static com.example.application.util.Util.*;
 @PermitAll
 public class SportSuppView extends VerticalLayout {
     public final DBServiceSportSupp dbServiceSportSupp ;
-    private final Button addNewSportSUppBtn = new Button("Add New SportSupp");
+    private final Button addNewSportSUppBtn = new Button("Add Sport Supplement");
     public final Grid<SportSupp> sportSuppGrid = new Grid<>();
     private final Dialog addSportSuppDialog = new Dialog();
     private GridListDataView<SportSupp> gridListDataView;

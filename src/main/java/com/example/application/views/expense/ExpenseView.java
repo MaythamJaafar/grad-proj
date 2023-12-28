@@ -140,28 +140,28 @@ public class ExpenseView extends HorizontalLayout {
     private void setFilters() {
         HeaderRow filterRow = expensesGrid.appendHeaderRow();
 
-        TextField titleTxt = new TextField(" Title");
+        TextField titleTxt = new TextField(" ");
         titleTxt.setValueChangeMode(ValueChangeMode.EAGER);
         filterRow.getCell(expensesGrid.getColumnByKey("title")).setComponent(titleTxt);
         titleTxt.setWidthFull();
-        titleTxt.setPlaceholder("Title");
+        titleTxt.setPlaceholder("");
         titleTxt.getElement().getStyle().set("font-size", "12px");
 
-        TextField detailTxt = new TextField("Details");
+        TextField detailTxt = new TextField("");
         titleTxt.setValueChangeMode(ValueChangeMode.EAGER);
         filterRow.getCell(expensesGrid.getColumnByKey("details")).setComponent(detailTxt);
         detailTxt.setWidthFull();
         detailTxt.setPlaceholder("Details");
         detailTxt.getElement().getStyle().set("font-size", "12px");
 
-        TextField priceTxt = new TextField("Price");
+        TextField priceTxt = new TextField("");
         titleTxt.setValueChangeMode(ValueChangeMode.EAGER);
         filterRow.getCell(expensesGrid.getColumnByKey("price")).setComponent(priceTxt);
         priceTxt.setWidthFull();
         priceTxt.setPlaceholder("Price");
         priceTxt.getElement().getStyle().set("font-size", "12px");
 
-        DateTimePicker datePicker = new DateTimePicker("Date");
+        DateTimePicker datePicker = new DateTimePicker("");
         datePicker.getElement().getThemeList().add("date-picker-width");
         datePicker.getElement().getThemeList().add("time-picker-width");
         filterRow.getCell(expensesGrid.getColumnByKey("date")).setComponent(datePicker);
@@ -190,7 +190,7 @@ public class ExpenseView extends HorizontalLayout {
             priceNb.setValue(expense.getPrice());
             clearBtn.setVisible(true);
             id = expense.get_id();
-            expenseBtn.setText("update expense");
+            expenseBtn.setText("Update Expense");
         });
         editBtn.getStyle().set("background-color", "blue");
         editBtn.getStyle().set("color", "white");

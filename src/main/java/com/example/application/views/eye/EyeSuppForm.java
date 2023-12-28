@@ -1,7 +1,7 @@
-package com.example.application.views.pcare;
+package com.example.application.views.eye;
 
-import com.example.application.db.dbServices.DBServicePCare;
-import com.example.application.db.model.PCare;
+import com.example.application.db.dbServices.DBServicesEyeSupp;
+import com.example.application.db.model.EyeSupp;
 import com.example.application.util.InputChecker;
 import com.mongodb.lang.Nullable;
 import com.vaadin.flow.component.button.Button;
@@ -15,48 +15,44 @@ import com.vaadin.flow.component.textfield.TextField;
 
 import java.util.concurrent.atomic.AtomicBoolean;
 
-
-public class PCareForm extends VerticalLayout {
-    private DBServicePCare dbServicePCare;
-
-    private final Button savePCareBtn = new Button("Add PCare");
+public class EyeSuppForm extends VerticalLayout {
+    private final DBServicesEyeSupp dbServicesEyeSupp;
+    private final Button saveEyeSuppBtn = new Button("Add EyeSupp");
     private final TextField nameTxt = new TextField("Name");
     private final TextField categoryTxt = new TextField("Category");
-    private final TextField batchNb = new TextField("BatchNb");
+    private final TextField batchNb = new TextField("Batch #");
     private final TextField detailsTxt = new TextField("Details");
     private final TextField quantityNb = new TextField("Quantity");
-    private final DatePicker expiryDateNb = new DatePicker("Expiry Date");
+    private final DatePicker expiryDateNb = new DatePicker("Expiry date");
     private final TextField buyingPriceNb = new TextField("Buying Price");
     private final TextField sellingPriceNb = new TextField("Selling Price");
     private final Button cancelBtn = new Button("Cancel");
     private final Dialog dialog;
-    private final Grid<PCare> pCareGrid;
-    private GridListDataView<PCare> gridListDataView;
+    private final Grid<EyeSupp> eyeSuppGrid;
+    private GridListDataView<EyeSupp> gridListDataView;
 
-    public PCareForm(DBServicePCare dbServicePCare, Dialog addPCareDialog, Grid<PCare> pCareGrid, GridListDataView<PCare> gridListDataView) {
-        this.dbServicePCare = dbServicePCare;
-        this.dialog = addPCareDialog;
-        this.pCareGrid = pCareGrid;
-        this.gridListDataView = gridListDataView;
+    public EyeSuppForm(DBServicesEyeSupp dbServicesEyeSupp, Dialog addEyeSuppDialog, Grid<EyeSupp> eyeSuppGrid, GridListDataView<EyeSupp> gridListDataView) {
+        this.dbServicesEyeSupp = dbServicesEyeSupp;
+        this.dialog = addEyeSuppDialog;
+        this.eyeSuppGrid = eyeSuppGrid;
         cancelBtn.addClickListener(buttonClickEvent -> {
-            addPCareDialog.close();
+            addEyeSuppDialog.close();
             clearFields();
         });
-        addPCareDialog.setCloseOnOutsideClick(false);
+        addEyeSuppDialog.setCloseOnOutsideClick(false);
         createForm();
-        saveNewPCare(null);
+        saveNewEyeSupp(null);
     }
 
-    public PCareForm(DBServicePCare dbServicePCare, Dialog editDialog, PCare pCare, Grid<PCare> pCareGrid, GridListDataView<PCare> gridListDataView) {
-        this.dbServicePCare = dbServicePCare;
+    public EyeSuppForm(DBServicesEyeSupp dbServicesEyeSupp, Dialog editDialog, EyeSupp eyeSupp, Grid<EyeSupp> eyeSuppGrid, GridListDataView<EyeSupp> gridListDataView) {
+        this.dbServicesEyeSupp = dbServicesEyeSupp;
         this.dialog = editDialog;
-        this.pCareGrid = pCareGrid;
-        this.gridListDataView = gridListDataView;
+        this.eyeSuppGrid = eyeSuppGrid;
         cancelBtn.addClickListener(buttonClickEvent -> editDialog.close());
         editDialog.setCloseOnOutsideClick(false);
-        createEditForm(pCare);
-        saveNewPCare(pCare.get_id());
-        savePCareBtn.setText("update");
+        createEditForm(eyeSupp);
+        saveNewEyeSupp(eyeSupp.get_id());
+        saveEyeSuppBtn.setText("Update");
     }
 
     private void clearFields() {
@@ -70,15 +66,15 @@ public class PCareForm extends VerticalLayout {
         sellingPriceNb.clear();
     }
 
-    private void createEditForm(PCare pCare) {
-        categoryTxt.setValue(pCare.getCategory());
-        nameTxt.setValue(pCare.getName());
-        detailsTxt.setValue(pCare.getDetails());
-        batchNb.setValue(pCare.getBatchNo());
-        quantityNb.setValue(pCare.getQuantity());
-        expiryDateNb.setValue(pCare.getExpiryDate());
-        buyingPriceNb.setValue(pCare.getBuyingPrice());
-        sellingPriceNb.setValue(pCare.getSellingPrice());
+    private void createEditForm(EyeSupp eyeSupp) {
+        categoryTxt.setValue(eyeSupp.getCategory());
+        nameTxt.setValue(eyeSupp.getName());
+        detailsTxt.setValue(eyeSupp.getDetails());
+        batchNb.setValue(eyeSupp.getBatchNo());
+        quantityNb.setValue(eyeSupp.getQuantity());
+        expiryDateNb.setValue(eyeSupp.getExpiryDate());
+        buyingPriceNb.setValue(eyeSupp.getBuyingPrice());
+        sellingPriceNb.setValue(eyeSupp.getSellingPrice());
         createForm();
     }
 
@@ -87,29 +83,30 @@ public class PCareForm extends VerticalLayout {
         HorizontalLayout batchDosHl = new HorizontalLayout(batchNb, quantityNb);
         HorizontalLayout forQuaHl = new HorizontalLayout(expiryDateNb, detailsTxt);
         HorizontalLayout expiryBuySelHl = new HorizontalLayout(buyingPriceNb, sellingPriceNb);
-        HorizontalLayout cancelSaveHl = new HorizontalLayout(savePCareBtn, cancelBtn);
+        HorizontalLayout cancelSaveHl = new HorizontalLayout(saveEyeSuppBtn, cancelBtn);
 
         add(catSupHl, batchDosHl, forQuaHl, batchDosHl, expiryBuySelHl, cancelSaveHl);
     }
 
-    public void saveNewPCare(@Nullable String id) {
-        savePCareBtn.addClickListener(buttonClickEvent -> {
+    public void saveNewEyeSupp(@Nullable String id) {
+        saveEyeSuppBtn.addClickListener(buttonClickEvent -> {
             if (checkFields()) {
-                PCare pCare = new PCare();
+                EyeSupp newEyeSupp = new EyeSupp();
                 if (id != null)
-                    pCare.set_id(id);
-                pCare.setName(nameTxt.getValue());
-                pCare.setBatchNo(batchNb.getValue());
-                pCare.setCategory(categoryTxt.getValue());
-                pCare.setDetails(detailsTxt.getValue());
-                pCare.setQuantity(quantityNb.getValue());
-                pCare.setExpiryDate(expiryDateNb.getValue());
-                pCare.setBuyingPrice(buyingPriceNb.getValue());
-                pCare.setSellingPrice(sellingPriceNb.getValue());
-                dbServicePCare.savePCare(pCare);
-                gridListDataView = pCareGrid.setItems(dbServicePCare.findAllPCare());
+                    newEyeSupp.set_id(id);
+                newEyeSupp.setName(nameTxt.getValue());
+                newEyeSupp.setBatchNo(batchNb.getValue());
+                newEyeSupp.setCategory(categoryTxt.getValue());
+                newEyeSupp.setDetails(detailsTxt.getValue());
+                newEyeSupp.setQuantity(quantityNb.getValue());
+                newEyeSupp.setExpiryDate(expiryDateNb.getValue());
+                newEyeSupp.setBuyingPrice(buyingPriceNb.getValue());
+                newEyeSupp.setSellingPrice(sellingPriceNb.getValue());
+                dbServicesEyeSupp.saveEyeSupp(newEyeSupp);
+                gridListDataView = eyeSuppGrid.setItems(dbServicesEyeSupp.findAllEyeSupp());
                 gridListDataView.refreshAll();
                 dialog.close();
+                clearFields();
             }
         });
     }
@@ -127,5 +124,4 @@ public class PCareForm extends VerticalLayout {
 
         return continueFlag.get();
     }
-
 }
