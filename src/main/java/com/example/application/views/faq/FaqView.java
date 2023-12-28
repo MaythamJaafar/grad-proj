@@ -1,9 +1,8 @@
 package com.example.application.views.faq;
 
 import com.example.application.views.MainLayout;
+import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.html.Div;
-import com.vaadin.flow.component.html.H1;
-import com.vaadin.flow.component.html.Image;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.router.PageTitle;
@@ -23,7 +22,8 @@ public class FaqView extends VerticalLayout {
     public FaqView() {
         createFaqHeader();
         createFAQAccordion();
-        setSizeFull();
+        getElement().getStyle().set("padding", "0");
+        setWidthFull();
     }
 
     private void createFaqHeader() {
@@ -32,7 +32,6 @@ public class FaqView extends VerticalLayout {
         backgroundDiv.getStyle().set("background-size", "cover");
         backgroundDiv.getStyle().set("background-position", "center");
         backgroundDiv.setWidthFull();
-        backgroundDiv.setHeight("100vh");
         HorizontalLayout headerHl = new HorizontalLayout();
         headerHl.setHeight("200px");
         backgroundDiv.add(headerHl);
@@ -41,7 +40,8 @@ public class FaqView extends VerticalLayout {
 
     private void createFAQAccordion() {
 
-        VerticalLayout accordionCardsVl = new VerticalLayout();
+        HorizontalLayout accordionCardsHl = new HorizontalLayout();
+        accordionCardsHl.setWidth("90%");
 
         List<String> questionList = new ArrayList<>();
         List<String> answerList = new ArrayList<>();
@@ -49,11 +49,11 @@ public class FaqView extends VerticalLayout {
         questionList.add("How do I refill my prescription online?");
         answerList.add("To refill your prescription online, log in to your account, go to the prescription section, and follow the prompts to submit your refill request. You can also use our mobile app for quick and easy refills.");
 
-        questionList.add("What information do I need for online prescription refills?");
-        answerList.add("To refill your prescription, you'll need the prescription number, your name, and the medication details. You can find this information on your prescription label.");
-
         questionList.add("Can I transfer my prescription to another pharmacy?");
         answerList.add("Yes, you can transfer your prescription. Simply provide us with the details, and we'll take care of the rest. You can initiate the transfer online or in-store.");
+
+        questionList.add("What is the expiration date policy for medications?");
+        answerList.add("We adhere to strict guidelines regarding medication expiration dates. All medications shipped from our pharmacy have a sufficient shelf life, and we recommend checking the expiration date before use.");
 
         questionList.add("What payment methods are accepted for online orders?");
         answerList.add("We accept major credit cards, debit cards, and some insurance plans for online orders. Check our website for the complete list of accepted payment methods.");
@@ -97,8 +97,8 @@ public class FaqView extends VerticalLayout {
         questionList.add("How can I transfer my prescription history to a new healthcare provider?");
         answerList.add("To transfer your prescription history to a new healthcare provider, contact our pharmacy, and we will assist you in providing the necessary information to your new healthcare professional.");
 
-        questionList.add("What is the expiration date policy for medications?");
-        answerList.add("We adhere to strict guidelines regarding medication expiration dates. All medications shipped from our pharmacy have a sufficient shelf life, and we recommend checking the expiration date before use.");
+        questionList.add("What information do I need for online prescription refills?");
+        answerList.add("To refill your prescription, you'll need the prescription number, your name, and the medication details. You can find this information on your prescription label.");
 
         questionList.add("Do you offer consultations with pharmacists for medication-related queries?");
         answerList.add("Yes, we provide consultations with our pharmacists for any medication-related queries. Feel free to call or visit our pharmacy, or use our online chat service for quick assistance.");
@@ -107,16 +107,21 @@ public class FaqView extends VerticalLayout {
         answerList.add("Refills are generally limited to medications on your prescription list. If you need a refill for a new medication, please consult with your healthcare provider for a new prescription.");
 
         int nbOfElementsInHl = 4;
-        HorizontalLayout hl = new HorizontalLayout();
+        VerticalLayout vl = new VerticalLayout();
+        vl.setHeight("100%");
+        int x = questionList.size() / 4;
+
         for (int i = 0; i < questionList.size(); i++) {
-            if (i != 0 && i % nbOfElementsInHl == 0) {
-                accordionCardsVl.add(hl);
-                hl = new HorizontalLayout();
+            if (i != 0 && i % x == 0) {
+                accordionCardsHl.add(vl);
+                vl = new VerticalLayout();
+                vl.setHeight("100%");
             }
-            hl.add(cardComponent(questionList.get(i), answerList.get(i)));
+            vl.add(cardComponent(questionList.get(i), answerList.get(i)));
             if (i != 0 && i == questionList.size() - 1 && i % nbOfElementsInHl != 0)
-                accordionCardsVl.add(hl);
+                accordionCardsHl.add(vl);
         }
-        add(accordionCardsVl);
+        add(accordionCardsHl);
     }
+
 }

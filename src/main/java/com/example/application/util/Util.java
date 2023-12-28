@@ -2,6 +2,7 @@ package com.example.application.util;
 
 import com.vaadin.flow.component.accordion.Accordion;
 import com.vaadin.flow.component.button.Button;
+import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.notification.NotificationVariant;
@@ -51,12 +52,11 @@ public class Util {
     }
 
     public static VerticalLayout cardComponent(String question, String answer) {
-        VerticalLayout card = new VerticalLayout();
-        card.setWidth("25%");
-
         Accordion accordion = new Accordion();
         accordion.add(question, createAnswerLayout(answer));
         accordion.close();
+
+        VerticalLayout card = new VerticalLayout();
         card.add(accordion);
         card.addClassName("card");
         return card;

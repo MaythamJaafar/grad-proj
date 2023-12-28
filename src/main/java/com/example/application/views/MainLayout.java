@@ -12,8 +12,8 @@ import com.example.application.views.pcare.PCareView;
 import com.example.application.views.sportSup.SportSuppView;
 import com.example.application.views.user.UserView;
 import com.vaadin.flow.component.Component;
+import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.applayout.AppLayout;
-import com.vaadin.flow.component.applayout.DrawerToggle;
 import com.vaadin.flow.component.avatar.Avatar;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
@@ -21,9 +21,8 @@ import com.vaadin.flow.component.contextmenu.MenuItem;
 import com.vaadin.flow.component.dialog.Dialog;
 import com.vaadin.flow.component.html.*;
 import com.vaadin.flow.component.icon.Icon;
+import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.component.menubar.MenuBar;
-import com.vaadin.flow.component.notification.Notification;
-import com.vaadin.flow.component.notification.NotificationVariant;
 import com.vaadin.flow.component.orderedlayout.FlexComponent;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.Scroller;
@@ -39,7 +38,6 @@ import org.vaadin.lineawesome.LineAwesomeIcon;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import static com.example.application.util.Util.showErrorNotification;
-import static com.example.application.util.Util.showSuccessNotification;
 
 /**
  * The main view is a top-level placeholder for other views.
@@ -81,7 +79,7 @@ public class MainLayout extends AppLayout {
         Div div = new Div();
         div.add(avatar);
         NativeLabel text = new NativeLabel(currentUser.getFullName().split("\s")[0]);
-        text.getElement().getStyle().set("color", "white");
+        text.getElement().getStyle().set("color", "grey");
         div.add(text);
 
         Icon dropDownIcon = new Icon("lumo", "dropdown");
@@ -96,15 +94,39 @@ public class MainLayout extends AppLayout {
         usernameMenuItem.getSubMenu().addItem("Change password", e -> changePassword(currentUser));
         usernameMenuItem.getSubMenu().addItem("Sign out", e -> authenticatedUser.logout());
 
+        Button themeBtn = new Button();
+        themeBtn.setWidth("20px");
+        themeBtn.setHeight("20px");
+
+        Icon nightIcon = VaadinIcon.MOON_O.create();
+        Icon dayIcon = VaadinIcon.SUN_O.create();
+
+        themeBtn.setIcon(nightIcon);
+        themeBtn.addClickListener(buttonClickEvent -> {
+            UI.getCurrent().getElement().getThemeList().clear();
+            if (themeBtn.getIcon().equals(nightIcon)) {
+                getElement().getThemeList().add("dark-background");
+                getElement().getStyle().set("background-color", "#333");
+                getElement().getStyle().set("color", "#fff");
+                themeBtn.setIcon(dayIcon);
+            } else {
+                getElement().getThemeList().add("light-background");
+                getElement().getStyle().set("background-color", "#f0f0f0");
+                getElement().getStyle().set("color", "#333");
+                themeBtn.setIcon(nightIcon);
+            }
+        });
+
+        layout.add(userMenu, themeBtn);
+
+        header.add(layout);
+
         layout.add(userMenu);
         header.add(layout);
         return header;
     }
 
     private void addHeaderContent() {
-        DrawerToggle toggle = new DrawerToggle();
-        toggle.setAriaLabel("Menu toggle");
-
         viewTitle = new H2();
         viewTitle.addClassNames(LumoUtility.FontSize.LARGE, LumoUtility.Margin.NONE);
         viewTitle.getElement().getStyle().set("align-self", "center");
@@ -114,18 +136,22 @@ public class MainLayout extends AppLayout {
         headerHl.setWidth("90%");
 //        headerHl.getElement().getStyle().set("background-color", "royalblue");
 
-        addToNavbar(true, toggle, headerHl);
+        addToNavbar(true, headerHl);
 
     }
 
     private void addDrawerContent() {
-        H1 appName = new H1("My App");
+        H1 appName = new H1("M/J");
         appName.addClassNames(LumoUtility.FontSize.LARGE, LumoUtility.Margin.NONE);
+        appName.getElement().getStyle().set("align-self", "center");
         Header header = new Header(appName);
+        header.getElement().getStyle().set("text-align", "center");
 
         Scroller scroller = new Scroller(createNavigation());
-
-        addToDrawer(header, scroller, createFooter());
+        NativeLabel label = new NativeLabel();
+        label.add(header, scroller, createFooter());
+        label.addClassNames("drawer-section", "drawerLayout");
+        addToDrawer(label);
     }
 
     private void changePassword(User entityUser) {
@@ -180,24 +206,24 @@ public class MainLayout extends AppLayout {
         SideNav nav = new SideNav();
 
         nav.addItem(new SideNavItem("Dashboard", DashboardView.class, LineAwesomeIcon.ACCUSOFT.create()));
-        nav.addItem(new SideNavItem("MedicineGrid", MedicineView.class, LineAwesomeIcon.ACCUSOFT.create()));
+        nav.addItem(new SideNavItem("MedicineGrid", MedicineView.class, LineAwesomeIcon.HOSPITAL.create()));
         if (currentUser.getRole().equals(User.Role.SUPER_ADMIN))
-            nav.addItem(new SideNavItem("UserGrid", UserView.class, LineAwesomeIcon.USER.create()));
+            nav.addItem(new SideNavItem("UserGrid", UserView.class, LineAwesomeIcon.USERS_SOLID.create()));
         if (currentUser.getRole().equals(User.Role.SUPER_ADMIN) || currentUser.getRole().equals(User.Role.ADMIN))
-            nav.addItem(new SideNavItem("Expenses", ExpenseView.class, LineAwesomeIcon.ACCUSOFT.create()));
-        nav.addItem(new SideNavItem("SportSupp", SportSuppView.class, LineAwesomeIcon.ACCUSOFT.create()));
-        nav.addItem(new SideNavItem("Contact", Contact.class, LineAwesomeIcon.ACCUSOFT.create()));
+            nav.addItem(new SideNavItem("Expenses", ExpenseView.class, LineAwesomeIcon.BUYSELLADS.create()));
+        nav.addItem(new SideNavItem("SportSupp", SportSuppView.class, LineAwesomeIcon.FOOTBALL_BALL_SOLID.create()));
+        nav.addItem(new SideNavItem("Contact", Contact.class, LineAwesomeIcon.CONTAO.create()));
         nav.addItem(new SideNavItem("PCare", PCareView.class, LineAwesomeIcon.ACCUSOFT.create()));
-        nav.addItem(new SideNavItem("FAQ", FaqView.class, LineAwesomeIcon.ACCUSOFT.create()));
+        nav.addItem(new SideNavItem("FAQ", FaqView.class, LineAwesomeIcon.FAN_SOLID.create()));
 //        nav.addItem(new SideNavItem("Eye", EyeView.class, LineAwesomeIcon.ACCUSOFT.create()));
-
 
         return nav;
     }
 
     private Footer createFooter() {
         Footer layout = new Footer();
-
+        NativeLabel text = new NativeLabel("Powered By @Maytham Jaafar");
+        text.getElement().getStyle().set("color", "grey");
         return layout;
     }
 

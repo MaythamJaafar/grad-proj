@@ -1,20 +1,164 @@
-vaadin-scroller[slot="drawer"] {
-  padding: var(--lumo-space-s);
+.view-title {
+  margin: 0;
+  font-size: var(--lumo-font-size-l);
 }
 
-vaadin-side-nav-item vaadin-icon {
-  padding: 0;
-}
-
-[slot="drawer"]:is(header, footer) {
-  display: flex;
+.view-header {
   align-items: center;
-  gap: var(--lumo-space-s);
-  padding: var(--lumo-space-s) var(--lumo-space-m);
-  min-height: var(--lumo-size-xl);
+  border-bottom: 1px solid var(--lumo-contrast-10pct);
   box-sizing: border-box;
+  display: flex;
+  height: var(--lumo-size-xl);
+  background-color: whitesmoke;
 }
 
-[slot="drawer"]:is(header, footer):is(:empty) {
-  display: none;
+
+.view-toggle {
+  color: var(--lumo-secondary-text-color);
+}
+
+.app-name {
+  align-items: center;
+  display: flex;
+  height: var(--lumo-size-xl);
+  margin: 0 var(--lumo-space-m);
+  font-size: var(--lumo-font-size-m);
+}
+
+.drawer-section {
+  align-items: stretch;
+  background: linear-gradient(var(--lumo-shade-5pct), var(--lumo-shade-5pct));
+  display: flex;
+  flex-direction: column;
+  max-height: 100%;
+  min-height: 100%;
+}
+
+.app-nav {
+  border-bottom: 1px solid var(--lumo-contrast-10pct);
+  color: var(--lumo-secondary-text-color);
+  flex: 1;
+  font-size: var(--lumo-font-size-s);
+  overflow: auto;
+  padding: 0 var(--lumo-space-s);
+}
+
+.app-nav .nav-item-icon {
+  font-size: var(--lumo-icon-size-s);
+}
+
+.app-nav-footer {
+  align-items: center;
+  display: flex;
+  gap: var(--lumo-space-s);
+  padding: var(--lumo-space-m);
+}
+
+.app-nav-footer vaadin-context-menu {
+  cursor: var(--lumo-clickable-cursor);
+  display: contents;
+  font-weight: 500;
+}
+
+vaadin-app-layout::part(drawer) {
+  width: auto;
+  position: absolute;
+  z-index: 5;
+}
+
+.drawerLayout {
+  width: 43px;
+  transition: width 0.5s;
+  background-color: whitesmoke;
+  background-image: url(https://www.transparenttextures.com/patterns/grunge-wall.png);
+}
+
+.drawerLayout:hover {
+  width: 200px;
+}
+
+.tab {
+  margin-bottom: 2px;
+  padding-left: 10px;
+}
+
+.numberCircle {
+  border-radius: 60%;
+  border-style: solid;
+  align-self: center;
+  font-size: 8px;
+  padding: 2px;
+  position: absolute;
+  top: 0;
+  margin-left: 23px;
+  background: red;
+  color: white;
+}
+
+.point {
+  background-color: dodgerblue;
+  width: 10px;
+  height: 10px;
+  border-radius: 100%;
+  margin: 10px;
+}
+
+.hover-Selected:hover {
+  cursor: pointer;
+  color: var(--_lumo-button-primary-background-color, var(--lumo-primary-color));
+}
+
+
+html {
+  --lumo-border-radius: 0.75em;
+  --lumo-font-family: Corbel, "Lucida Grande", "Lucida Sans Unicode", "Lucida Sans", "DejaVu Sans", "Bitstream Vera Sans", "Liberation Sans", Verdana, "Verdana Ref", sans-serif;
+  --lumo-size-xl: 3rem;
+  --lumo-size-l: 2.5rem;
+  --lumo-size-m: 2rem;
+  --lumo-size-s: 1.75rem;
+  --lumo-size-xs: 1.5rem;
+  --lumo-space-xl: 1.875rem;
+  --lumo-space-l: 1.25rem;
+  --lumo-space-m: 0.625rem;
+  --lumo-space-s: 0.3125rem;
+  --lumo-space-xs: 0.1875rem;
+  --lumo-primary-text-color: rgb(172, 168, 93);
+  --lumo-primary-color-50pct: rgba(172, 168, 93, 0.5);
+  --lumo-primary-color-10pct: rgba(172, 168, 93, 0.1);
+  --lumo-error-text-color: rgb(231, 24, 24);
+  --lumo-error-color-50pct: rgba(231, 24, 24, 0.5);
+  --lumo-error-color-10pct: rgba(231, 24, 24, 0.1);
+  --lumo-success-text-color: rgb(62, 229, 170);
+  --lumo-success-color-50pct: rgba(62, 229, 170, 0.5);
+  --lumo-success-color-10pct: rgba(62, 229, 170, 0.1);
+  --lumo-primary-color: #aca85d;
+  --lumo-error-color: hsl(0, 81%, 50%);
+  --lumo-success-color: hsl(159, 76%, 57%);
+  --lumo-shade-5pct: rgba(26, 26, 26, 0.05);
+  --lumo-shade-10pct: rgba(26, 26, 26, 0.1);
+  --lumo-shade-20pct: rgba(26, 26, 26, 0.2);
+  --lumo-shade-30pct: rgba(26, 26, 26, 0.3);
+  --lumo-shade-40pct: rgba(26, 26, 26, 0.4);
+  --lumo-shade-50pct: rgba(26, 26, 26, 0.5);
+  --lumo-shade-60pct: rgba(26, 26, 26, 0.6);
+  --lumo-shade-70pct: rgba(26, 26, 26, 0.7);
+  --lumo-shade-80pct: rgba(26, 26, 26, 0.8);
+  --lumo-shade-90pct: rgba(26, 26, 26, 0.9);
+  --lumo-shade: hsl(0, 0%, 10%);
+  --lumo-success-contrast-color: hsl(159, 29%, 10%);
+  --lumo-base-color: #ffffff;
+}
+
+.button-link {
+  display: inline-block;
+  padding: 0.5em 1em;
+  background-color: #f5f5f5;
+  text-align: center;
+  text-decoration: none;
+  font-size: 16px;
+  border-radius: 25px;
+  cursor: pointer;
+}
+
+[theme~="dark"] {
 }
