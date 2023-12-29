@@ -6,9 +6,9 @@ import com.example.application.security.AuthenticatedUser;
 import com.example.application.util.InputChecker;
 import com.example.application.views.baby.BabyView;
 import com.example.application.views.contact.ContactUs;
-import com.example.application.views.eye.EyeSuppView;
 import com.example.application.views.dashboard.DashboardView;
 import com.example.application.views.expense.ExpenseView;
+import com.example.application.views.eye.EyeSuppView;
 import com.example.application.views.faq.FaqView;
 import com.example.application.views.medicine.MedicineView;
 import com.example.application.views.pcare.PCareView;
@@ -28,6 +28,7 @@ import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.component.menubar.MenuBar;
 import com.vaadin.flow.component.orderedlayout.FlexComponent;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
+import com.vaadin.flow.component.orderedlayout.Scroller;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.sidenav.SideNav;
 import com.vaadin.flow.component.sidenav.SideNavItem;
@@ -40,7 +41,6 @@ import org.vaadin.lineawesome.LineAwesomeIcon;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import static com.example.application.util.Util.showErrorNotification;
-import static com.example.application.util.Util.showSuccessNotification;
 
 /**
  * The main view is a top-level placeholder for other views.
@@ -59,6 +59,7 @@ public class MainLayout extends AppLayout {
         setPrimarySection(Section.DRAWER);
         addDrawerContent();
         addHeaderContent();
+        getElement().getStyle().set("background-image", "url(https://www.transparenttextures.com/patterns/brick-wall.png)");
     }
 
     private Component createHeaderContent() {
@@ -81,7 +82,7 @@ public class MainLayout extends AppLayout {
 
         Div div = new Div();
         div.add(avatar);
-        NativeLabel text = new NativeLabel(currentUser.getFullName().split("\s")[0]);
+        NativeLabel text = new NativeLabel(currentUser.getFullName().split(" ")[0]);
         text.getElement().getStyle().set("color", "grey");
         div.add(text);
 
@@ -121,11 +122,13 @@ public class MainLayout extends AppLayout {
         });
 
         layout.add(userMenu, themeBtn);
+        layout.getElement().getStyle().set("margin-top", "12px");
 
         header.add(layout);
 
         layout.add(userMenu);
         header.add(layout);
+        header.getElement().getStyle().set("margin-right", "100px");
         return header;
     }
 
@@ -133,12 +136,14 @@ public class MainLayout extends AppLayout {
         viewTitle = new H2();
         viewTitle.addClassNames(LumoUtility.FontSize.LARGE, LumoUtility.Margin.NONE);
         viewTitle.getElement().getStyle().set("align-self", "center");
+        viewTitle.getElement().getStyle().set("margin-left", "20px");
+        viewTitle.getElement().getStyle().set("margin-top", "12px");
 
         HorizontalLayout headerHl = new HorizontalLayout(viewTitle, createHeaderContent());
         headerHl.getElement().getStyle().set("justify-content", "space-between");
-        headerHl.setWidth("90%");
-//        headerHl.getElement().getStyle().set("background-color", "royalblue");
-
+        headerHl.setWidthFull();
+        headerHl.setHeight("50px");
+        headerHl.getElement().getStyle().set("background-image", "url(https://www.transparenttextures.com/patterns/brick-wall.png)");
         addToNavbar(true, headerHl);
 
     }
@@ -165,12 +170,16 @@ public class MainLayout extends AppLayout {
         PasswordField confirmNewPasswordTxt = new PasswordField();
         confirmNewPasswordTxt.setWidth("70%");
 
-        VerticalLayout verticalLayout = new VerticalLayout(newPasswordTxt, confirmNewPasswordTxt);
+        NativeLabel titleLbl = new NativeLabel("Change password of " + entityUser.get_id() + " (" + entityUser.getRole() + ") ?");
+        titleLbl.getElement().getStyle().set("color", "grey");
+        titleLbl.getElement().getStyle().set("font-size", "larger");
+
+        VerticalLayout verticalLayout = new VerticalLayout(titleLbl, newPasswordTxt, confirmNewPasswordTxt);
         verticalLayout.getElement().getStyle().set("padding", "0");
         verticalLayout.getElement().getStyle().set("margin", "0");
         verticalLayout.setAlignItems(FlexComponent.Alignment.CENTER);
+//        dialog.getElement().getStyle().set("align-item", "center");
         dialog.add(verticalLayout);
-        dialog.getElement().getStyle().set("align-item", "center");
 
         Button changePasswordButton = new Button("Save", (e) -> {
             AtomicBoolean continueFlag = new AtomicBoolean(true);
@@ -186,8 +195,7 @@ public class MainLayout extends AppLayout {
                     showErrorNotification("Passwords do not match");
         });
 
-        dialog.setHeaderTitle(
-                String.format("Change password of \"%s\"?", entityUser.get_id()));
+
         newPasswordTxt.setPlaceholder("New Password");
         newPasswordTxt.addValueChangeListener(event -> {
             confirmNewPasswordTxt.clear();
@@ -197,11 +205,12 @@ public class MainLayout extends AppLayout {
 
         changePasswordButton.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
         changePasswordButton.getStyle().set("margin-right", "auto");
-        dialog.getFooter().add(changePasswordButton);
+        dialog.setWidth("30%");
 
         Button cancelButton = new Button("Cancel", (e) -> dialog.close());
         cancelButton.addThemeVariants(ButtonVariant.LUMO_TERTIARY);
-        dialog.getFooter().add(cancelButton);
+
+        dialog.getFooter().add(changePasswordButton, cancelButton);
         dialog.open();
     }
 

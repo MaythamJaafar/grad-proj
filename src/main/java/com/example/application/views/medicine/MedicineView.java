@@ -98,11 +98,11 @@ public class MedicineView extends VerticalLayout {
         quantityTxt.getElement().getStyle().set("font-size", "12px");
 
         TextField sideEffect = new TextField("");
-        filterRow.getCell(medicineGrid.getColumnByKey("sideEffect")).setComponent(quantityTxt);
+        filterRow.getCell(medicineGrid.getColumnByKey("sideEffect")).setComponent(sideEffect);
         sideEffect.setValueChangeMode(ValueChangeMode.EAGER);
         sideEffect.setClearButtonVisible(true);
         sideEffect.setWidthFull();
-        sideEffect.setPlaceholder("Quantity");
+        sideEffect.setPlaceholder("Side Effect");
         sideEffect.getElement().getStyle().set("font-size", "12px");
 
         DatePicker expiryDatePicker = new DatePicker("");
@@ -114,7 +114,7 @@ public class MedicineView extends VerticalLayout {
 
 
         TextField buyingPriceTxt = new TextField("");
-        if(!currentUser.getRole().equals(User.Role.CLIENT))
+        if (!currentUser.getRole().equals(User.Role.CLIENT))
             filterRow.getCell(medicineGrid.getColumnByKey("buyingPrice")).setComponent(buyingPriceTxt);
         buyingPriceTxt.setValueChangeMode(ValueChangeMode.EAGER);
         buyingPriceTxt.setClearButtonVisible(true);
@@ -138,20 +138,20 @@ public class MedicineView extends VerticalLayout {
         formulaTxt.setPlaceholder("Formula");
         formulaTxt.getElement().getStyle().set("font-size", "12px");
 
-        nameTxt.addValueChangeListener(event -> applyFilter(nameTxt, categoryTxt, dosageTxt, detailsTxt, batchNoTxt, quantityTxt,sideEffect, expiryDatePicker, buyingPriceTxt, sellingPriceTxt, formulaTxt));
-        categoryTxt.addValueChangeListener(event -> applyFilter(nameTxt, categoryTxt, dosageTxt, detailsTxt, batchNoTxt, quantityTxt, sideEffect,expiryDatePicker, buyingPriceTxt, sellingPriceTxt, formulaTxt));
-        dosageTxt.addValueChangeListener(event -> applyFilter(nameTxt, categoryTxt, dosageTxt, detailsTxt, batchNoTxt, quantityTxt, sideEffect,expiryDatePicker, buyingPriceTxt, sellingPriceTxt, formulaTxt));
-        detailsTxt.addValueChangeListener(event -> applyFilter(nameTxt, categoryTxt, dosageTxt, detailsTxt, batchNoTxt, quantityTxt, sideEffect,expiryDatePicker, buyingPriceTxt, sellingPriceTxt, formulaTxt));
-        batchNoTxt.addValueChangeListener(event -> applyFilter(nameTxt, categoryTxt, dosageTxt, detailsTxt, batchNoTxt, quantityTxt,sideEffect, expiryDatePicker, buyingPriceTxt, sellingPriceTxt, formulaTxt));
-        quantityTxt.addValueChangeListener(event -> applyFilter(nameTxt, categoryTxt, dosageTxt, detailsTxt, batchNoTxt, quantityTxt,sideEffect, expiryDatePicker, buyingPriceTxt, sellingPriceTxt, formulaTxt));
-        sideEffect.addValueChangeListener(event -> applyFilter(nameTxt, categoryTxt, dosageTxt, detailsTxt, batchNoTxt, quantityTxt,sideEffect, expiryDatePicker, buyingPriceTxt, sellingPriceTxt, formulaTxt));
-        expiryDatePicker.addValueChangeListener(event -> applyFilter(nameTxt, categoryTxt, dosageTxt, detailsTxt, batchNoTxt, quantityTxt, sideEffect,expiryDatePicker, buyingPriceTxt, sellingPriceTxt, formulaTxt));
-        buyingPriceTxt.addValueChangeListener(event -> applyFilter(nameTxt, categoryTxt, dosageTxt, detailsTxt, batchNoTxt, quantityTxt, sideEffect,expiryDatePicker, buyingPriceTxt, sellingPriceTxt, formulaTxt));
-        sellingPriceTxt.addValueChangeListener(event -> applyFilter(nameTxt, categoryTxt, dosageTxt, detailsTxt, batchNoTxt, quantityTxt,sideEffect, expiryDatePicker, buyingPriceTxt, sellingPriceTxt, formulaTxt));
-        formulaTxt.addValueChangeListener(event -> applyFilter(nameTxt, categoryTxt, dosageTxt, detailsTxt, batchNoTxt, quantityTxt, sideEffect,expiryDatePicker, buyingPriceTxt, sellingPriceTxt, formulaTxt));
+        nameTxt.addValueChangeListener(event -> applyFilter(nameTxt, categoryTxt, dosageTxt, detailsTxt, batchNoTxt, quantityTxt, sideEffect, expiryDatePicker, buyingPriceTxt, sellingPriceTxt, formulaTxt));
+        categoryTxt.addValueChangeListener(event -> applyFilter(nameTxt, categoryTxt, dosageTxt, detailsTxt, batchNoTxt, quantityTxt, sideEffect, expiryDatePicker, buyingPriceTxt, sellingPriceTxt, formulaTxt));
+        dosageTxt.addValueChangeListener(event -> applyFilter(nameTxt, categoryTxt, dosageTxt, detailsTxt, batchNoTxt, quantityTxt, sideEffect, expiryDatePicker, buyingPriceTxt, sellingPriceTxt, formulaTxt));
+        detailsTxt.addValueChangeListener(event -> applyFilter(nameTxt, categoryTxt, dosageTxt, detailsTxt, batchNoTxt, quantityTxt, sideEffect, expiryDatePicker, buyingPriceTxt, sellingPriceTxt, formulaTxt));
+        batchNoTxt.addValueChangeListener(event -> applyFilter(nameTxt, categoryTxt, dosageTxt, detailsTxt, batchNoTxt, quantityTxt, sideEffect, expiryDatePicker, buyingPriceTxt, sellingPriceTxt, formulaTxt));
+        quantityTxt.addValueChangeListener(event -> applyFilter(nameTxt, categoryTxt, dosageTxt, detailsTxt, batchNoTxt, quantityTxt, sideEffect, expiryDatePicker, buyingPriceTxt, sellingPriceTxt, formulaTxt));
+        sideEffect.addValueChangeListener(event -> applyFilter(nameTxt, categoryTxt, dosageTxt, detailsTxt, batchNoTxt, quantityTxt, sideEffect, expiryDatePicker, buyingPriceTxt, sellingPriceTxt, formulaTxt));
+        expiryDatePicker.addValueChangeListener(event -> applyFilter(nameTxt, categoryTxt, dosageTxt, detailsTxt, batchNoTxt, quantityTxt, sideEffect, expiryDatePicker, buyingPriceTxt, sellingPriceTxt, formulaTxt));
+        buyingPriceTxt.addValueChangeListener(event -> applyFilter(nameTxt, categoryTxt, dosageTxt, detailsTxt, batchNoTxt, quantityTxt, sideEffect, expiryDatePicker, buyingPriceTxt, sellingPriceTxt, formulaTxt));
+        sellingPriceTxt.addValueChangeListener(event -> applyFilter(nameTxt, categoryTxt, dosageTxt, detailsTxt, batchNoTxt, quantityTxt, sideEffect, expiryDatePicker, buyingPriceTxt, sellingPriceTxt, formulaTxt));
+        formulaTxt.addValueChangeListener(event -> applyFilter(nameTxt, categoryTxt, dosageTxt, detailsTxt, batchNoTxt, quantityTxt, sideEffect, expiryDatePicker, buyingPriceTxt, sellingPriceTxt, formulaTxt));
     }
 
-    private void applyFilter(TextField nameTxt, TextField categoryTxt, TextField dosageTxt, TextField detailsTxt, TextField batchNoTxt, TextField quantityTxt,TextField sideEffect, DatePicker expiryDatePicker, TextField buyingPriceTxt, TextField sellingPriceTxt, TextField formulaTxt) {
+    private void applyFilter(TextField nameTxt, TextField categoryTxt, TextField dosageTxt, TextField detailsTxt, TextField batchNoTxt, TextField quantityTxt, TextField sideEffect, DatePicker expiryDatePicker, TextField buyingPriceTxt, TextField sellingPriceTxt, TextField formulaTxt) {
         gridListDataView.setFilter(medicine ->
                 (nameTxt.getValue() == null || nameTxt.getValue().isEmpty() || medicine.getName().contains(nameTxt.getValue()))
                         && (categoryTxt.getValue() == null || categoryTxt.getValue().isEmpty() || medicine.getCategory().contains(categoryTxt.getValue()))
@@ -222,13 +222,13 @@ public class MedicineView extends VerticalLayout {
             expDateLbl.getElement().setProperty("title", medicine.getExpiryDate().toString());
             return expDateLbl;
         }).setHeader("Exp Date").setKey("expiryDate").setSortable(true).setResizable(true);
-            if(!currentUser.getRole().equals(User.Role.CLIENT)) {
-                medicineGrid.addComponentColumn(medicine -> {
-                    NativeLabel buyingPriceLbl = new NativeLabel(medicine.getBuyingPrice());
-                    buyingPriceLbl.getElement().setProperty("title", medicine.getBuyingPrice());
-                    return buyingPriceLbl;
-                }).setHeader("Buying Price").setKey("buyingPrice").setSortable(true).setResizable(true);
-            }
+        if (!currentUser.getRole().equals(User.Role.CLIENT)) {
+            medicineGrid.addComponentColumn(medicine -> {
+                NativeLabel buyingPriceLbl = new NativeLabel(medicine.getBuyingPrice());
+                buyingPriceLbl.getElement().setProperty("title", medicine.getBuyingPrice());
+                return buyingPriceLbl;
+            }).setHeader("Buying Price").setKey("buyingPrice").setSortable(true).setResizable(true);
+        }
         medicineGrid.addComponentColumn(medicine -> {
             NativeLabel sellingPriceLbl = new NativeLabel(medicine.getSellingPrice());
             sellingPriceLbl.getElement().setProperty("title", medicine.getSellingPrice());
@@ -236,39 +236,43 @@ public class MedicineView extends VerticalLayout {
         }).setHeader("Selling Price").setKey("sellingPrice").setSortable(true).setResizable(true);
 
 
-        if(!currentUser.getRole().equals(User.Role.CLIENT))
-        medicineGrid.addComponentColumn(medicine -> {
-            Button editBtn = createEditButton();
-            editBtn.addClickListener(clickEvent -> {
-                Dialog editDialog = new Dialog();
-                editDialog.add(new MedicineForm(dbServiceMedicine, editDialog, medicine, medicineGrid, gridListDataView));
-                editDialog.open();
-            });
-            Button deleteBtn = createDeleteButton();
-            deleteBtn.addClickListener(buttonClickEvent -> {
-                ConfirmDialog confirmDialog = new ConfirmDialog();
-                confirmDialog.setText("Are you sure you want to delete " + medicine.getName());
-                confirmDialog.setHeader("Delete");
-                confirmDialog.setCancelable(true);
-                Button confirmDeleteBtn = createDeleteButton();
-                confirmDeleteBtn.addClickListener(clickEvent -> {
-                    dbServiceMedicine.deleteMedicine(medicine.get_id());
-                    gridListDataView = medicineGrid.setItems(dbServiceMedicine.findAllMedicines());
-                    gridListDataView.refreshAll();
-                    confirmDialog.close();
+        if (!currentUser.getRole().equals(User.Role.CLIENT))
+            medicineGrid.addComponentColumn(medicine -> {
+                Button editBtn = createEditButton();
+                editBtn.addClickListener(clickEvent -> {
+                    Dialog editDialog = new Dialog();
+                    editDialog.add(new MedicineForm(dbServiceMedicine, editDialog, medicine, medicineGrid, gridListDataView));
+                    editDialog.open();
                 });
-                confirmDialog.setCancelButton(new Button("Cancel", clickEvent -> confirmDialog.close()));
-                confirmDialog.setConfirmButton(confirmDeleteBtn);
-                confirmDialog.open();
-            });
-            return new HorizontalLayout(editBtn, deleteBtn);
-        }).setHeader("Edit").setFooter(addNewMedicineBtn).setWidth("10%");
+                Button deleteBtn = createDeleteButton();
+                deleteBtn.addClickListener(buttonClickEvent -> {
+                    ConfirmDialog confirmDialog = new ConfirmDialog();
+                    confirmDialog.setText("Are you sure you want to delete " + medicine.getName());
+                    confirmDialog.setHeader("Delete");
+                    confirmDialog.setCancelable(true);
+                    Button confirmDeleteBtn = createDeleteButton();
+                    confirmDeleteBtn.addClickListener(clickEvent -> {
+                        dbServiceMedicine.deleteMedicine(medicine.get_id());
+                        gridListDataView = medicineGrid.setItems(dbServiceMedicine.findAllMedicines());
+                        gridListDataView.refreshAll();
+                        confirmDialog.close();
+                    });
+                    confirmDialog.setCancelButton(new Button("Cancel", clickEvent -> confirmDialog.close()));
+                    confirmDialog.setConfirmButton(confirmDeleteBtn);
+                    confirmDialog.open();
+                });
+                return new HorizontalLayout(editBtn, deleteBtn);
+            }).setHeader("Edit").setFooter(addNewMedicineBtn).setWidth("10%");
         addNewMedicineBtn.getStyle().set("background-color", getSaveBtnColor());
         addNewMedicineBtn.getStyle().set("color", "white");
         addNewMedicineBtn.getStyle().set("border", "none");
         addNewMedicineBtn.getStyle().set("border-radius", "5px");
         medicineGrid.setHeightFull();
         add(medicineGrid);
+//        medicineGrid.getFooterRows().forEach(footerRow -> footerRow.getCells().forEach(footerCell -> {
+//            if (footerCell.getComponent() != null)
+//                footerCell.getComponent().getElement().getStyle().set("background-image", "url(https://www.transparenttextures.com/patterns/brick-wall.png)");
+//        }));
     }
 }
 

@@ -41,7 +41,6 @@ public class test extends AppLayout {
     private final DBServiceEntityUser dbServiceUser;
     private final AuthenticatedUser authenticatedUser;
     private final UI ui = UI.getCurrent();
-    private final DrawerToggle toggle = new DrawerToggle();
     private final User currentUser;
     private final AtomicInteger dashboardTabClick = new AtomicInteger(0);
     private String tabSelectedName = "";
@@ -53,8 +52,6 @@ public class test extends AppLayout {
         this.authenticatedUser = authenticatedUser;
         this.dbServiceUser = dbServiceUser;
         currentUser = authenticatedUser.get().orElseThrow(() -> new RuntimeException("Authenticated user not found"));
-        toggle.getElement().getStyle().set("color", "white");
-        toggle.getElement().getStyle().set("margin-left", "-20px");
         tabs = getTabs();
         addToNavbar(true, createHeaderContent());
         Scroller tabsScroller = new Scroller(tabs);
@@ -67,7 +64,6 @@ public class test extends AppLayout {
         verticalLayout.getElement().getStyle().set("justify-content", "space-between");
         verticalLayout.setAlignItems(FlexComponent.Alignment.CENTER);
         addToDrawer(verticalLayout);
-        toggle.setVisible(true);
         setPrimarySection(Section.DRAWER);
         addDrawerContent();
         addHeaderContent();
@@ -108,7 +104,7 @@ public class test extends AppLayout {
             RouterLink routerLink = new RouterLink();
             routerLink.setRoute(DashboardView.class);
         });
-        HorizontalLayout horizontalLayout = new HorizontalLayout(toggle, image);
+        HorizontalLayout horizontalLayout = new HorizontalLayout(image);
         horizontalLayout.setAlignItems(FlexComponent.Alignment.CENTER);
         layout.add(horizontalLayout);
 
