@@ -5,8 +5,8 @@ import com.example.application.db.model.User;
 import com.example.application.security.AuthenticatedUser;
 import com.example.application.util.InputChecker;
 import com.example.application.views.baby.BabyView;
-import com.example.application.views.contact.ContactUs;
-import com.example.application.views.dashboard.DashboardView;
+import com.example.application.views.contact.ContactUsView;
+import com.example.application.views.home.HomeView;
 import com.example.application.views.expense.ExpenseView;
 import com.example.application.views.eye.EyeSuppView;
 import com.example.application.views.faq.FaqView;
@@ -98,37 +98,34 @@ public class MainLayout extends AppLayout {
         usernameMenuItem.getSubMenu().addItem("Change password", e -> changePassword(currentUser));
         usernameMenuItem.getSubMenu().addItem("Sign out", e -> authenticatedUser.logout());
 
-        Button themeBtn = new Button();
-        themeBtn.setWidth("20px");
-        themeBtn.setHeight("20px");
+        Button homeBtn = new Button();
+        homeBtn.setWidth("20px");
+        homeBtn.setHeight("20px");
+        Icon homeIcon = VaadinIcon.HOME.create();
+        homeIcon.setColor("grey");
+        homeBtn.setIcon(homeIcon);
+        homeBtn.getElement().getStyle().set("margin-right", "10px");
 
-        Icon nightIcon = VaadinIcon.MOON_O.create();
-        Icon dayIcon = VaadinIcon.SUN_O.create();
+        homeBtn.addClickListener(clickEvent -> UI.getCurrent().navigate(HomeView.class));
 
-        themeBtn.setIcon(nightIcon);
-        themeBtn.addClickListener(buttonClickEvent -> {
-            UI.getCurrent().getElement().getThemeList().clear();
-            if (themeBtn.getIcon().equals(nightIcon)) {
-                getElement().getThemeList().add("dark-background");
-                getElement().getStyle().set("background-color", "#333");
-                getElement().getStyle().set("color", "#fff");
-                themeBtn.setIcon(dayIcon);
-            } else {
-                getElement().getThemeList().add("light-background");
-                getElement().getStyle().set("background-color", "#f0f0f0");
-                getElement().getStyle().set("color", "#333");
-                themeBtn.setIcon(nightIcon);
-            }
-        });
+        Button contactUsBtn = new Button();
+        contactUsBtn.setWidth("20px");
+        contactUsBtn.setHeight("20px");
+        Icon contactUsIcon = VaadinIcon.PHONE.create();
+        contactUsIcon.setColor("grey");
+        contactUsBtn.setIcon(contactUsIcon);
+        contactUsBtn.getElement().getStyle().set("margin-right", "10px");
 
-        layout.add(userMenu, themeBtn);
+        contactUsBtn.addClickListener(clickEvent -> UI.getCurrent().navigate(ContactUsView.class));
+
+        layout.add(userMenu, homeBtn, contactUsBtn);
         layout.getElement().getStyle().set("margin-top", "12px");
 
         header.add(layout);
 
         layout.add(userMenu);
         header.add(layout);
-        header.getElement().getStyle().set("margin-right", "100px");
+        header.getElement().getStyle().set("margin-right", "150px");
         return header;
     }
 
@@ -195,7 +192,6 @@ public class MainLayout extends AppLayout {
                     showErrorNotification("Passwords do not match");
         });
 
-
         newPasswordTxt.setPlaceholder("New Password");
         newPasswordTxt.addValueChangeListener(event -> {
             confirmNewPasswordTxt.clear();
@@ -216,18 +212,18 @@ public class MainLayout extends AppLayout {
 
     private SideNav createNavigation() {
         SideNav nav = new SideNav();
-        nav.addItem(new SideNavItem("Dashboard", DashboardView.class, LineAwesomeIcon.DATABASE_SOLID.create()));
-        nav.addItem(new SideNavItem("MedicineGrid", MedicineView.class, LineAwesomeIcon.HEART.create()));
+        nav.addItem(new SideNavItem("Home", HomeView.class, LineAwesomeIcon.HOME_SOLID.create()));
         if (currentUser.getRole().equals(User.Role.SUPER_ADMIN))
-            nav.addItem(new SideNavItem("UserGrid", UserView.class, LineAwesomeIcon.USER.create()));
+            nav.addItem(new SideNavItem("User", UserView.class, LineAwesomeIcon.USER.create()));
+        nav.addItem(new SideNavItem("Medicine Items", MedicineView.class, LineAwesomeIcon.HEART.create()));
+        nav.addItem(new SideNavItem("Sport Items", SportSuppView.class, LineAwesomeIcon.DUMBBELL_SOLID.create()));
+        nav.addItem(new SideNavItem("PCare Items", PCareView.class, LineAwesomeIcon.PERSON_BOOTH_SOLID.create()));
+        nav.addItem(new SideNavItem("Eye items", EyeSuppView.class, LineAwesomeIcon.EYE.create()));
+        nav.addItem(new SideNavItem("Baby Items", BabyView.class, LineAwesomeIcon.BABY_SOLID.create()));
         if (currentUser.getRole().equals(User.Role.SUPER_ADMIN) || currentUser.getRole().equals(User.Role.ADMIN))
             nav.addItem(new SideNavItem("Expenses", ExpenseView.class, LineAwesomeIcon.WALLET_SOLID.create()));
-        nav.addItem(new SideNavItem("SportSupp", SportSuppView.class, LineAwesomeIcon.DUMBBELL_SOLID.create()));
-        nav.addItem(new SideNavItem("Contact", ContactUs.class, LineAwesomeIcon.PHONE_SOLID.create()));
-        nav.addItem(new SideNavItem("PCare", PCareView.class, LineAwesomeIcon.PERSON_BOOTH_SOLID.create()));
         nav.addItem(new SideNavItem("FAQ", FaqView.class, LineAwesomeIcon.QUESTION_SOLID.create()));
-        nav.addItem(new SideNavItem("Eye", EyeSuppView.class, LineAwesomeIcon.EYE.create()));
-        nav.addItem(new SideNavItem("Baby", BabyView.class, LineAwesomeIcon.BABY_SOLID.create()));
+        nav.addItem(new SideNavItem("Contact", ContactUsView.class, LineAwesomeIcon.PHONE_SOLID.create()));
         return nav;
     }
 

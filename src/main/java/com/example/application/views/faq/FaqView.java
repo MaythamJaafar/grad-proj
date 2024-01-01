@@ -46,7 +46,7 @@ public class FaqView extends VerticalLayout {
         List<String> questionList = new ArrayList<>();
         List<String> answerList = new ArrayList<>();
 
-        questionList.add("How do I refill my prescription online?");
+        questionList.add("How do I refill my prescription online in data?");
         answerList.add("To refill your prescription online, log in to your account, go to the prescription section, and follow the prompts to submit your refill request. You can also use our mobile app for quick and easy refills.");
 
         questionList.add("Can I transfer my prescription to another pharmacy?");
@@ -100,7 +100,7 @@ public class FaqView extends VerticalLayout {
         questionList.add("What information do I need for online prescription refills?");
         answerList.add("To refill your prescription, you'll need the prescription number, your name, and the medication details. You can find this information on your prescription label.");
 
-        questionList.add("Do you offer consultations with pharmacists for medication-related queries?");
+        questionList.add("Do you offer consultations with pharmacists for medication-related ?");
         answerList.add("Yes, we provide consultations with our pharmacists for any medication-related queries. Feel free to call or visit our pharmacy, or use our online chat service for quick assistance.");
 
         questionList.add("Can I request a refill for a medication that's not on my prescription list?");

@@ -6,6 +6,7 @@ import com.example.application.db.model.User;
 import com.example.application.security.AuthenticatedUser;
 import com.example.application.views.MainLayout;
 import com.vaadin.flow.component.button.Button;
+import com.vaadin.flow.component.confirmdialog.ConfirmDialog;
 import com.vaadin.flow.component.datetimepicker.DateTimePicker;
 import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.grid.HeaderRow;
@@ -17,13 +18,11 @@ import com.vaadin.flow.data.value.ValueChangeMode;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import jakarta.annotation.security.RolesAllowed;
-import org.springframework.security.access.annotation.Secured;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
-import static com.example.application.util.Util.showErrorNotification;
-import static com.example.application.util.Util.showSuccessNotification;
+import static com.example.application.util.Util.*;
 
 @Route(value = "expense", layout = MainLayout.class)
 @PageTitle("Expense")
@@ -41,6 +40,7 @@ public class ExpenseView extends HorizontalLayout {
     private final User currentUser;
 
 
+
     public ExpenseView(DBServicesExpenses dbServicesExpenses, AuthenticatedUser authenticatedUser) {
         this.dbServicesExpenses = dbServicesExpenses;
         currentUser = authenticatedUser.get().orElseThrow(() -> new RuntimeException("Authenticated user not found"));
@@ -48,7 +48,6 @@ public class ExpenseView extends HorizontalLayout {
         VerticalLayout section2 = new VerticalLayout();
 
         HorizontalLayout addClrHl = new HorizontalLayout(expenseBtn, clearBtn);
-
         setHeightFull();
         section1.setWidth("30%");
         section2.setWidth("70%");
@@ -61,6 +60,9 @@ public class ExpenseView extends HorizontalLayout {
         createGrid();
         if (currentUser.getRole().equals(User.Role.ADMIN)) {
             section1.setEnabled(false);
+            section1.setEnabled(false);
+            section2.setEnabled(false);
+
             expenseBtn.getStyle().set("background-color", "grey");
         }
 
@@ -78,8 +80,36 @@ public class ExpenseView extends HorizontalLayout {
         expensesGrid.addColumn(Expense::getDetails).setHeader("Details").setKey("details").setSortable(true);
         expensesGrid.addColumn(expense -> expense.getPrice() + "$").setHeader("Price").setKey("price").setSortable(true);
         expensesGrid.addColumn(expense -> expense.getDate().format(shortFormatter)).setHeader("Date").setWidth("30%").setKey("date").setSortable(true);
-        if (currentUser.getRole().equals(User.Role.SUPER_ADMIN))
-            expensesGrid.addComponentColumn(this::createEditBtn);
+        if (!currentUser.getRole().equals(User.Role.CLIENT))
+            expensesGrid.addComponentColumn(expense -> {
+                Button editBtn = createEditButton();
+                Button deleteBtn = createDeleteButton();
+                editBtn.addClickListener(clickEvent -> {
+                    titleTxt.setValue(expense.getTitle());
+                    detailsTxt.setValue(expense.getDetails());
+                    priceNb.setValue(expense.getPrice());
+                    clearBtn.setVisible(true);
+                    id = expense.get_id();
+                    expenseBtn.setText("Update Expense");
+                });
+                deleteBtn.addClickListener(buttonClickEvent -> {
+                    ConfirmDialog confirmDialog = new ConfirmDialog();
+                    confirmDialog.setText("Are you sure you want to delete " + expense.getTitle());
+                    confirmDialog.setHeader("Delete");
+                    confirmDialog.setCancelable(true);
+                    Button confirmDeleteBtn = createDeleteButton();
+                    confirmDeleteBtn.addClickListener(clickEvent -> {
+                        dbServicesExpenses.deletExpense(expense.get_id());
+                        gridListDataView = expensesGrid.setItems(dbServicesExpenses.findAllExpenses());
+                        gridListDataView.refreshAll();
+                        confirmDialog.close();
+                    });
+                    confirmDialog.setCancelButton(new Button("Cancel", clickEvent -> confirmDialog.close()));
+                    confirmDialog.setConfirmButton(confirmDeleteBtn);
+                    confirmDialog.open();
+                });
+                return new HorizontalLayout(editBtn, deleteBtn);
+            });
         titleTxt.getStyle().setWidth("100%");
         detailsTxt.getStyle().setWidth("100%");
         priceNb.getStyle().setWidth("100%");
@@ -182,23 +212,6 @@ public class ExpenseView extends HorizontalLayout {
         );
     }
 
-    private Button createEditBtn(Expense expense) {
-        Button editBtn = new Button("edit");
-        editBtn.addClickListener(clickEvent -> {
-            titleTxt.setValue(expense.getTitle());
-            detailsTxt.setValue(expense.getDetails());
-            priceNb.setValue(expense.getPrice());
-            clearBtn.setVisible(true);
-            id = expense.get_id();
-            expenseBtn.setText("Update Expense");
-        });
-        editBtn.getStyle().set("background-color", "blue");
-        editBtn.getStyle().set("color", "white");
-        editBtn.getStyle().set("border", "5px");
-        editBtn.getStyle().set("border-radius", "5px");
-
-        return editBtn;
-    }
 
     private void clearFields() {
         titleTxt.clear();

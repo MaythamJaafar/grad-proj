@@ -3,27 +3,27 @@ package com.example.application.views.user;
 import com.example.application.db.dbServices.DBServiceEntityUser;
 import com.example.application.db.model.User;
 import com.example.application.views.MainLayout;
-import com.example.application.views.medicine.MedicineForm;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.combobox.ComboBox;
+import com.vaadin.flow.component.confirmdialog.ConfirmDialog;
 import com.vaadin.flow.component.datepicker.DatePicker;
 import com.vaadin.flow.component.dialog.Dialog;
 import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.grid.HeaderRow;
 import com.vaadin.flow.component.grid.dataview.GridListDataView;
+import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
-import com.vaadin.flow.component.textfield.PasswordField;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.data.value.ValueChangeMode;
+import com.vaadin.flow.dom.Style;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
-import jakarta.annotation.security.PermitAll;
 import jakarta.annotation.security.RolesAllowed;
 
 import java.util.Arrays;
 import java.util.List;
 
-import static com.example.application.util.Util.createEditButton;
+import static com.example.application.util.Util.*;
 
 @Route(value = "userGrid", layout = MainLayout.class)
 @PageTitle("User Grid")
@@ -96,15 +96,35 @@ public class UserView extends VerticalLayout {
         userGrid.addColumn(User::getGender).setHeader("Gender").setKey("gender").setSortable(true);
         userGrid.addColumn(User::getUsername).setHeader("Username").setKey("username").setSortable(true);
         userGrid.addColumn(User::getDateOfBirth).setHeader("DOB").setKey("dob").setSortable(true);
-        userGrid.addComponentColumn(user -> {
+        Style edit = userGrid.addComponentColumn(user -> {
             Button editBtn = createEditButton();
+            Button deleteBtn = createDeleteButton();
+
             editBtn.addClickListener(clickEvent -> {
                 Dialog editDialog = new Dialog();
                 editDialog.add(new UserForm(dbServiceEntityUser, editDialog, user, userGrid, gridListDataView));
                 editDialog.open();
             });
-            return editBtn;
-        }).setHeader("Edit").setFooter(addNewUserBtn);
+            deleteBtn.addClickListener(clickEvent -> {
+                ConfirmDialog confirmDialog = new ConfirmDialog();
+                Button confirmDeleteBtn = createDeleteButton();
+                confirmDialog.setConfirmButton(confirmDeleteBtn);
+                confirmDialog.setHeader("Delete Confirmation");
+                confirmDialog.setText("Are you sure you want to delete " + user.getUsername(    ));
+                confirmDialog.setCancelable(true);
+                    confirmDeleteBtn.addClickListener(clickEvent1 -> {
+                    dbServiceEntityUser.deleteById(user.get_id());
+                    gridListDataView = userGrid.setItems(dbServiceEntityUser.findAllUser());
+                    gridListDataView.refreshAll();
+                    showSuccessNotification("Item deleted successfully");
+                });
+                confirmDialog.setCancelButton(new Button("Cancel", clickEvent1 -> confirmDialog.close()));
+                confirmDialog.setConfirmButton(confirmDeleteBtn);
+                confirmDialog.open();
+            });
+
+                return new HorizontalLayout(editBtn, deleteBtn);
+        }).setHeader("Edit").setFooter(addNewUserBtn).getStyle().setMargin("margin-left");
 
         addNewUserBtn.getStyle().set("background-color", "green");
         addNewUserBtn.getStyle().set("color", "white");
@@ -114,4 +134,5 @@ public class UserView extends VerticalLayout {
         add(userGrid);
     }
 }
+
 

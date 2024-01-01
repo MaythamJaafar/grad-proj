@@ -3,7 +3,7 @@ package com.example.application.views;
 import com.example.application.db.dbServices.DBServiceEntityUser;
 import com.example.application.db.model.User;
 import com.example.application.security.AuthenticatedUser;
-import com.example.application.views.dashboard.DashboardView;
+import com.example.application.views.home.HomeView;
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.applayout.AppLayout;
@@ -30,7 +30,6 @@ import com.vaadin.flow.spring.annotation.UIScope;
 import com.vaadin.flow.theme.lumo.LumoUtility;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.vaadin.lineawesome.LineAwesomeIcon;
 
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -102,7 +101,7 @@ public class test extends AppLayout {
         image.addClassName("pointer");
         image.addClickListener(imageClickEvent -> {
             RouterLink routerLink = new RouterLink();
-            routerLink.setRoute(DashboardView.class);
+            routerLink.setRoute(HomeView.class);
         });
         HorizontalLayout horizontalLayout = new HorizontalLayout(image);
         horizontalLayout.setAlignItems(FlexComponent.Alignment.CENTER);
@@ -203,7 +202,7 @@ public class test extends AppLayout {
     private Tabs getTabs() {
         Tabs tabs = new Tabs();
         tabs.setWidthFull();
-        dashboardTab = createTab(VaadinIcon.DASHBOARD, dashboardTabClick, "Dashboard", DashboardView.class);
+        dashboardTab = createTab(VaadinIcon.DASHBOARD, dashboardTabClick, "Dashboard", HomeView.class);
         tabs.add(dashboardTab);
         tabs.setOrientation(Tabs.Orientation.VERTICAL);
 

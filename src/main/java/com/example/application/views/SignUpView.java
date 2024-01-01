@@ -2,7 +2,6 @@ package com.example.application.views;
 
 import com.example.application.db.model.User;
 import com.example.application.db.repo.RepoUser;
-import com.example.application.views.dashboard.DashboardView;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.datepicker.DatePicker;

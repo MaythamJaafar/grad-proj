@@ -27,6 +27,7 @@ public class MedicineForm extends VerticalLayout {
     private final TextField formulaTxt = new TextField("Formula");
     private final TextField detailsTxt = new TextField("Details");
     private final TextField quantityNb = new TextField("Quantity");
+    private final TextField sideEffect = new TextField("Side Effect");
     private final DatePicker expiryDateNb = new DatePicker("Expiry Date");
     private final TextField buyingPriceNb = new TextField("Buying Price");
     private final TextField sellingPriceNb = new TextField("Selling Price");
@@ -70,6 +71,7 @@ public class MedicineForm extends VerticalLayout {
         batchNb.clear();
         dosageTxt.clear();
         quantityNb.clear();
+        sideEffect.clear();
         expiryDateNb.clear();
         buyingPriceNb.clear();
         sellingPriceNb.clear();
@@ -83,6 +85,7 @@ public class MedicineForm extends VerticalLayout {
         batchNb.setValue(medicine.getBatchNo());
         dosageTxt.setValue(medicine.getDosage());
         quantityNb.setValue(medicine.getQuantity());
+        sideEffect.setValue(medicine.getSideEffect());
         expiryDateNb.setValue(medicine.getExpiryDate());
         buyingPriceNb.setValue(medicine.getBuyingPrice());
         sellingPriceNb.setValue(medicine.getSellingPrice());
@@ -90,9 +93,9 @@ public class MedicineForm extends VerticalLayout {
     }
 
     public void createForm() {
-        HorizontalLayout catSupHl = new HorizontalLayout(categoryTxt, nameTxt);
-        HorizontalLayout batchDosHl = new HorizontalLayout(batchNb, dosageTxt);
-        HorizontalLayout forQuaHl = new HorizontalLayout(formulaTxt, quantityNb, detailsTxt);
+        HorizontalLayout catSupHl = new HorizontalLayout(nameTxt,categoryTxt);
+        HorizontalLayout batchDosHl = new HorizontalLayout(batchNb, dosageTxt,formulaTxt);
+        HorizontalLayout forQuaHl = new HorizontalLayout(quantityNb,sideEffect, detailsTxt);
         HorizontalLayout expiryBuySelHl = new HorizontalLayout(expiryDateNb, buyingPriceNb, sellingPriceNb);
         HorizontalLayout cancelSaveHl = new HorizontalLayout(saveMedicineBtn, cancelBtn);
 
@@ -112,6 +115,7 @@ public class MedicineForm extends VerticalLayout {
                 newMedicine.setFormula(formulaTxt.getValue());
                 newMedicine.setDetails(detailsTxt.getValue());
                 newMedicine.setQuantity(quantityNb.getValue());
+                newMedicine.setSideEffect(sideEffect.getValue());
                 newMedicine.setExpiryDate(expiryDateNb.getValue());
                 newMedicine.setBuyingPrice(buyingPriceNb.getValue());
                 newMedicine.setSellingPrice(sellingPriceNb.getValue());
@@ -132,6 +136,7 @@ public class MedicineForm extends VerticalLayout {
         InputChecker.checkTextField(formulaTxt, continueFlag);
         InputChecker.checkTextField(detailsTxt, continueFlag);
         InputChecker.checkTextField(quantityNb, continueFlag);
+        InputChecker.checkTextField(sideEffect, continueFlag);
         InputChecker.checkDatePicker(expiryDateNb, continueFlag);
         InputChecker.checkTextField(buyingPriceNb, continueFlag);
 

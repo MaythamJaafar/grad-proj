@@ -29,7 +29,7 @@ import static com.example.application.util.Util.*;
 
 public class PCareView extends VerticalLayout {
     public final DBServicePCare dbServicePCare;
-    private final Button addNewPCareBtn = new Button("Add PCare");
+    private final Button addNewPCareBtn = new Button("Add PCare Supplement");
     public final Grid<PCare> pCareGrid = new Grid<>();
     private final Dialog addPCareDialog = new Dialog();
     private final User currentUser;

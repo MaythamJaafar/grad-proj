@@ -41,7 +41,10 @@ public class UserForm extends VerticalLayout {
         this.dialog = dialog;
         this.userGrid = userGrid;
         this.gridListDataView = gridListDataView;
-        cancelBtn.addClickListener(buttonClickEvent -> dialog.close());
+        cancelBtn.addClickListener(buttonClickEvent -> {
+            dialog.close();
+            clearFields();
+        });
         dialog.setCloseOnOutsideClick(false);
         createDesign();
         saveNewUser();
@@ -60,6 +63,7 @@ public class UserForm extends VerticalLayout {
         saveNewUser();
         setComponentsValues(user);
         usernameTxt.setEnabled(false);
+
     }
 
     private void setComponentsValues(User user) {
@@ -114,6 +118,7 @@ public class UserForm extends VerticalLayout {
                     dialog.close();
                     gridListDataView = userGrid.setItems(dbServiceEntityUser.findAllUser());
                     gridListDataView.refreshAll();
+
                 }
             }
         });
@@ -129,6 +134,13 @@ public class UserForm extends VerticalLayout {
         InputChecker.checkRdGrp(genderRd, continueFlag);
         return continueFlag.get();
     }
-
+    private void clearFields() {
+        fullNameTxt.clear();
+        dateOfBirth.clear();
+        usernameTxt.clear();
+        password.clear();
+        roleCom.clear();
+        genderRd.clear();
+    }
 
 }

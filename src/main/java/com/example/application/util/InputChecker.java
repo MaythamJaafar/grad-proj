@@ -24,6 +24,9 @@ import static com.example.application.util.Util.showErrorNotification;
 
 @Slf4j
 public class InputChecker {
+    private static NumberField numberField;
+    private static AtomicBoolean continueFlag;
+
     public static boolean checkDates(DatePicker sinceDatePicker, DatePicker untilDatePicker, LocalDate date) {
         if (date == null)
             return false;
@@ -112,6 +115,17 @@ public class InputChecker {
             rdGrp.setInvalid(true);
             rdGrp.setErrorMessage("Fill Empty Fields");
             rdGrp.scrollIntoView();
+            continueFlag.set(false);
+        }
+    }
+
+    public static void checkNumberField(NumberField numberField, AtomicBoolean continueFlag) {
+        InputChecker.numberField = numberField;
+        InputChecker.continueFlag = continueFlag;
+        if (numberField.getValue() == null) {
+            numberField.setInvalid(true);
+            numberField.setErrorMessage("Fill Empty Fields");
+            numberField.scrollIntoView();
             continueFlag.set(false);
         }
     }

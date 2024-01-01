@@ -37,7 +37,6 @@
 .app-nav {
   border-bottom: 1px solid var(--lumo-contrast-10pct);
   color: var(--lumo-secondary-text-color);
-  background: linear-gradient(var(--lumo-shade-5pct), var(--lumo-shade-5pct));
   flex: 1;
   font-size: var(--lumo-font-size-s);
   overflow: auto;

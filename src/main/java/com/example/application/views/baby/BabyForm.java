@@ -85,7 +85,7 @@ public class BabyForm extends VerticalLayout {
     public void createForm() {
         HorizontalLayout catSupHl = new HorizontalLayout(nameTxt, categoryTxt);
         HorizontalLayout batchDosHl = new HorizontalLayout(batchNb, quantityNb);
-        HorizontalLayout forQuaHl = new HorizontalLayout(expiryDateNb, detailsTxt);
+        HorizontalLayout forQuaHl = new HorizontalLayout(detailsTxt ,expiryDateNb);
         HorizontalLayout expiryBuySelHl = new HorizontalLayout(buyingPriceNb, sellingPriceNb);
         HorizontalLayout cancelSaveHl = new HorizontalLayout(saveBabyBtn, cancelBtn);
 

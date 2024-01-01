@@ -20,5 +20,8 @@ public class DBServicesExpenses {
     public void saveExpense(Expense expense){
         repoExpense.save(expense);
     }
+    public void deletExpense(String _id){
+        repoExpense.deleteById(_id);
+    }
 
 }

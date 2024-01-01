@@ -25,5 +25,8 @@ public class DBServiceEntityUser {
     public User findUserByUsername(String username){
         return repoUser.findByUsername(username);
     }
+    public void deleteById(String id){
+        repoUser.deleteById(id);
+    }
 
 }
