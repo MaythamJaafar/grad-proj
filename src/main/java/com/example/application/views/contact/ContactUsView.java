@@ -35,7 +35,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 @Route(value = "contact", layout = MainLayout.class)
-@PageTitle("Contact")
+@PageTitle("Contact Us")
 @PermitAll
 public class ContactUsView extends VerticalLayout {
     private final DBServiceContactUs dbServiceContactUs;

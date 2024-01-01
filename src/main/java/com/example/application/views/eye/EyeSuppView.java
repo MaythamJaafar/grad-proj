@@ -24,12 +24,12 @@ import jakarta.annotation.security.PermitAll;
 import static com.example.application.util.Util.*;
 
 @Route(value = "eyeGrid", layout = MainLayout.class)
-@PageTitle("Eye Grid")
+@PageTitle("Eye Items")
 @PermitAll
 
 public class EyeSuppView extends VerticalLayout {
     public final DBServicesEyeSupp dbServicesEyeSupp ;
-    private final Button addNewEyeSuppBtn = new Button("Add EyeSupp");
+    private final Button addNewEyeSuppBtn = new Button("Add");
 public final Grid<EyeSupp> eyeSuppGrid = new Grid<>();
     private final Dialog addEyeSuppDialog = new Dialog();
     private GridListDataView<EyeSupp> gridListDataView;
@@ -86,11 +86,11 @@ public final Grid<EyeSupp> eyeSuppGrid = new Grid<>();
         quantityTxt.setPlaceholder("Quantity");
         quantityTxt.getElement().getStyle().set("font-size", "12px");
 
-        DatePicker expiryDatePicker = new DatePicker();
-        filterRow.getCell(eyeSuppGrid.getColumnByKey("expiryDate")).setComponent(expiryDatePicker);
-        expiryDatePicker.setClearButtonVisible(true);
-        expiryDatePicker.setPlaceholder("Expiry Date");
-        expiryDatePicker.getElement().getStyle().set("font-size", "12px");
+//        DatePicker expiryDatePicker = new DatePicker();
+//        filterRow.getCell(eyeSuppGrid.getColumnByKey("expiryDate")).setComponent(expiryDatePicker);
+//        expiryDatePicker.setClearButtonVisible(true);
+//        expiryDatePicker.setPlaceholder("Expiry Date");
+//        expiryDatePicker.getElement().getStyle().set("font-size", "12px");
 
 
         TextField buyingPriceTxt = new TextField();
@@ -108,26 +108,24 @@ public final Grid<EyeSupp> eyeSuppGrid = new Grid<>();
         sellingPriceTxt.setPlaceholder("selling Price");
         sellingPriceTxt.getElement().getStyle().set("font-size", "12px");
 
-        nameTxt.addValueChangeListener(event -> applyFilter(nameTxt, categoryTxt, detailsTxt, batchNoTxt, quantityTxt, expiryDatePicker, buyingPriceTxt, sellingPriceTxt));
-        categoryTxt.addValueChangeListener(event -> applyFilter(nameTxt, categoryTxt, detailsTxt, batchNoTxt, quantityTxt, expiryDatePicker, buyingPriceTxt, sellingPriceTxt));
-        detailsTxt.addValueChangeListener(event -> applyFilter(nameTxt, categoryTxt, detailsTxt, batchNoTxt, quantityTxt, expiryDatePicker, buyingPriceTxt, sellingPriceTxt));
-        batchNoTxt.addValueChangeListener(event -> applyFilter(nameTxt, categoryTxt, detailsTxt, batchNoTxt, quantityTxt, expiryDatePicker, buyingPriceTxt, sellingPriceTxt));
-        quantityTxt.addValueChangeListener(event -> applyFilter(nameTxt, categoryTxt, detailsTxt, batchNoTxt, quantityTxt, expiryDatePicker, buyingPriceTxt, sellingPriceTxt));
-        expiryDatePicker.addValueChangeListener(event -> applyFilter(nameTxt, categoryTxt, detailsTxt, batchNoTxt, quantityTxt, expiryDatePicker, buyingPriceTxt, sellingPriceTxt));
-        buyingPriceTxt.addValueChangeListener(event -> applyFilter(nameTxt, categoryTxt, detailsTxt, batchNoTxt, quantityTxt, expiryDatePicker, buyingPriceTxt, sellingPriceTxt));
-        sellingPriceTxt.addValueChangeListener(event -> applyFilter(nameTxt, categoryTxt, detailsTxt, batchNoTxt, quantityTxt, expiryDatePicker, buyingPriceTxt, sellingPriceTxt));
+        nameTxt.addValueChangeListener(event -> applyFilter(nameTxt, categoryTxt, detailsTxt, batchNoTxt, quantityTxt, buyingPriceTxt, sellingPriceTxt));
+        categoryTxt.addValueChangeListener(event -> applyFilter(nameTxt, categoryTxt, detailsTxt, batchNoTxt, quantityTxt, buyingPriceTxt, sellingPriceTxt));
+        detailsTxt.addValueChangeListener(event -> applyFilter(nameTxt, categoryTxt, detailsTxt, batchNoTxt, quantityTxt, buyingPriceTxt, sellingPriceTxt));
+        batchNoTxt.addValueChangeListener(event -> applyFilter(nameTxt, categoryTxt, detailsTxt, batchNoTxt, quantityTxt, buyingPriceTxt, sellingPriceTxt));
+        quantityTxt.addValueChangeListener(event -> applyFilter(nameTxt, categoryTxt, detailsTxt, batchNoTxt, quantityTxt, buyingPriceTxt, sellingPriceTxt));
+        buyingPriceTxt.addValueChangeListener(event -> applyFilter(nameTxt, categoryTxt, detailsTxt, batchNoTxt, quantityTxt, buyingPriceTxt, sellingPriceTxt));
+        sellingPriceTxt.addValueChangeListener(event -> applyFilter(nameTxt, categoryTxt, detailsTxt, batchNoTxt, quantityTxt, buyingPriceTxt, sellingPriceTxt));
 
 
     }
 
-    private void applyFilter(TextField nameTxt, TextField categoryTxt, TextField detailsTxt, TextField batchNoTxt, TextField quantityTxt, DatePicker expiryDatePicker, TextField buyingPriceTxt, TextField sellingPriceTxt) {
+    private void applyFilter(TextField nameTxt, TextField categoryTxt, TextField detailsTxt, TextField batchNoTxt, TextField quantityTxt, TextField buyingPriceTxt, TextField sellingPriceTxt) {
         gridListDataView.setFilter(EyeSupp ->
                 (nameTxt.getValue() == null || nameTxt.getValue().isEmpty() || EyeSupp.getName().contains(nameTxt.getValue()))
                         && (categoryTxt.getValue() == null || categoryTxt.getValue().isEmpty() || EyeSupp.getCategory().contains(categoryTxt.getValue()))
                         && (detailsTxt.getValue() == null || detailsTxt.getValue().isEmpty() || EyeSupp.getDetails().contains(detailsTxt.getValue()))
                         && (batchNoTxt.getValue() == null || batchNoTxt.getValue().isEmpty() || EyeSupp.getBatchNo().contains(batchNoTxt.getValue()))
                         && (quantityTxt.getValue() == null || quantityTxt.getValue().isEmpty() || EyeSupp.getQuantity().contains(quantityTxt.getValue()))
-                        && (expiryDatePicker.getValue() == null || EyeSupp.getExpiryDate().equals(expiryDatePicker.getValue()))
                         && (buyingPriceTxt.getValue() == null || buyingPriceTxt.getValue().isEmpty() || EyeSupp.getBuyingPrice().contains(buyingPriceTxt.getValue()))
                         && (sellingPriceTxt.getValue() == null || sellingPriceTxt.getValue().isEmpty() || EyeSupp.getSellingPrice().contains(sellingPriceTxt.getValue())));
     }
@@ -166,11 +164,11 @@ public final Grid<EyeSupp> eyeSuppGrid = new Grid<>();
             return quantityLbl;
         }).setHeader("Quantity").setKey("quantity").setSortable(true).setResizable(true);
 
-        eyeSuppGrid.addComponentColumn(eyeSupp -> {
-            NativeLabel expDateLbl = new NativeLabel(eyeSupp.getExpiryDate().toString());
-            expDateLbl.getElement().setProperty("title", eyeSupp.getExpiryDate().toString());
-            return expDateLbl;
-        }).setHeader("Exp Date").setKey("expiryDate").setSortable(true).setResizable(true);
+//        eyeSuppGrid.addComponentColumn(eyeSupp -> {
+//            NativeLabel expDateLbl = new NativeLabel(eyeSupp.getExpiryDate().toString());
+//            expDateLbl.getElement().setProperty("title", eyeSupp.getExpiryDate().toString());
+//            return expDateLbl;
+//        }).setHeader("Exp Date").setKey("expiryDate").setSortable(true).setResizable(true);
 
         if(!currentUser.getRole().equals(User.Role.CLIENT))
             eyeSuppGrid.addComponentColumn(eyeSupp -> {

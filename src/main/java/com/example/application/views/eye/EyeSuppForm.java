@@ -12,18 +12,19 @@ import com.vaadin.flow.component.grid.dataview.GridListDataView;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.textfield.TextField;
+import org.hibernate.boot.jaxb.hbm.internal.CacheAccessTypeConverter;
 
 import java.util.concurrent.atomic.AtomicBoolean;
 
 public class EyeSuppForm extends VerticalLayout {
     private final DBServicesEyeSupp dbServicesEyeSupp;
-    private final Button saveEyeSuppBtn = new Button("Add EyeSupp");
+    private final Button saveEyeSuppBtn = new Button("Add Eye Item");
     private final TextField nameTxt = new TextField("Name");
     private final TextField categoryTxt = new TextField("Category");
     private final TextField batchNb = new TextField("Batch #");
     private final TextField detailsTxt = new TextField("Details");
     private final TextField quantityNb = new TextField("Quantity");
-    private final DatePicker expiryDateNb = new DatePicker("Expiry date");
+//    private final DatePicker expiryDateNb = new DatePicker("Expiry date");
     private final TextField buyingPriceNb = new TextField("Buying Price");
     private final TextField sellingPriceNb = new TextField("Selling Price");
     private final Button cancelBtn = new Button("Cancel");
@@ -61,7 +62,7 @@ public class EyeSuppForm extends VerticalLayout {
         detailsTxt.clear();
         batchNb.clear();
         quantityNb.clear();
-        expiryDateNb.clear();
+//        expiryDateNb.clear();
         buyingPriceNb.clear();
         sellingPriceNb.clear();
     }
@@ -72,20 +73,21 @@ public class EyeSuppForm extends VerticalLayout {
         detailsTxt.setValue(eyeSupp.getDetails());
         batchNb.setValue(eyeSupp.getBatchNo());
         quantityNb.setValue(eyeSupp.getQuantity());
-        expiryDateNb.setValue(eyeSupp.getExpiryDate());
+//        expiryDateNb.setValue(eyeSupp.getExpiryDate());
         buyingPriceNb.setValue(eyeSupp.getBuyingPrice());
         sellingPriceNb.setValue(eyeSupp.getSellingPrice());
         createForm();
     }
 
     public void createForm() {
-        HorizontalLayout catSupHl = new HorizontalLayout(nameTxt, categoryTxt);
-        HorizontalLayout batchDosHl = new HorizontalLayout(batchNb, quantityNb);
-        HorizontalLayout forQuaHl = new HorizontalLayout(detailsTxt ,expiryDateNb);
-        HorizontalLayout expiryBuySelHl = new HorizontalLayout(buyingPriceNb, sellingPriceNb);
+        HorizontalLayout catSupHl = new HorizontalLayout(nameTxt);
+        HorizontalLayout batchDosHl = new HorizontalLayout(categoryTxt, detailsTxt);
+        HorizontalLayout forQuaHl = new HorizontalLayout(batchNb,quantityNb );
+        HorizontalLayout BuySelHl = new HorizontalLayout(buyingPriceNb, sellingPriceNb);
         HorizontalLayout cancelSaveHl = new HorizontalLayout(saveEyeSuppBtn, cancelBtn);
+        catSupHl.getElement().getStyle().set("align-self", "center");
 
-        add(catSupHl, batchDosHl, forQuaHl, batchDosHl, expiryBuySelHl, cancelSaveHl);
+        add(catSupHl, batchDosHl, forQuaHl, BuySelHl, cancelSaveHl);
     }
 
     public void saveNewEyeSupp(@Nullable String id) {
@@ -99,7 +101,7 @@ public class EyeSuppForm extends VerticalLayout {
                 newEyeSupp.setCategory(categoryTxt.getValue());
                 newEyeSupp.setDetails(detailsTxt.getValue());
                 newEyeSupp.setQuantity(quantityNb.getValue());
-                newEyeSupp.setExpiryDate(expiryDateNb.getValue());
+//                newEyeSupp.setExpiryDate(expiryDateNb.getValue());
                 newEyeSupp.setBuyingPrice(buyingPriceNb.getValue());
                 newEyeSupp.setSellingPrice(sellingPriceNb.getValue());
                 dbServicesEyeSupp.saveEyeSupp(newEyeSupp);
@@ -118,7 +120,7 @@ public class EyeSuppForm extends VerticalLayout {
         InputChecker.checkTextField(categoryTxt, continueFlag);
         InputChecker.checkTextField(detailsTxt, continueFlag);
         InputChecker.checkTextField(quantityNb, continueFlag);
-        InputChecker.checkDatePicker(expiryDateNb, continueFlag);
+//        InputChecker.checkDatePicker(expiryDateNb, continueFlag);
         InputChecker.checkTextField(buyingPriceNb, continueFlag);
         InputChecker.checkTextField(sellingPriceNb, continueFlag);
 

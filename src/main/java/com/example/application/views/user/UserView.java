@@ -26,11 +26,11 @@ import java.util.List;
 import static com.example.application.util.Util.*;
 
 @Route(value = "userGrid", layout = MainLayout.class)
-@PageTitle("User Grid")
+@PageTitle("Users")
 @RolesAllowed({"SUPER_ADMIN"})
 public class UserView extends VerticalLayout {
     public final DBServiceEntityUser dbServiceEntityUser;
-    private final Button addNewUserBtn = new Button("Add User");
+    private final Button addNewUserBtn = new Button("Add");
     public final Grid<User> userGrid = new Grid<>();
     private final Dialog addUserDialog = new Dialog();
     private GridListDataView<User> gridListDataView;
@@ -68,23 +68,31 @@ public class UserView extends VerticalLayout {
         roleCombo.setClearButtonVisible(true);
         filterRow.getCell(userGrid.getColumnByKey("role")).setComponent(roleCombo);
 
+        ComboBox<User.UserBranch> branchCombo = new ComboBox<>("");
+        List<User.UserBranch> branchList = Arrays.asList(User.UserBranch.values());
+        branchCombo.setItems(branchList);
+        branchCombo.setClearButtonVisible(true);
+        filterRow.getCell(userGrid.getColumnByKey("branch")).setComponent(branchCombo);
+
         DatePicker dobDatePicker = new DatePicker("");
         dobDatePicker.setClearButtonVisible(true);
         filterRow.getCell(userGrid.getColumnByKey("dob")).setComponent(dobDatePicker);
 
-        fullNameTxt.addValueChangeListener(event -> applyFilter(fullNameTxt, usernameTxt, genderCombo, roleCombo, dobDatePicker));
-        usernameTxt.addValueChangeListener(event -> applyFilter(fullNameTxt, usernameTxt, genderCombo, roleCombo, dobDatePicker));
-        genderCombo.addValueChangeListener(event -> applyFilter(fullNameTxt, usernameTxt, genderCombo, roleCombo, dobDatePicker));
-        roleCombo.addValueChangeListener(event -> applyFilter(fullNameTxt, usernameTxt, genderCombo, roleCombo, dobDatePicker));
-        dobDatePicker.addValueChangeListener(event -> applyFilter(fullNameTxt, usernameTxt, genderCombo, roleCombo, dobDatePicker));
+        fullNameTxt.addValueChangeListener(event -> applyFilter(fullNameTxt, usernameTxt, genderCombo, roleCombo, dobDatePicker,branchCombo));
+        usernameTxt.addValueChangeListener(event -> applyFilter(fullNameTxt, usernameTxt, genderCombo, roleCombo, dobDatePicker,branchCombo));
+        genderCombo.addValueChangeListener(event -> applyFilter(fullNameTxt, usernameTxt, genderCombo, roleCombo, dobDatePicker,branchCombo));
+        roleCombo.addValueChangeListener(event -> applyFilter(fullNameTxt, usernameTxt, genderCombo, roleCombo, dobDatePicker,branchCombo));
+        branchCombo.addValueChangeListener(event -> applyFilter(fullNameTxt, usernameTxt, genderCombo, roleCombo, dobDatePicker,branchCombo));
+        dobDatePicker.addValueChangeListener(event -> applyFilter(fullNameTxt, usernameTxt, genderCombo, roleCombo, dobDatePicker,branchCombo));
     }
 
-    private void applyFilter(TextField fullNameTxt, TextField usernameTxt, ComboBox<User.Gender> genderCombo, ComboBox<User.Role> roleCombo, DatePicker dobDatePicker) {
+    private void applyFilter(TextField fullNameTxt, TextField usernameTxt, ComboBox<User.Gender> genderCombo, ComboBox<User.Role> roleCombo, DatePicker dobDatePicker,ComboBox<User.UserBranch> branchCombo) {
         gridListDataView.setFilter(user -> (
                 (fullNameTxt.getValue() == null || fullNameTxt.getValue().isEmpty() || user.getFullName().contains(fullNameTxt.getValue()))
                 && (usernameTxt.getValue() == null || usernameTxt.getValue().isEmpty() || user.getUsername().contains(usernameTxt.getValue()))
                 && (genderCombo.getValue() == null || user.getGender().equals(genderCombo.getValue()))
                 && (roleCombo.getValue() == null || user.getRole().equals(roleCombo.getValue()))
+                && (branchCombo.getValue() == null || user.getBranch().equals(branchCombo.getValue()))
                 && (dobDatePicker.getValue() == null || user.getDateOfBirth().equals(dobDatePicker.getValue()))
         ));
     }
@@ -93,6 +101,7 @@ public class UserView extends VerticalLayout {
         gridListDataView = userGrid.setItems(dbServiceEntityUser.findAllUser());
         userGrid.addColumn(User::getFullName).setHeader("Full Name").setKey("fullName").setSortable(true);
         userGrid.addColumn(User::getRole).setHeader("Role").setKey("role").setSortable(true);
+        userGrid.addColumn(User::getBranch).setHeader("Branch").setKey("branch").setSortable(true);
         userGrid.addColumn(User::getGender).setHeader("Gender").setKey("gender").setSortable(true);
         userGrid.addColumn(User::getUsername).setHeader("Username").setKey("username").setSortable(true);
         userGrid.addColumn(User::getDateOfBirth).setHeader("DOB").setKey("dob").setSortable(true);

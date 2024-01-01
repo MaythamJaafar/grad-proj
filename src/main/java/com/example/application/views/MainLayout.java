@@ -60,6 +60,7 @@ public class MainLayout extends AppLayout {
         addDrawerContent();
         addHeaderContent();
         getElement().getStyle().set("background-image", "url(https://www.transparenttextures.com/patterns/brick-wall.png)");
+
     }
 
     private Component createHeaderContent() {

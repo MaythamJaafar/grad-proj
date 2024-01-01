@@ -24,12 +24,12 @@ import jakarta.annotation.security.PermitAll;
 import static com.example.application.util.Util.*;
 
 @Route(value = "babyGrid", layout = MainLayout.class)
-@PageTitle("Baby Grid")
+@PageTitle("Baby Items")
 @PermitAll
 
 public class BabyView extends VerticalLayout {
     public final DBServicesBaby dbServicesBaby;
-    private final Button addNewBabyBtn = new Button("Add Baby Item");
+    private final Button addNewBabyBtn = new Button("Add");
     public final Grid<Baby> babyGrid = new Grid<>();
     private final Dialog addBabyDialog = new Dialog();
     private final User currentUser;

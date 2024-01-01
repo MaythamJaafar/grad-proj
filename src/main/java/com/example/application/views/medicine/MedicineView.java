@@ -24,12 +24,12 @@ import jakarta.annotation.security.PermitAll;
 import static com.example.application.util.Util.*;
 
 @Route(value = "medicinesGrid", layout = MainLayout.class)
-@PageTitle("Medicines Grid")
+@PageTitle("Medicines Items")
 @PermitAll
 
 public class MedicineView extends VerticalLayout {
     public final DBServiceMedicine dbServiceMedicine;
-    private final Button addNewMedicineBtn = new Button("Add Medicine");
+    private final Button addNewMedicineBtn = new Button("Add");
     public final Grid<Medicine> medicineGrid = new Grid<>();
     private final Dialog addMedicineDialog = new Dialog();
     private GridListDataView<Medicine> gridListDataView;

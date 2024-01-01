@@ -19,7 +19,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 public class PCareForm extends VerticalLayout {
     private DBServicePCare dbServicePCare;
 
-    private final Button savePCareBtn = new Button("Add PCare");
+    private final Button savePCareBtn = new Button("Add PCare Item");
     private final TextField nameTxt = new TextField("Name");
     private final TextField categoryTxt = new TextField("Category");
     private final TextField batchNb = new TextField("BatchNb");

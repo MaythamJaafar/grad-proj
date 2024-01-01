@@ -25,7 +25,7 @@ import java.time.format.DateTimeFormatter;
 import static com.example.application.util.Util.*;
 
 @Route(value = "expense", layout = MainLayout.class)
-@PageTitle("Expense")
+@PageTitle("Expenses")
 @RolesAllowed({"SUPER_ADMIN", "ADMIN"})
 public class ExpenseView extends HorizontalLayout {
     public final DBServicesExpenses dbServicesExpenses;

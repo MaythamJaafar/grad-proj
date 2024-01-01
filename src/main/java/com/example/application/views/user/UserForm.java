@@ -25,6 +25,7 @@ public class UserForm extends VerticalLayout {
     private final TextField fullNameTxt = new TextField("Full Name");
     private final RadioButtonGroup<User.Gender> genderRd = new RadioButtonGroup<>("Gender", User.Gender.values());
     private final ComboBox<User.Role> roleCom = new ComboBox<>("Role", User.Role.values());
+    private final ComboBox<User.UserBranch> branchCom = new ComboBox<>("Branch", User.UserBranch.values());
     private final TextField usernameTxt = new TextField("Username");
     private final PasswordField password = new PasswordField("Password");
     private final DatePicker dateOfBirth = new DatePicker("DOB");
@@ -73,6 +74,8 @@ public class UserForm extends VerticalLayout {
             dateOfBirth.setValue(user.getDateOfBirth());
         if (user.getRole() != null)
             roleCom.setValue(user.getRole());
+        if (user.getBranch() != null)
+            branchCom.setValue(user.getBranch());
         if (user.getGender() != null)
             genderRd.setValue(user.getGender());
         if (user.getUsername() != null)
@@ -83,8 +86,8 @@ public class UserForm extends VerticalLayout {
 
     public void createDesign() {
         HorizontalLayout nameHl = new HorizontalLayout(fullNameTxt, usernameTxt);
-        HorizontalLayout phnDobHl = new HorizontalLayout(roleCom, dateOfBirth);
-        HorizontalLayout roleGnHL = new HorizontalLayout(genderRd, password);
+        HorizontalLayout phnDobHl = new HorizontalLayout(roleCom,branchCom  );
+        HorizontalLayout roleGnHL = new HorizontalLayout(genderRd,dateOfBirth, password);
         HorizontalLayout saveCancelHl = new HorizontalLayout(saveUserBtn, cancelBtn);
         saveCancelHl.setSizeFull();
         saveUserBtn.setWidth("50%");
@@ -110,6 +113,7 @@ public class UserForm extends VerticalLayout {
                     newUser.setPassword(passwordEncoder.encode(password.getValue()));
                 }
                 newUser.setRole(roleCom.getValue());
+                newUser.setBranch(branchCom.getValue());
                 newUser.setGender(genderRd.getValue());
                 if (user == null && dbServiceEntityUser.findUserByUsername(usernameTxt.getValue()) != null)
                     showErrorNotification("Username Already Exists");
@@ -131,6 +135,7 @@ public class UserForm extends VerticalLayout {
         InputChecker.checkTextField(usernameTxt, continueFlag);
         InputChecker.checkPasswordField(password, continueFlag);
         InputChecker.checkCombo(roleCom, continueFlag);
+        InputChecker.checkCombo(branchCom, continueFlag);
         InputChecker.checkRdGrp(genderRd, continueFlag);
         return continueFlag.get();
     }
@@ -140,6 +145,7 @@ public class UserForm extends VerticalLayout {
         usernameTxt.clear();
         password.clear();
         roleCom.clear();
+        branchCom.clear();
         genderRd.clear();
     }
 

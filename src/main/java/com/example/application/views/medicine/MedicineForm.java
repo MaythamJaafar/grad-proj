@@ -19,7 +19,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 public class MedicineForm extends VerticalLayout {
     private DBServiceMedicine dbServiceMedicine;
 
-    private final Button saveMedicineBtn = new Button("Add medicine");
+    private final Button saveMedicineBtn = new Button("Add Medicine Item");
     private final TextField nameTxt = new TextField("Name");
     private final TextField categoryTxt = new TextField("Category");
     private final TextField batchNb = new TextField("Batch #");

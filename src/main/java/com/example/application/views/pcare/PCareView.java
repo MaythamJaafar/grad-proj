@@ -24,12 +24,12 @@ import jakarta.annotation.security.PermitAll;
 import static com.example.application.util.Util.*;
 
 @Route(value = "pCareGrid", layout = MainLayout.class)
-@PageTitle("PCare Grid")
+@PageTitle("PCare Items")
 @PermitAll
 
 public class PCareView extends VerticalLayout {
     public final DBServicePCare dbServicePCare;
-    private final Button addNewPCareBtn = new Button("Add PCare Supplement");
+    private final Button addNewPCareBtn = new Button("Add");
     public final Grid<PCare> pCareGrid = new Grid<>();
     private final Dialog addPCareDialog = new Dialog();
     private final User currentUser;

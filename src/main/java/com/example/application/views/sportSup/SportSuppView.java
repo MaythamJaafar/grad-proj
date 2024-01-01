@@ -27,11 +27,11 @@ import jakarta.annotation.security.PermitAll;
 import static com.example.application.util.Util.*;
 
 @Route(value = "sportSuppGrid", layout = MainLayout.class)
-@PageTitle("SportSupp Grid")
+@PageTitle("SportSupp Items")
 @PermitAll
 public class SportSuppView extends VerticalLayout {
     public final DBServiceSportSupp dbServiceSportSupp ;
-    private final Button addNewSportSUppBtn = new Button("Add Sport Supplement");
+    private final Button addNewSportSUppBtn = new Button("Add");
     public final Grid<SportSupp> sportSuppGrid = new Grid<>();
     private final Dialog addSportSuppDialog = new Dialog();
     private GridListDataView<SportSupp> gridListDataView;

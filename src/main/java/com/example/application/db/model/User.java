@@ -16,6 +16,7 @@ public class User {
     private String fullName;
     private Gender gender;
     private Role role;
+    private UserBranch branch;
     private String username;
     private String password;
     private LocalDate dateOfBirth;
@@ -30,6 +31,11 @@ public class User {
     public enum Gender {
         MALE,
         FEMALE
+    }
+    public enum UserBranch{
+        HAMRA_BRANCH,
+        AIRPORT_BRANCH;
+
     }
 
 }

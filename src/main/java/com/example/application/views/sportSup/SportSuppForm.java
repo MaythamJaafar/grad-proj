@@ -18,7 +18,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 
 public class SportSuppForm extends VerticalLayout {
     private final DBServiceSportSupp dbServiceSportSupp;
-    private final Button saveSportSuppBtn = new Button("Add sportSupp");
+    private final Button saveSportSuppBtn = new Button("Add Sport Item");
     private final TextField nameTxt = new TextField("Name");
     private final TextField categoryTxt = new TextField("Category");
     private final TextField batchNb = new TextField("Batch #");

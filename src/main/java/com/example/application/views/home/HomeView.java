@@ -27,7 +27,7 @@ public class HomeView extends VerticalLayout {
     private final VerticalLayout branchDetailsVl = new VerticalLayout();
     private final Tab createMessageTab = new Tab("Airport Highway Branch");
     private final Tab myMessagesTab = new Tab("Hamra Branch");
-    private final Tabs tabs = new Tabs(createMessageTab, myMessagesTab);
+    private final Tabs tabs = new Tabs(myMessagesTab,createMessageTab);
     private final TextField phoneNbLbl = new TextField("Phone");
     private final TextField addressLbl = new TextField("Address");
     private final TextField workTimeLbl = new TextField("Work Time");
