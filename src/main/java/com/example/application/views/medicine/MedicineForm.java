@@ -49,6 +49,7 @@ public class MedicineForm extends VerticalLayout {
         addMedicineDialog.setCloseOnOutsideClick(false);
         createForm();
         saveNewMedicine(null);
+        setPlaceHolders();
     }
 
     public MedicineForm(DBServiceMedicine dbServiceMedicine, Dialog editDialog, Medicine medicine, Grid<Medicine> medicineGrid, GridListDataView<Medicine> gridListDataView) {
@@ -123,6 +124,8 @@ public class MedicineForm extends VerticalLayout {
                 gridListDataView = medicineGrid.setItems(dbServiceMedicine.findAllMedicines());
                 gridListDataView.refreshAll();
                 dialog.close();
+                clearFields();
+
             }
         });
     }
@@ -141,6 +144,18 @@ public class MedicineForm extends VerticalLayout {
         InputChecker.checkTextField(buyingPriceNb, continueFlag);
 
         return continueFlag.get();
+    }
+    public void setPlaceHolders(){
+        categoryTxt.setPlaceholder("Category");
+        nameTxt.setPlaceholder("Name");
+        detailsTxt.setPlaceholder("Details");
+        batchNb.setPlaceholder("Batch Nb");
+        quantityNb.setPlaceholder("Quantity");
+        expiryDateNb.setPlaceholder("Expiry Date");
+        buyingPriceNb.setPlaceholder("Buying Price");
+        sellingPriceNb.setPlaceholder("Selling Price");
+        dosageTxt.setPlaceholder("Dosage");
+        formulaTxt.setPlaceholder("Formula");
     }
 
 }

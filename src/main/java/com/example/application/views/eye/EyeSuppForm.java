@@ -43,6 +43,7 @@ public class EyeSuppForm extends VerticalLayout {
         addEyeSuppDialog.setCloseOnOutsideClick(false);
         createForm();
         saveNewEyeSupp(null);
+        setPlaceHolders();
     }
 
     public EyeSuppForm(DBServicesEyeSupp dbServicesEyeSupp, Dialog editDialog, EyeSupp eyeSupp, Grid<EyeSupp> eyeSuppGrid, GridListDataView<EyeSupp> gridListDataView) {
@@ -125,5 +126,14 @@ public class EyeSuppForm extends VerticalLayout {
         InputChecker.checkTextField(sellingPriceNb, continueFlag);
 
         return continueFlag.get();
+    }
+    public void setPlaceHolders(){
+        categoryTxt.setPlaceholder("Category");
+        nameTxt.setPlaceholder("Name");
+        detailsTxt.setPlaceholder("Details");
+        batchNb.setPlaceholder("Batch Nb");
+        quantityNb.setPlaceholder("Quantity");
+        buyingPriceNb.setPlaceholder("Buying Price");
+        sellingPriceNb.setPlaceholder("Selling Price");
     }
 }

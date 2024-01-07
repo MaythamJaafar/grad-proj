@@ -40,7 +40,6 @@ public class ExpenseView extends HorizontalLayout {
     private final User currentUser;
 
 
-
     public ExpenseView(DBServicesExpenses dbServicesExpenses, AuthenticatedUser authenticatedUser) {
         this.dbServicesExpenses = dbServicesExpenses;
         currentUser = authenticatedUser.get().orElseThrow(() -> new RuntimeException("Authenticated user not found"));
@@ -60,9 +59,6 @@ public class ExpenseView extends HorizontalLayout {
         createGrid();
         if (currentUser.getRole().equals(User.Role.ADMIN)) {
             section1.setEnabled(false);
-            section1.setEnabled(false);
-            section2.setEnabled(false);
-
             expenseBtn.getStyle().set("background-color", "grey");
         }
 
@@ -70,6 +66,7 @@ public class ExpenseView extends HorizontalLayout {
         clearBtn.addClickListener(event -> clearFields());
         add(section1, section2);
         clearBtn.setVisible(false);
+        setPlaceHolders();
     }
 
     private void createGrid() {
@@ -108,7 +105,13 @@ public class ExpenseView extends HorizontalLayout {
                     confirmDialog.setConfirmButton(confirmDeleteBtn);
                     confirmDialog.open();
                 });
-                return new HorizontalLayout(editBtn, deleteBtn);
+                HorizontalLayout editHl = new HorizontalLayout(editBtn, deleteBtn);
+                if (currentUser.getRole().equals(User.Role.ADMIN)) {
+                    editHl.setEnabled(false);
+                    editBtn.getStyle().set("background-color", "grey");
+                    deleteBtn.getStyle().set("background-color", "grey");
+                }
+                return editHl;
             });
         titleTxt.getStyle().setWidth("100%");
         detailsTxt.getStyle().setWidth("100%");
@@ -161,6 +164,7 @@ public class ExpenseView extends HorizontalLayout {
                 clearBtn.setVisible(false);
                 expensesGrid.setItems(dbServicesExpenses.findAllExpenses());
                 gridListDataView.refreshAll();
+                clearFields();
             }
 
         });
@@ -174,7 +178,7 @@ public class ExpenseView extends HorizontalLayout {
         titleTxt.setValueChangeMode(ValueChangeMode.EAGER);
         filterRow.getCell(expensesGrid.getColumnByKey("title")).setComponent(titleTxt);
         titleTxt.setWidthFull();
-        titleTxt.setPlaceholder("");
+        titleTxt.setPlaceholder("Title");
         titleTxt.getElement().getStyle().set("font-size", "12px");
 
         TextField detailTxt = new TextField("");
@@ -192,6 +196,8 @@ public class ExpenseView extends HorizontalLayout {
         priceTxt.getElement().getStyle().set("font-size", "12px");
 
         DateTimePicker datePicker = new DateTimePicker("");
+        datePicker.setDatePlaceholder("Date");
+        datePicker.setTimePlaceholder("Time");
         datePicker.getElement().getThemeList().add("date-picker-width");
         datePicker.getElement().getThemeList().add("time-picker-width");
         filterRow.getCell(expensesGrid.getColumnByKey("date")).setComponent(datePicker);
@@ -220,5 +226,10 @@ public class ExpenseView extends HorizontalLayout {
         id = null;
         clearBtn.setVisible(false);
         expenseBtn.setText("Add Expense");
+    }
+    public void setPlaceHolders(){
+        detailsTxt.setPlaceholder("Details");
+        titleTxt.setPlaceholder("Title");
+        priceNb.setPlaceholder("Price");
     }
 }

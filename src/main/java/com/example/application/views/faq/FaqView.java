@@ -79,7 +79,7 @@ public class FaqView extends VerticalLayout {
         questionList.add("How do I update my personal information in my account?");
         answerList.add("To update your personal information, log in to your account and navigate to the profile settings. You can modify your details such as address, phone number, and email.");
 
-        questionList.add("Is my personal and health information secure on your website?");
+        questionList.add("Is my personal and health information secure on website?");
         answerList.add("Yes, we take the security and privacy of your information seriously. Our website uses advanced encryption and follows industry standards to protect your personal and health data.");
 
         questionList.add("What do I do if I forget my account password?");

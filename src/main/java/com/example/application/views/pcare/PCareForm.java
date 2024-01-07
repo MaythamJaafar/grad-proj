@@ -45,6 +45,8 @@ public class PCareForm extends VerticalLayout {
         addPCareDialog.setCloseOnOutsideClick(false);
         createForm();
         saveNewPCare(null);
+        setPlaceHolders();
+
     }
 
     public PCareForm(DBServicePCare dbServicePCare, Dialog editDialog, PCare pCare, Grid<PCare> pCareGrid, GridListDataView<PCare> gridListDataView) {
@@ -110,6 +112,8 @@ public class PCareForm extends VerticalLayout {
                 gridListDataView = pCareGrid.setItems(dbServicePCare.findAllPCare());
                 gridListDataView.refreshAll();
                 dialog.close();
+                clearFields();
+
             }
         });
     }
@@ -126,6 +130,16 @@ public class PCareForm extends VerticalLayout {
         InputChecker.checkTextField(sellingPriceNb, continueFlag);
 
         return continueFlag.get();
+    }
+    public void setPlaceHolders(){
+        categoryTxt.setPlaceholder("Category");
+        nameTxt.setPlaceholder("Name");
+        detailsTxt.setPlaceholder("Details");
+        batchNb.setPlaceholder("Batch Nb");
+        quantityNb.setPlaceholder("Quantity");
+        expiryDateNb.setPlaceholder("Expiry Date");
+        buyingPriceNb.setPlaceholder("Buying Price");
+        sellingPriceNb.setPlaceholder("Selling Price");
     }
 
 }

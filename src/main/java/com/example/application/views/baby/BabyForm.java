@@ -45,6 +45,7 @@ public class BabyForm extends VerticalLayout {
         addBabyDialog.setCloseOnOutsideClick(false);
         createForm();
         saveNewbaby(null);
+        setPlaceHolders();
     }
 
     public BabyForm(DBServicesBaby dbServicesBaby, Dialog editDialog, Baby baby, Grid<Baby> babyGrid, GridListDataView<Baby> gridListDataView) {
@@ -127,5 +128,14 @@ public void saveNewbaby(@Nullable String id) {
 
         return continueFlag.get();
     }
-
+    public void setPlaceHolders(){
+        categoryTxt.setPlaceholder("Category");
+        nameTxt.setPlaceholder("Name");
+        detailsTxt.setPlaceholder("Details");
+        batchNb.setPlaceholder("Batch Nb");
+        quantityNb.setPlaceholder("Quantity");
+        expiryDateNb.setPlaceholder("Expiry Date");
+        buyingPriceNb.setPlaceholder("Buying Price");
+        sellingPriceNb.setPlaceholder("Selling Price");
+    }
 }

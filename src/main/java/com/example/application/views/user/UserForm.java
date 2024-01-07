@@ -49,6 +49,7 @@ public class UserForm extends VerticalLayout {
         dialog.setCloseOnOutsideClick(false);
         createDesign();
         saveNewUser();
+        setPlaceHolders();
     }
 
 
@@ -122,6 +123,8 @@ public class UserForm extends VerticalLayout {
                     dialog.close();
                     gridListDataView = userGrid.setItems(dbServiceEntityUser.findAllUser());
                     gridListDataView.refreshAll();
+                    clearFields();
+
 
                 }
             }
@@ -147,6 +150,14 @@ public class UserForm extends VerticalLayout {
         roleCom.clear();
         branchCom.clear();
         genderRd.clear();
+    }
+    public void setPlaceHolders(){
+        fullNameTxt.setPlaceholder("Full Name");
+        usernameTxt.setPlaceholder("Username");
+        password.setPlaceholder("Password");
+        dateOfBirth.setPlaceholder("DOB");
+        roleCom.setPlaceholder("Role");
+        branchCom.setPlaceholder("Branch");
     }
 
 }

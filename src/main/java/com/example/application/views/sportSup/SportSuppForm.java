@@ -42,6 +42,7 @@ public class SportSuppForm extends VerticalLayout {
         });
         addSportSuppDialog.setCloseOnOutsideClick(false);
         createForm();
+        setPlaceHolders();
         saveNewSportSupp(null);
     }
 
@@ -65,6 +66,16 @@ public class SportSuppForm extends VerticalLayout {
         expiryDateNb.clear();
         buyingPriceNb.clear();
         sellingPriceNb.clear();
+    }
+    public void setPlaceHolders(){
+        categoryTxt.setPlaceholder("Category");
+        nameTxt.setPlaceholder("Name");
+        detailsTxt.setPlaceholder("Details");
+        batchNb.setPlaceholder("Batch Nb");
+        quantityNb.setPlaceholder("Quantity");
+        expiryDateNb.setPlaceholder("Expiry Date");
+        buyingPriceNb.setPlaceholder("Buying Price");
+        sellingPriceNb.setPlaceholder("Selling Price");
     }
 
     private void createEditForm(SportSupp sportSupp) {
@@ -106,6 +117,7 @@ public class SportSuppForm extends VerticalLayout {
                 dbServiceSportSupp.saveSportSupp(newSportSupp);
                 gridListDataView = sportSuppGrid.setItems(dbServiceSportSupp.findAllSportSUpp());
                 gridListDataView.refreshAll();
+                clearFields();
                 dialog.close();
             }
         });

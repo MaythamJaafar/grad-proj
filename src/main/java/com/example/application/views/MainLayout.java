@@ -15,6 +15,7 @@ import com.example.application.views.pcare.PCareView;
 import com.example.application.views.sportSup.SportSuppView;
 import com.example.application.views.user.UserView;
 import com.vaadin.flow.component.Component;
+import com.vaadin.flow.component.Html;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.applayout.AppLayout;
 import com.vaadin.flow.component.avatar.Avatar;
@@ -59,6 +60,7 @@ public class MainLayout extends AppLayout {
         setPrimarySection(Section.DRAWER);
         addDrawerContent();
         addHeaderContent();
+        createUnderReviewDialog();
         getElement().getStyle().set("background-image", "url(https://www.transparenttextures.com/patterns/brick-wall.png)");
 
     }
@@ -126,7 +128,7 @@ public class MainLayout extends AppLayout {
 
         layout.add(userMenu);
         header.add(layout);
-        header.getElement().getStyle().set("margin-right", "150px");
+        header.getElement().getStyle().set("margin-right", "170px");
         return header;
     }
 
@@ -155,8 +157,10 @@ public class MainLayout extends AppLayout {
 
         Scroller scroller = new Scroller(createNavigation());
         NativeLabel label = new NativeLabel();
-        label.add(header, scroller, createFooter());
+        VerticalLayout vl =new VerticalLayout(header, scroller);
+        label.add(vl, createFooter());
         label.addClassNames("drawer-section", "drawerLayout");
+        label.getElement().getStyle().set("justify-content", "space-between");
         addToDrawer(label);
     }
 
@@ -231,7 +235,10 @@ public class MainLayout extends AppLayout {
     private Footer createFooter() {
         Footer layout = new Footer();
         NativeLabel text = new NativeLabel("Powered By @Maytham Jaafar");
-        text.getElement().getStyle().set("color", "grey");
+        text.getElement().getStyle().set("color", "#1000ff");
+        text.getElement().getStyle().set("font-size", "12px");
+        layout.add(text);
+        layout.getElement().getStyle().set("align-self", "center");
         return layout;
     }
 
@@ -244,5 +251,83 @@ public class MainLayout extends AppLayout {
     private String getCurrentPageTitle() {
         PageTitle title = getContent().getClass().getAnnotation(PageTitle.class);
         return title == null ? "" : title.value();
+    }
+
+    public  void createUnderReviewDialog() {
+        Dialog dialog = new Dialog();
+        dialog.setCloseOnOutsideClick(false);
+        dialog.setCloseOnEsc(false);
+        dialog.setModal(false);
+        String message = "<div>"
+                + "<p>"
+                + "We've received your account opening application, and it's currently under review.<br>"
+                + "</div>";
+        dialog.add(applicationUnderReviewVL(dialog, "Application is under review", true, message));
+        NativeLabel engTitle = new NativeLabel("Give Feedback");
+        engTitle.getStyle().set("margin-top", "-10px");
+        engTitle.getStyle().set("color", "green");
+        NativeLabel arTitle = new NativeLabel("تقديم الرأي");
+        arTitle.getStyle().set("margin-top", "-10px");
+        arTitle.getStyle().set("margin-bottom", "-10px");
+        arTitle.getStyle().set("color", "green");
+        VerticalLayout verticalLayout = new VerticalLayout(engTitle, arTitle);
+        verticalLayout.setHeight("100%");
+        verticalLayout.setAlignItems(FlexComponent.Alignment.CENTER);
+        Button reviewBtn = new Button(verticalLayout);
+        reviewBtn.setHeight("100%");
+        reviewBtn.addClickListener(event -> UI.getCurrent().getPage().open("https://g.page/r/CUvMXm6ljycfEB0/review", "_blank"));
+
+        NativeLabel engTitle2 = new NativeLabel("Decline & Exit");
+        engTitle2.getStyle().set("margin-top", "-10px");
+        engTitle2.getStyle().set("color", "black");
+        NativeLabel arTitle2 = new NativeLabel("عدم الموافقة، إغلاق");
+        arTitle2.getStyle().set("margin-top", "-10px");
+        arTitle2.getStyle().set("margin-bottom", "-10px");
+        arTitle2.getStyle().set("color", "black");
+        VerticalLayout verticalLayout2 = new VerticalLayout(engTitle2, arTitle2);
+        verticalLayout2.setAlignItems(FlexComponent.Alignment.CENTER);
+        verticalLayout2.setHeight("100%");
+        Button closeBtn = new Button(verticalLayout2);
+        closeBtn.addClickListener(event -> authenticatedUser.logout());
+        closeBtn.setHeight("100%");
+        HorizontalLayout buttonHl = new HorizontalLayout(reviewBtn, closeBtn);
+        buttonHl.setWidthFull();
+        buttonHl.setJustifyContentMode(FlexComponent.JustifyContentMode.BETWEEN);
+        dialog.add(buttonHl);
+        dialog.open();
+    }
+
+    public VerticalLayout applicationUnderReviewVL(Dialog dialog, String title, boolean withClose, String message) {
+        H1 headline = new H1(title);
+        headline.getElement().getStyle().set("align-self", "center");
+        headline.getStyle().set("margin", "var(--lumo-space-m) 0").set("font-size", "1.5em").set("font-weight", "bold");
+        Html underReviewMessage = new Html(message);
+        underReviewMessage.getElement().getStyle().set("align-self", "start");
+        underReviewMessage.getElement().getStyle().set("margin-top", "-10px");
+
+        Image verifiedImage = new Image();
+        if (title.equals("Application is Not Complete")) {
+            verifiedImage.setSrc("./images/not-completed.jpg");
+        } else
+            verifiedImage.setSrc("./images/verifiedTrue.png");
+
+        verifiedImage.getElement().getStyle().set("width", "110px");
+        verifiedImage.getElement().getStyle().set("align-self", "center");
+        verifiedImage.getElement().getStyle().set("margin-left", "-10px");
+        verifiedImage.setVisible(true);
+
+        Button closeButton = new Button("Close");
+        closeButton.addClickListener(e -> {
+            dialog.close();
+            UI.getCurrent().getPage().reload();
+        });
+        closeButton.setVisible(withClose);
+
+        VerticalLayout dialogLayout = new VerticalLayout(verifiedImage, headline, underReviewMessage, closeButton);
+        dialogLayout.setWidth("100%");
+        dialogLayout.setPadding(false);
+        dialogLayout.setAlignItems(FlexComponent.Alignment.STRETCH);
+        dialogLayout.getStyle().set("width", "550px").set("max-width", "100%");
+        return dialogLayout;
     }
 }

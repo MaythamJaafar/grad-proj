@@ -1,6 +1,5 @@
 package com.example.application.views.contact;
 
-//import com.example.application.db.dbServices.DBServiceContactUS;
 
 import com.example.application.db.dbServices.DBServiceContactUs;
 import com.example.application.db.model.ContactUs;
@@ -73,8 +72,13 @@ public class ContactUsView extends VerticalLayout {
             }
         });
         tabs.setSelectedTab(createMessageTab);
-
-        add(tabs, createMessageVl, messagesVl);
+        if (!currentUser.getRole().equals(User.Role.CLIENT)) {
+            add(messagesVl);
+            messagesVl.setVisible(true);
+            setMessageGridVl();
+        }
+        else
+            add(tabs,createMessageVl,messagesVl);
     }
 
     private void setMessageGridVl() {
