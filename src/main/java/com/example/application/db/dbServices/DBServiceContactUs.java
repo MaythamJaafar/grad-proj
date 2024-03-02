@@ -12,17 +12,13 @@ public class DBServiceContactUs {
     public DBServiceContactUs(RepoContactUs repoContactUs) {
         this.repoContactUs= repoContactUs;
     }
-
     public void saveContact(ContactUs newContact){
         repoContactUs.save(newContact);
     }
-
     public List<ContactUs> findAllFeedbacks(){
         return repoContactUs.findAll();
     }
-
     public List<ContactUs> findAllFeedbacksByUsername(String username){
         return repoContactUs.findAllByMessageOwner(username);
     }
-
 }

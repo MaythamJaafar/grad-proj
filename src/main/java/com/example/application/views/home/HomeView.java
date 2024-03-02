@@ -1,8 +1,10 @@
 package com.example.application.views.home;
 
+import com.example.application.util.Util;
 import com.example.application.views.MainLayout;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
+import com.vaadin.flow.component.dialog.Dialog;
 import com.vaadin.flow.component.html.H1;
 import com.vaadin.flow.component.html.H2;
 import com.vaadin.flow.component.html.H3;
@@ -20,6 +22,7 @@ import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import com.vaadin.flow.router.RouteAlias;
+import com.vaadin.flow.server.VaadinSession;
 import com.vaadin.flow.shared.ui.Transport;
 import jakarta.annotation.PostConstruct;
 import jakarta.annotation.security.PermitAll;
@@ -97,8 +100,47 @@ public class HomeView extends VerticalLayout {
         branchDetailsVl.add(vl);
 
         tabs.setSelectedTab(hamraTab);
-        add(tabs, branchDetailsVl);
+
+        if (VaadinSession.getCurrent().getAttribute("firstLogin") != null)
+            add(tabs, branchDetailsVl);
+        else
+            createComingSoonDialog();
         customNotificationH3.getElement().getStyle().set("color", "red");
+    }
+
+    public void createComingSoonDialog() {
+        VaadinSession.getCurrent().setAttribute("firstLogin","1");
+        Dialog dialog = new Dialog();
+        dialog.setCloseOnOutsideClick(false);
+        dialog.setCloseOnEsc(false);
+        dialog.setModal(true);
+        dialog.setWidth("70%");
+
+        H2 hamraH2 = new H2("Hamra Branch");
+        H2 airportH2 = new H2("Airport Highway Branch");
+        H4 comingSoonH4 = new H4("Coming Soon!!");
+        comingSoonH4.getElement().getStyle().set("color", "red");
+
+        Button seeDetailsBtn = Util.createEditButton();
+        seeDetailsBtn.setText("See Details");
+        seeDetailsBtn.addClickListener(clickEvent -> {
+            add(tabs, branchDetailsVl);
+            dialog.close();
+        });
+
+        VerticalLayout hamraBranchCard = new VerticalLayout(hamraH2, seeDetailsBtn);
+        VerticalLayout airportBranchCard = new VerticalLayout(airportH2, comingSoonH4);
+        hamraBranchCard.getElement().getStyle().set("align-items", "center");
+        airportBranchCard.getElement().getStyle().set("align-items", "center");
+        hamraBranchCard.addClassName("card");
+        airportBranchCard.addClassName("card");
+        hamraBranchCard.setWidthFull();
+        airportBranchCard.setWidthFull();
+
+        HorizontalLayout dialogHl = new HorizontalLayout(hamraBranchCard, airportBranchCard);
+        dialog.getElement().getStyle().set("background-image", "url(https://www.transparenttextures.com/patterns/brick-wall.png)");
+        dialog.add(dialogHl);
+        dialog.open();
     }
 
     public void setBranchDetails(String phone, String address, String workTime, String categories, String email, boolean comingSoon) {
@@ -108,7 +150,6 @@ public class HomeView extends VerticalLayout {
         categoriesLbl.setValue(categories);
         emailLbl.setValue(email);
         customNotificationH3.setVisible(comingSoon);
-
     }
 
     private Button addGoogleMapsButton() {

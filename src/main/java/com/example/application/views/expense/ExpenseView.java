@@ -74,8 +74,11 @@ public class ExpenseView extends HorizontalLayout {
         gridListDataView = expensesGrid.setItems(dbServicesExpenses.findAllExpenses());
 
         expensesGrid.addColumn(Expense::getTitle).setHeader("Title").setKey("title").setSortable(true);
+        titleTxt.setClearButtonVisible(true);
         expensesGrid.addColumn(Expense::getDetails).setHeader("Details").setKey("details").setSortable(true);
+        detailsTxt.setClearButtonVisible(true);
         expensesGrid.addColumn(expense -> expense.getPrice() + "$").setHeader("Price").setKey("price").setSortable(true);
+        priceNb.setClearButtonVisible(true);
         expensesGrid.addColumn(expense -> expense.getDate().format(shortFormatter)).setHeader("Date").setWidth("30%").setKey("date").setSortable(true);
         if (!currentUser.getRole().equals(User.Role.CLIENT))
             expensesGrid.addComponentColumn(expense -> {
@@ -178,6 +181,7 @@ public class ExpenseView extends HorizontalLayout {
         titleTxt.setValueChangeMode(ValueChangeMode.EAGER);
         filterRow.getCell(expensesGrid.getColumnByKey("title")).setComponent(titleTxt);
         titleTxt.setWidthFull();
+        titleTxt.setClearButtonVisible(true);
         titleTxt.setPlaceholder("Title");
         titleTxt.getElement().getStyle().set("font-size", "12px");
 
@@ -185,6 +189,7 @@ public class ExpenseView extends HorizontalLayout {
         titleTxt.setValueChangeMode(ValueChangeMode.EAGER);
         filterRow.getCell(expensesGrid.getColumnByKey("details")).setComponent(detailTxt);
         detailTxt.setWidthFull();
+        detailTxt.setClearButtonVisible(true);
         detailTxt.setPlaceholder("Details");
         detailTxt.getElement().getStyle().set("font-size", "12px");
 
@@ -192,6 +197,7 @@ public class ExpenseView extends HorizontalLayout {
         titleTxt.setValueChangeMode(ValueChangeMode.EAGER);
         filterRow.getCell(expensesGrid.getColumnByKey("price")).setComponent(priceTxt);
         priceTxt.setWidthFull();
+        detailTxt.setClearButtonVisible(true);
         priceTxt.setPlaceholder("Price");
         priceTxt.getElement().getStyle().set("font-size", "12px");
 

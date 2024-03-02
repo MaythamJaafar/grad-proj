@@ -61,7 +61,7 @@ public class MedicineForm extends VerticalLayout {
         editDialog.setCloseOnOutsideClick(false);
         createEditForm(medicine);
         saveNewMedicine(medicine.get_id());
-        saveMedicineBtn.setText("update");
+        saveMedicineBtn.setText("Update");
     }
 
     private void clearFields() {
