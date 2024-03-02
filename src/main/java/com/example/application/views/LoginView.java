@@ -18,7 +18,6 @@ public class LoginView extends VerticalLayout implements BeforeEnterObserver {
     private final LoginForm loginForm = new LoginForm();
     private final RouterLink signupLink = new RouterLink();
 
-    //test
     public LoginView() {
         setSizeFull();
         setAlignItems(Alignment.CENTER);
